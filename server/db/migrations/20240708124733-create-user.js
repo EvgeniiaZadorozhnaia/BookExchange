@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       rating: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       placeOfMeeting: {
         type: Sequelize.STRING

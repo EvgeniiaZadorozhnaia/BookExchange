@@ -25,9 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     ownerId: DataTypes.INTEGER,
     title: DataTypes.STRING,
     author: DataTypes.STRING,
-    genre: DataTypes.STRING,
     pages: DataTypes.INTEGER,
-    rating: DataTypes.INTEGER,
+    rating: DataTypes.FLOAT,
     pictureUrl: DataTypes.STRING
   }, {
     sequelize,
