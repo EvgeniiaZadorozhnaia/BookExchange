@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
 
 let accessToken = '';
 
-function setAccessToken(newToken) {
+function setAccessToken(newToken: string) {
   accessToken = newToken;
 }
 

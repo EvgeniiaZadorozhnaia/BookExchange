@@ -9,5 +9,11 @@ export interface AuthFormProps {
     answer: string; 
     price: string; 
   } 
+
+  export interface ErrorModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    error: string;
+  }
   
 

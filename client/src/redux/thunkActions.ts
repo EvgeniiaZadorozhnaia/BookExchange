@@ -3,7 +3,6 @@ import { AxiosResponse } from "axios";
 import axiosInstance, { setAccessToken } from "../axiosInstance";
 import { IType, IUser } from "../types/stateTypes";
 import { NewUser } from "./types/thunk";
-import { useNavigate } from "react-router-dom";
 
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 

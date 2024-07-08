@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+
 import { useAppSelector } from "../../redux/hooks";
 
 function Profile(): JSX.Element {
