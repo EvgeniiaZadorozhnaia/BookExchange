@@ -7,7 +7,7 @@ import Main from "./components/Main/Main";
 import Profile from "./pages/profile/profile"; 
 import { useAppSelector } from "./redux/hooks";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-import LeaderBoard from "./components/LeaderBoard/LeaderBoard";
+
 
 
 function App() {

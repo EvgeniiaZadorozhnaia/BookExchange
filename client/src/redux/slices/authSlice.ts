@@ -1,8 +1,8 @@
 import { UserState } from './../../components/initState';
-import { ActionReducerMapBuilder, Draft, combineReducers, createSlice } from "@reduxjs/toolkit"
-import { AuthState, UsersState } from "../types/states"
-import { addUser, getUser, logoutUser } from '../thunkActions';
-import { AuthSlice, RejectedAction, UserAction, UsersSlice } from '../types/reducers';
+import { ActionReducerMapBuilder, Draft, createSlice } from "@reduxjs/toolkit"
+import { AuthState } from "../types/states"
+import { addUser, logoutUser } from '../thunkActions';
+import { AuthSlice, RejectedAction, UserAction } from '../types/reducers';
 
 
 const initialState: AuthState = { user: UserState, loading: true, error: {}}
@@ -28,7 +28,7 @@ const authSlice: AuthSlice = createSlice({
     builder.addCase(logoutUser.pending, (state: Draft<AuthState>): void => {
       state.loading = true;
     })
-    builder.addCase(logoutUser.fulfilled, (state: Draft<AuthState>, action: UserAction): void => {
+    builder.addCase(logoutUser.fulfilled, (state: Draft<AuthState>): void => {
       state.user = UserState;
       state.loading = false;
     })

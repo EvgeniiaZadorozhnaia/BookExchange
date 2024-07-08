@@ -1,5 +1,4 @@
-import { AxiosResponse } from "axios";
-import axiosInstance, { setAccessToken } from "../../axiosInstance";
+
 import styles from "./Navbar.module.css";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";

@@ -1,24 +1,16 @@
 import { PayloadAction, SerializedError, Slice, SliceCaseReducers, SliceSelectors } from "@reduxjs/toolkit";
-import { AuthState, UsersState } from "./states";
-import { IUser } from "../../types/stateTypes";
+import { AuthState } from "./states";
+import { IType, IUser } from "../../types/stateTypes";
 
 export type UserAction = PayloadAction<IUser, string, {
-    arg: void;
+    arg: IType;
     requestId: string;
     requestStatus: "fulfilled";
 }, never>
 
-export type RejectedAction = PayloadAction<unknown, string, {
-    arg: void;
-    requestId: string;
-    requestStatus: "rejected";
-    aborted: boolean;
-    condition: boolean;
-} & ({
-    rejectedWithValue: true;
-} | ({
-    rejectedWithValue: false;
-} & object)), SerializedError>
+export type RejectedAction = PayloadAction<
+  unknown, string, never, SerializedError
+>
 
 export type AuthSlice = Slice<
   AuthState,
@@ -28,10 +20,4 @@ export type AuthSlice = Slice<
   SliceSelectors<AuthState>
 >;
 
-export type UsersSlice = Slice<
-  UsersState,
-  SliceCaseReducers<UsersState>,
-  string,
-  string,
-  SliceSelectors<UsersState>
->;
+
