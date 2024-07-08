@@ -23,14 +23,11 @@ module.exports = {
       author: {
         type: Sequelize.STRING
       },
-      genre: {
-        type: Sequelize.STRING
-      },
       pages: {
         type: Sequelize.INTEGER
       },
       rating: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       pictureUrl: {
         type: Sequelize.STRING
