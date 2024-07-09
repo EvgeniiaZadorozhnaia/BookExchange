@@ -3,3 +3,7 @@
   justify-content: space-between;
   text-align: center;
 }
+.message-container {
+  height: 510px;
+  overflow-y: auto;
+}

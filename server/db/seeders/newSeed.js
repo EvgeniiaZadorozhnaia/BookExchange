@@ -246,15 +246,33 @@ module.exports = {
       [
         {
           text: "Привет. Хочу забрать твою книгу!",
-          authorId: 2,
-          toUser: 1,
+          authorId: 1,
+          toUser: 2,
           exchangeId: 4
         },
         {
           text: "Поскорее!",
+          authorId: 1,
+          toUser: 2,
+          exchangeId: 4
+        },
+        {
+          text: "Добрый вечер! Забираю Вашу книгу!",
+          authorId: 1,
+          toUser: 3,
+          exchangeId: 5
+        },
+        {
+          text: "Привет! Забираю!",
           authorId: 2,
           toUser: 1,
-          exchangeId: 4
+          exchangeId: 1
+        },
+        {
+          text: "Добрый вечер! I need this book!",
+          authorId: 3,
+          toUser: 1,
+          exchangeId: 2
         },
       ],
       {}
