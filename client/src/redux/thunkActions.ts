@@ -28,13 +28,13 @@ export const logoutUser = createAsyncThunk("users/logout", async () => {
   }
 });
 
-export const getBooks = createAsyncThunk("/books", async () => {
+export const getBooks = createAsyncThunk("/books/getting", async () => {
   const res: AxiosResponse = await axiosInstance.get(
     `${VITE_BASE_URL}${VITE_API}/books`
   );
-  console.log(res);
-  const data = res.data;
-  
-  
+  const data = res.data as IBooks;
   return data;
 });
+
+
+

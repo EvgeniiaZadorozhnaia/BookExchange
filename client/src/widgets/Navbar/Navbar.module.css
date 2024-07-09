@@ -10,12 +10,12 @@
   text-align: center;
   left: 0;
   background-color: rgba(22, 9, 156, 0.3);
+  z-index: 1;
 }
 
 .left, .right {
   display: flex;
   justify-content: space-between;
-  /* text-shadow: 2px 2px 2px black, 0 0 25px rgb(0, 0, 0), 0 0 5px rgb(0, 0, 0); */
   margin: 5px
 }
 
