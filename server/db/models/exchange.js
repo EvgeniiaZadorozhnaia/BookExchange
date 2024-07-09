@@ -11,10 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User, { foreignKey: 'fromUser' });
-      this.belongsTo(models.User, { foreignKey: 'toUser' });
+      this.belongsTo(models.User, { foreignKey: 'fromUser', as: 'Author' });
+      this.belongsTo(models.User, { foreignKey: 'toUser', as: 'Reciever' });
       this.belongsTo(models.Book, { foreignKey: 'fromBook' });
       this.belongsTo(models.Book, { foreignKey: 'toBook' });
+      this.hasMany(models.Message, { foreignKey: "exchangeId" });
     }
   }
   Exchange.init({
