@@ -192,6 +192,20 @@ module.exports = {
           toBook: 12,
           status: 'processing',
         },
+        {
+          fromUser: 2,
+          fromBook: 6,
+          toUser: 1,
+          toBook: 12,
+          status: 'processing',
+        },
+        {
+          fromUser: 3,
+          fromBook: 5,
+          toUser: 1,
+          toBook: 10,
+          status: 'processing',
+        },
       ],
       {}
     );
@@ -226,9 +240,29 @@ module.exports = {
       ],
       {}
     );
+
+    await queryInterface.bulkInsert(
+      "Messages",
+      [
+        {
+          text: "Привет. Хочу забрать твою книгу!",
+          authorId: 2,
+          toUser: 1,
+          exchangeId: 4
+        },
+        {
+          text: "Поскорее!",
+          authorId: 2,
+          toUser: 1,
+          exchangeId: 4
+        },
+      ],
+      {}
+    );
   },
 
   async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete("Messages", null, {});
     await queryInterface.bulkDelete("Favorites", null, {});
     await queryInterface.bulkDelete("Exchanges", null, {});
     await queryInterface.bulkDelete("Reviews", null, {});
