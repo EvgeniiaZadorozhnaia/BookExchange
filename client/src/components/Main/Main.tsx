@@ -1,11 +1,10 @@
 
-function Main(): JSX.Element { 
-  
-
-
-  return ( 
-    <></>
-  ); 
-} 
+function Main() {
+  return (
+    <>
+     
+    </>
+  );
+}
 
 export default Main;
