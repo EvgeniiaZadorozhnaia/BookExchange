@@ -56,7 +56,6 @@ export default function AuthForm({
           showErrorModal("Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)");
         }, 200);
       } else {
-        console.log("Зашли в signup")
         dispatch(addUser({ type, inputs }));
       }
     }

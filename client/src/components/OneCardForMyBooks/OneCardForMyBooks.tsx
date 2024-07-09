@@ -2,7 +2,6 @@ import { Card, CardBody, Image, Stack, Heading, Text, Divider, CardFooter, Butto
 import { Book } from "../../types/propsTypes";
 import { deleteBook } from "../../redux/thunkActions";
 import { useAppDispatch } from "../../redux/hooks";
-import styles from './OneCard.module.css'
 
 function OneCardForMyBooks({ book }: Book) {
   const dispatch = useAppDispatch();
@@ -15,7 +14,7 @@ function OneCardForMyBooks({ book }: Book) {
  
 
   return (
-    <Card className={styles.card} maxW="sm" m='20px' >
+    <Card maxW="sm" m='20px' >
       <CardBody>
         <Image h='450px' src={book.pictureUrl} alt="Picture" borderRadius="lg" />
         <Stack mt="6" spacing="3">

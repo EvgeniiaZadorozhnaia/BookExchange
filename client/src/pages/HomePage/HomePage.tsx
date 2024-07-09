@@ -15,10 +15,8 @@ function HomePage(): JSX.Element {
   const [displayedBooks, setDisplayedBooks] = useState<IBooks>([]);
 
   useEffect(() => {
-  
-    
     dispatch(getBooks());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (books.length > 0) {
@@ -27,7 +25,7 @@ function HomePage(): JSX.Element {
     }
   }, [books, currentPage]);
 
-  const getCurrentBooks: () => IBooks = () => {
+  const getCurrentBooks = () => {
     const startIndex = (currentPage - 1) * booksPerPage;
     const endIndex = startIndex + booksPerPage;
     return books.slice(startIndex, endIndex);
@@ -44,14 +42,10 @@ function HomePage(): JSX.Element {
         <Button
           key={i}
           onClick={() => handlePageChange(i)}
-          style={{
-            margin: "5px",
-            backgroundColor: i === currentPage ? "#2f855a" : "inherit",
-            color: i === currentPage ? "white" : "inherit",
-          }}
-          _hover={{ color: "#2F855A", bg: "teal.700" }}
-          _active={{ bg: "teal.800" }}
-          _focus={{ boxShadow: "none" }}
+          colorScheme={i === currentPage ? "teal" : "gray"}
+          mr={2}
+          mb={2}
+          _hover={{ bg: "teal.700" }}
         >
           {i}
         </Button>
@@ -62,16 +56,16 @@ function HomePage(): JSX.Element {
 
   return (
     <>
-      <SearchInput displayedBooks={displayedBooks} setDisplayedBooks={setDisplayedBooks} />
+      <SearchInput
+        displayedBooks={displayedBooks}
+        setDisplayedBooks={setDisplayedBooks}
+      />
       <ListOfBooks displayedBooks={displayedBooks} />
-      <Box
-        mt={4}
-        style={{
-          marginBottom: "20px",
-        }}
-      >
-        {generatePageButtons()}
-      </Box>
+      {totalPages > 1 && (
+        <Box mt={4} textAlign="center">
+          {generatePageButtons()}
+        </Box>
+      )}
     </>
   );
 }
