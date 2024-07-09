@@ -1,4 +1,5 @@
-const router = require("express").Router();
+const router = require('express').Router();
+
 const messagesRouter = require("./messages.api.router");
 const exchangesRouter = require("./exchanges.api.router");
 const authRouter = require("./auth.api.router");
