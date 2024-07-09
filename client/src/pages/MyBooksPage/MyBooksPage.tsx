@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { createBook, getBooksByUser } from "../../redux/thunkActions";
-import OneCard from "../../components/OneCard/OneCard";
+
 import { Button, useDisclosure } from "@chakra-ui/react";
 import CreateBookForm from "../../components/CreateBookForm/CreateBookForm";
 import React from "react";
 import { InputsBookCreationState } from "../../components/initState";
 import { IInputsBookCreationState } from "../../types/stateTypes";
+import OneCardForMyBooks from "../../components/OneCardForMyBooks/OneCardForMyBooks";
 
 function MyBooksPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -52,7 +53,7 @@ function MyBooksPage(): JSX.Element {
         }}
       >
         {books.length > 0 &&
-          books.map((book) => <OneCard key={book.id} book={book} />)}
+          books.map((book) => <OneCardForMyBooks key={book.id} book={book} />)}
       </div>
       <Button colorScheme="blue" onClick={onOpen}>
         Добавить книгу
