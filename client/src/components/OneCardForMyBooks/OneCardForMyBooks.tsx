@@ -2,7 +2,7 @@ import { Card, CardBody, Image, Stack, Heading, Text, Divider, CardFooter, Butto
 import { Book } from "../../types/propsTypes";
 import { deleteBook } from "../../redux/thunkActions";
 import { useAppDispatch } from "../../redux/hooks";
-import styles from './OneCard.module.css'
+import styles from '../OneCard/OneCard.module.css'
 
 function OneCardForMyBooks({ book }: Book) {
   const dispatch = useAppDispatch();
