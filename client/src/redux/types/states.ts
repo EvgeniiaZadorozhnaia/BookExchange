@@ -1,4 +1,4 @@
-import { IUser } from "../../types/stateTypes"
+import { IBook, IUser } from "../../types/stateTypes"
 
 export type AuthState = {
     user: IUser,
@@ -7,7 +7,13 @@ export type AuthState = {
 }
 
 export type UsersState = {
-    users: IUser[]
+    users: IUser[],
+    loading: boolean,
+    error: object
+}
+
+export type BooksState = {
+    books: IBook[],
     loading: boolean,
     error: object
 }
