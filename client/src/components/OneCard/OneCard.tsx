@@ -11,8 +11,19 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Book } from "../../types/propsTypes";
+import { deleteBook } from "../../redux/thunkActions";
+import { useAppDispatch } from "../../redux/hooks";
 
 function OneCard({ book }: Book) {
+  const dispatch = useAppDispatch();
+
+
+  const deleteHandler = () => {
+    if (book.id) dispatch(deleteBook(book.id));
+  };
+
+ 
+
   return (
     <Card maxW="sm">
       <CardBody>
@@ -24,23 +35,18 @@ function OneCard({ book }: Book) {
         <Stack mt="6" spacing="3">
           <Heading size="md">{book.title}</Heading>
           <Text>
-            This sofa is perfect for modern tropical spaces, baroque inspired
-            spaces, earthy toned spaces and for people who love a chic design
-            with a sprinkle of vintage design.
-          </Text>
-          <Text color="blue.600" fontSize="2xl">
-            $450
+            Здесь будет аннотация к книге
           </Text>
         </Stack>
       </CardBody>
       <Divider />
-      <CardFooter>
-        <ButtonGroup spacing="2">
+      <CardFooter display="flex" justifyContent="space-between" mt="auto">
+        <ButtonGroup display="flex" justifyContent="space-between" mt="auto">
           <Button variant="solid" colorScheme="blue">
-            Buy now
-          </Button>
-          <Button variant="ghost" colorScheme="blue">
-            Add to cart
+            Редактировать
+          </Button>     
+          <Button variant="outline" colorScheme="red" onClick={deleteHandler}>
+            Delete
           </Button>
         </ButtonGroup>
       </CardFooter>

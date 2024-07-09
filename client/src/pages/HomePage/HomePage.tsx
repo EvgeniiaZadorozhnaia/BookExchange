@@ -9,10 +9,12 @@ function HomePage(): JSX.Element {
   const { books } = useAppSelector((state) => state.booksSlice);
 
   useEffect(() => {
+  
+    
     dispatch(getBooks());
-  });
+  }, []);
 
-  console.log(books);
+  
   
   return (
     <div>

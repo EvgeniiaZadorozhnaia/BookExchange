@@ -4,6 +4,13 @@ export interface IInputs {
     password: string,
   }
 
+  export interface IInputsBookCreationState {
+    title?: string,
+    author?: string,
+    pages?: number,
+    pictureUrl?: string,
+  }
+
 export interface IUser {
     id: number,
     username: string,
