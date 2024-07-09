@@ -7,6 +7,7 @@ import {
   GridItem,
   Image,
   Input,
+  Spacer,
   Tag,
   TagLabel,
   Text,
@@ -149,23 +150,24 @@ export default function Profile(): JSX.Element {
 
   return (
     <>
-      <div className="profile-top">
+      <Box className="profile-top" display='flex'>
         <Text
           style={{
             backgroundColor: "rgba(22, 9, 156, 0.3)",
             padding: "20px",
             borderRadius: "5px",
+            marginRight: "30px"
           }}
         >
           Мой рейтинг: ⭐ {user.rating}
         </Text>
         <Image
           borderRadius="full"
-          boxSize="80px"
+          boxSize="65px"
           src="https://bit.ly/dan-abramov"
           alt="Dan Abramov"
         />
-      </div>
+      </Box>
       <Box display="flex" justifyContent="space-around" mt={4}>
         <Button
           onClick={() => setIncomeOrOutcome("income")}
