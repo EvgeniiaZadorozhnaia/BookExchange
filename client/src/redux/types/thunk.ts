@@ -35,3 +35,4 @@ type AsyncThunkConfig = {
   }
 
   export type NewUser = AsyncThunk<IUser, IType, AsyncThunkConfig>
+

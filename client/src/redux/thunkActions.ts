@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import axiosInstance, { setAccessToken } from "../axiosInstance";
-import { IBooks, IType, IUser } from "../types/stateTypes";
+import { IBook, IBooks, IType, IUser } from "../types/stateTypes";
 import { NewUser } from "./types/thunk";
 
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
@@ -28,13 +28,43 @@ export const logoutUser = createAsyncThunk("users/logout", async () => {
   }
 });
 
-export const getBooks = createAsyncThunk("/books/getting", async () => {
+export const getBooks = createAsyncThunk("books/getting/getAll", async () => {
   const res: AxiosResponse = await axiosInstance.get(
     `${VITE_BASE_URL}${VITE_API}/books`
   );
-  const data = res.data as IBooks;
+  const data = res.data as IBooks[];
+
   return data;
 });
 
+export const getBooksByUser = createAsyncThunk(
+  "books/getAllByUser",
+  async (ownerId) => {
+    const res: AxiosResponse = await axiosInstance.get(
+      `${VITE_BASE_URL}${VITE_API}/books/${ownerId}`
+    );
+    const data = res.data as IBooks[];
 
+    return data;
+  }
+);
 
+export const deleteBook = createAsyncThunk("books/delete", async (bookId) => {
+  const res: AxiosResponse = await axiosInstance.delete(
+    `${VITE_BASE_URL}${VITE_API}/books/${bookId}`
+  );
+  return res.status === 200;
+});
+
+export const createBook = createAsyncThunk(
+  
+  "books/create",
+  async ({ ownerId, inputs }) => {
+    const res: AxiosResponse = await axiosInstance.post(
+      `${VITE_BASE_URL}${VITE_API}/books/${ownerId}`,
+      inputs
+    );
+    const data = res.data.book as IBook;
+    return data;
+  }
+);

@@ -1,8 +1,12 @@
 import { Card, CardBody, Image, Stack, Heading } from "@chakra-ui/react";
 import { Book } from "../../types/propsTypes";
+
 import styles from './OneCard.module.css'
 
 function OneCard({ book }: Book) {
+ 
+
+
   return (
     <Card className={styles.card} maxW="sm" m='20px' >
       <CardBody>

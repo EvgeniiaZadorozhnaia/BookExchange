@@ -15,6 +15,8 @@ function HomePage(): JSX.Element {
   const [displayedBooks, setDisplayedBooks] = useState<IBooks>([]);
 
   useEffect(() => {
+  
+    
     dispatch(getBooks());
   }, []);
 
