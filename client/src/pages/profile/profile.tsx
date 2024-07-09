@@ -10,10 +10,12 @@ import {
   Tag,
   TagLabel,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useAppSelector } from "../../redux/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import axiosInstance from "../../axiosInstance";
+import ProfileModal from "./profileModal";
 const { VITE_BASE_URL, VITE_API } = import.meta.env;
 
 export default function Profile(): JSX.Element {
@@ -28,7 +30,33 @@ export default function Profile(): JSX.Element {
   const [exchanges, setExchanges] = useState([]);
   const [activeExchange, setActiveExchange] = useState(null);
   const [activeUser, setActiveUser] = useState(null);
-  
+  const [incomeOrOutcome, setIncomeOrOutcome] = useState("income");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [exchangeHistoryIncoming, setExchangeHistoryIncoming] = useState();
+  const [exchangeHistoryOutcoming, setExchangeHistoryOutcoming] = useState();
+  const [activeStatusIncomeExchange, setActiveStatusIncomeExchange] = useState();
+  const [activeStatusOutcomeExchange, setActiveStatusOutcomeExchange] = useState();
+  const messageContainerRef = useRef(null);
+
+  const fetchExchangeHistory = async () => {
+    try {
+      const { data } = await axiosInstance.get(
+        `${VITE_BASE_URL}${VITE_API}/exchanges/history/${user.id}`
+      );
+      setActiveStatusOutcomeExchange(data.exchangesOutcoming.filter((el) => el.status === 'pending' || el.status === 'processing'))
+      setActiveStatusIncomeExchange(data.exchangesIncoming.filter((el) => el.status === 'pending' || el.status === 'processing'));
+      setExchangeHistoryIncoming(data.exchangesIncoming);
+      setExchangeHistoryOutcoming(data.exchangesOutcoming);
+    } catch (error) {
+      console.error("Ошибка при получении истории обменов:", error);
+    }
+  };
+  useEffect(() => {
+    if (isOpen) {
+      fetchExchangeHistory();
+    }
+  }, [isOpen]);
+
   const changeHandler = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
@@ -48,45 +76,74 @@ export default function Profile(): JSX.Element {
         },
       };
       setMessages((prev) => [...prev, newMessage]);
-      setInputs({ text: "", authorId: 0, toUser: 0, exchangeId: 0 });
+      setInputs((prev) => ({ ...prev, text: "" }));
 
-      await axiosInstance.post(
-        `${VITE_BASE_URL}${VITE_API}/messages`,
-        newMessage
-      );
+      try {
+        await axiosInstance.post(
+          `${VITE_BASE_URL}${VITE_API}/messages`,
+          newMessage
+        );
+      } catch (error) {
+        console.error("Ошибка при отправке сообщения:", error);
+      }
     }
   };
 
   const fetchMessagesForExchange = async (exchangeId) => {
-    const { data } = await axiosInstance.get(
-      `${VITE_BASE_URL}${VITE_API}/messages/${user.id}/exchange/${exchangeId}`
-    );
-    
-    console.log('exchangeId текущего чата', exchangeId);
-    
-    setMessages(data)
-    
-  };
-  console.log(exchanges);
-  useEffect((): void => {
-    const fetchInitialData = async () => {
+    try {
       const { data } = await axiosInstance.get(
-        `${VITE_BASE_URL}${VITE_API}/exchanges/${user.id}`
+        `${VITE_BASE_URL}${VITE_API}/messages/${user.id}/exchange/${exchangeId}`
       );
-      setExchanges(data);
-      
-      if (data.length > 0) {
-        setActiveExchange(data[0].id);
-        setActiveUser(data[0].Author.id);
-        fetchMessagesForExchange(data[0].id);
-      }
-    };
-    fetchInitialData();
-  }, [user.id]);  
+      setMessages(data);
+    } catch (error) {
+      console.error("Ошибка при загрузке сообщений:", error);
+    }
+  };
 
-  const handleExchangeClick = (exchangeId, authorId) => {
+  const fetchExchanges = useCallback(async () => {
+    try {
+      const { data: incomingExchanges } = await axiosInstance.get(
+        `${VITE_BASE_URL}${VITE_API}/exchanges/incoming/${user.id}`
+      );
+      const { data: outgoingExchanges } = await axiosInstance.get(
+        `${VITE_BASE_URL}${VITE_API}/exchanges/outcoming/${user.id}`
+      );
+
+      if (incomeOrOutcome === "income") {
+        setExchanges(incomingExchanges);
+        if (incomingExchanges.length > 0) {
+          setActiveExchange(incomingExchanges[0].id);
+          setActiveUser(incomingExchanges[0].Author.id);
+          fetchMessagesForExchange(incomingExchanges[0].id);
+        }
+      } else {
+        setExchanges(outgoingExchanges);
+
+        if (outgoingExchanges.length > 0) {
+          setActiveExchange(outgoingExchanges[0].id);
+          setActiveUser(outgoingExchanges[0].Reciever.id);
+          fetchMessagesForExchange(outgoingExchanges[0].id);
+        }
+      }
+    } catch (error) {
+      console.error("Ошибка при загрузке обменов сообщениями:", error);
+    }
+  }, [incomeOrOutcome, user.id]);
+
+  useEffect(() => {
+    fetchExchanges();
+  }, [fetchExchanges]);
+
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const handleExchangeClick = (exchangeId, userId) => {
     setActiveExchange(exchangeId);
-    setActiveUser(authorId);
+    setActiveUser(userId);
     fetchMessagesForExchange(exchangeId);
   };
 
@@ -95,12 +152,12 @@ export default function Profile(): JSX.Element {
       <div className="profile-top">
         <Text
           style={{
-            backgroundColor: "#D8BFD8",
+            backgroundColor: "rgba(22, 9, 156, 0.3)",
             padding: "20px",
             borderRadius: "5px",
           }}
         >
-          Мой рейтинг: ⭐ 4.8
+          Мой рейтинг: ⭐ {user.rating}
         </Text>
         <Image
           borderRadius="full"
@@ -111,24 +168,35 @@ export default function Profile(): JSX.Element {
       </div>
       <Box display="flex" justifyContent="space-around" mt={4}>
         <Button
+          onClick={() => setIncomeOrOutcome("income")}
           style={{
-            backgroundColor: "#D8BFD8",
+            backgroundColor:
+              incomeOrOutcome === "income"
+                ? "rgba(22, 9, 156, 0.3)"
+                : "initial",
             padding: "10px",
-            borderRadius: "5px",
+            width: "200px",
+            borderRadius: "20px",
           }}
         >
           Входящие
         </Button>
         <Button
+          onClick={() => setIncomeOrOutcome("outcome")}
           style={{
-            backgroundColor: "#D8BFD8",
+            backgroundColor:
+              incomeOrOutcome === "outcome"
+                ? "rgba(22, 9, 156, 0.3)"
+                : "initial",
             padding: "10px",
-            borderRadius: "5px",
+            width: "200px",
+            borderRadius: "20px",
           }}
         >
           Исходящие
         </Button>
       </Box>
+
       <Box
         border="solid 1px"
         borderRadius="7px"
@@ -147,57 +215,70 @@ export default function Profile(): JSX.Element {
                   margin="10px"
                   cursor="pointer"
                   bg={exchange.id === activeExchange ? "teal.300" : "gray.200"}
-                  onClick={() =>
-                    handleExchangeClick(exchange.id, exchange.Author.id)
-                  }
+                  onClick={() => {
+                    const userId =
+                      incomeOrOutcome === "income"
+                        ? exchange.Author.id
+                        : exchange.Reciever.id;
+                    handleExchangeClick(exchange.id, userId);
+                  }}
                 >
-                  <Avatar src={exchange.Author.avatarUrl} size="xs" mr={4} />
-                  <TagLabel>{exchange.Author.username}</TagLabel>
+                  <TagLabel>
+                    {incomeOrOutcome === "income"
+                      ? exchange.Author.username
+                      : exchange.Reciever.username}
+                  </TagLabel>
                 </Tag>
               ))}
           </GridItem>
           <GridItem
             colSpan={4}
-            bg="whitesmoke"
+            bg="#f2f3f4"
             display="flex"
             flexDirection="column"
             p={4}
             borderRadius="7px"
+            className="message-container"
+            ref={messageContainerRef}
           >
-            {messages.map((message) => (
-              <Box
-                key={message.id}
-                alignSelf={
-                  message.authorId === user.id ? "flex-end" : "flex-start"
-                }
-                bg={message.authorId === user.id ? "#c2e9a8" : "#b3cde0"}
-                p={4}
-                borderRadius="7px"
-                mb={2}
-                boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
-              >
-                <Tag size="lg" borderRadius="full" marginBottom="5px">
-                  <Avatar
-                    src={
-                      message.authorId === user.id
-                        ? user.avatarUrl
-                        : message.Author.avatarUrl
-                    }
-                    size="xs"
-                    mr={2}
-                  />
-                  <TagLabel>
-                    {message.authorId === user.id
-                      ? user.username
-                      : message.Author.username}
-                  </TagLabel>
-                </Tag>
-                <Text>{message.text}</Text>
-                <span style={{ fontSize: "0.8em", opacity: 0.7 }}>
-                  {new Date(message.createdAt).toLocaleString()}
-                </span>
-              </Box>
-            ))}
+            {messages.length > 0 ? (
+              messages.map((message) => (
+                <Box
+                  key={message.id}
+                  alignSelf={
+                    message.authorId === user.id ? "flex-end" : "flex-start"
+                  }
+                  bg={message.authorId === user.id ? "#a4e8af" : "#b3cde0"}
+                  p={4}
+                  borderRadius="7px"
+                  mb={2}
+                  boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                >
+                  <Tag size="lg" borderRadius="full" marginBottom="5px">
+                    <Avatar
+                      src={
+                        message.authorId === user.id
+                          ? user.avatarUrl
+                          : message.Author.avatarUrl
+                      }
+                      size="xs"
+                      mr={2}
+                    />
+                    <TagLabel>
+                      {message.authorId === user.id
+                        ? user.username
+                        : message.Author.username}
+                    </TagLabel>
+                  </Tag>
+                  <Text>{message.text}</Text>
+                  <span style={{ fontSize: "0.8em", opacity: 0.7 }}>
+                    {new Date(message.createdAt).toLocaleString()}
+                  </span>
+                </Box>
+              ))
+            ) : (
+              <Text>Начните обмениваться сообщениями!</Text>
+            )}
           </GridItem>
         </Grid>
         <Box mt={4}>
@@ -212,8 +293,9 @@ export default function Profile(): JSX.Element {
         </Box>
       </Box>
       <Button
+        onClick={onOpen}
         style={{
-          backgroundColor: "#D8BFD8",
+          backgroundColor: "rgba(22, 9, 156, 0.3)",
           padding: "20px",
           margin: "20px",
           width: "400px",
@@ -224,6 +306,15 @@ export default function Profile(): JSX.Element {
       >
         История обменов
       </Button>
+
+      <ProfileModal
+        isOpen={isOpen}
+        onClose={onClose}
+        exchangeHistoryIncoming={exchangeHistoryIncoming}
+        exchangeHistoryOutcoming={exchangeHistoryOutcoming}
+        activeStatusIncomeExchange={activeStatusIncomeExchange}
+        activeStatusOutcomeExchange={activeStatusOutcomeExchange}
+      />
     </>
   );
 }
