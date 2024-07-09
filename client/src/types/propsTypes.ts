@@ -1,19 +1,16 @@
+import { IBook } from "./stateTypes";
+
 export interface AuthFormProps {
-    title: string;
-    type: "signin" | "signup";
+  title: string;
+  type: "signin" | "signup";
 }
 
-  export interface Question { 
-    id: number; 
-    question: string; 
-    answer: string; 
-    price: string; 
-  } 
+export interface ErrorModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  error: string;
+}
 
-  export interface ErrorModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    error: string;
-  }
-  
-
+export interface Book {
+  book: IBook;
+}

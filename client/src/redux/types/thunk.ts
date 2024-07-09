@@ -1,3 +1,4 @@
+import { logoutUser } from './../thunkActions';
 import { AsyncThunk, SerializedError } from "@reduxjs/toolkit"
 import { IType, IUser } from "../../types/stateTypes"
 import { AppDispatch, RootState } from "../store"

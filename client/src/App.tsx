@@ -3,10 +3,11 @@ import "./App.css";
 import Root from "./Root";
 import SigninPage from "./pages/SigninPage/SigninPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
-import Main from "./components/Main/Main";
+import Main from "./pages/HomePage/HomePage";
 import Profile from "./pages/profile/profile"; 
 import { useAppSelector } from "./redux/hooks";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import OneCard from "./components/OneCard/OneCard";
 
 
 
@@ -19,9 +20,9 @@ function App() {
       element: <Root />,
       children: [
         {
-          path: "/",
+          path: "/homepage",
           element: user?.id !== 0 ? (
-              <Main />     
+              <OneCard />     
           )  : (
             <Navigate to="/signup" />
           ),

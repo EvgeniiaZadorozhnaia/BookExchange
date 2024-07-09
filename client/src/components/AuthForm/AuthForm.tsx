@@ -27,8 +27,6 @@ export default function AuthForm({
     setInputs(
       (prev: IInputs): IInputs => ({ ...prev, [e.target.name]: e.target.value })
       );
-      console.log(inputs.password.length)
-      console.log(inputs.password)
   };
 
   const showErrorModal = (errorText: string): void => {
