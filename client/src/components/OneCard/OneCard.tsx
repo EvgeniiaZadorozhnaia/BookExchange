@@ -1,18 +1,8 @@
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Image,
-  Stack,
-  Heading,
-  Text,
-  Divider,
-  ButtonGroup,
-  Button,
-} from "@chakra-ui/react";
+import { Card, CardBody, Image, Stack, Heading } from "@chakra-ui/react";
 import { Book } from "../../types/propsTypes";
 import { deleteBook } from "../../redux/thunkActions";
 import { useAppDispatch } from "../../redux/hooks";
+import styles from './OneCard.module.css'
 
 function OneCard({ book }: Book) {
   const dispatch = useAppDispatch();
@@ -25,13 +15,9 @@ function OneCard({ book }: Book) {
  
 
   return (
-    <Card maxW="sm">
+    <Card className={styles.card} maxW="sm" m='20px' >
       <CardBody>
-        <Image
-          src={book.pictureUrl}
-          alt="Picture"
-          borderRadius="lg"
-        />
+        <Image h='450px' src={book.pictureUrl} alt="Picture" borderRadius="lg" />
         <Stack mt="6" spacing="3">
           <Heading size="md">{book.title}</Heading>
           <Text>
@@ -55,3 +41,5 @@ function OneCard({ book }: Book) {
 }
 
 export default OneCard;
+
+

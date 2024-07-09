@@ -28,7 +28,7 @@ export const logoutUser = createAsyncThunk("users/logout", async () => {
   }
 });
 
-export const getBooks = createAsyncThunk("books/getAll", async () => {
+export const getBooks = createAsyncThunk("books/getting/getAll", async () => {
   const res: AxiosResponse = await axiosInstance.get(
     `${VITE_BASE_URL}${VITE_API}/books`
   );

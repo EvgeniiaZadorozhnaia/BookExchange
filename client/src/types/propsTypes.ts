@@ -1,4 +1,4 @@
-import { IBook } from "./stateTypes";
+import { IBook, IBooks } from "./stateTypes";
 
 export interface AuthFormProps {
   title: string;
@@ -13,4 +13,8 @@ export interface ErrorModalProps {
 
 export interface Book {
   book: IBook;
+}
+
+export interface displayedBooks {
+  displayedBooks: IBooks;
 }

@@ -3,7 +3,6 @@ import "./App.css";
 import Root from "./Root";
 import SigninPage from "./pages/SigninPage/SigninPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
-import Main from "./pages/HomePage/HomePage";
 import Profile from "./pages/profile/profile"; 
 import { useAppSelector } from "./redux/hooks";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
