@@ -67,5 +67,17 @@ export const createBook = createAsyncThunk(
     );
     const data = res.data.book as IBook;
     return data;
-  }
-);
+  });
+
+ 
+  export const editBook = createAsyncThunk(
+    "books/edit",
+    async ({ bookId, inputs }) => {
+      const res: AxiosResponse = await axiosInstance.put(
+        `${VITE_BASE_URL}${VITE_API}/books/${bookId}`,
+        inputs
+      );
+      const data = res.data
+      return data;
+    });
+

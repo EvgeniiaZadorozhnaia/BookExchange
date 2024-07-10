@@ -30,6 +30,30 @@ router
     }
   })
 
+  .put('/:bookId', verifyAccessToken, async (req, res) => {
+    const { bookId } = req.params;
+    const {
+      title, author, pages, pictureUrl
+    } = req.body;
+
+    try {
+      const updatedBook = await Book.update({
+        title,
+        author,
+        pages,
+        pictureUrl,
+      }, {
+        where: {
+          id: bookId,
+        },
+      });
+      const book = await Book.findByPk(bookId);
+      return res.status(200).json(book);
+    } catch (error) {
+      return res.status(500).json({ message: 'Произошла ошибка при обновлении книги', error: error.message });
+    }
+  })
+
   .post("/:ownerId", verifyAccessToken, async (req, res) => {
     const { ownerId } = req.params;
     const { title, author, pages, pictureUrl } = req.body;
