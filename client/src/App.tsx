@@ -6,9 +6,9 @@ import SignupPage from "./pages/SignupPage/SignupPage";
 import Profile from "./pages/profile/Profile"; 
 import { useAppSelector } from "./redux/hooks";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-import OneCard from "./components/OneCard/OneCard";
 import HomePage from "./pages/HomePage/HomePage";
 import MyBooksPage from "./pages/MyBooksPage/MyBooksPage";
+import OneBookPage from "./pages/OneBookPage/OneBookPage";
 
 
 
@@ -32,6 +32,14 @@ function App() {
           path: "/mybooks",
           element: user?.id !== 0 ? (
               <MyBooksPage />     
+          )  : (
+            <Navigate to="/signup" />
+          ),
+        },
+        {
+          path: "/books/oneBook/:bookId",
+          element: user?.id !== 0 ? (
+              <OneBookPage />     
           )  : (
             <Navigate to="/signup" />
           ),

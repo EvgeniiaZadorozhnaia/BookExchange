@@ -3,18 +3,20 @@ const { verifyAccessToken } = require("../middlewares/verifyToken");
 const { Book } = require("../../db/models");
 const { User } = require("../../db/models");
 
-router.get("/", async (req, res) => {
-  
-  try {
-    const books = await Book.findAll({ include: { model: User, attributes: ['city'] } });
-    res.json(books.map((el) => el.get({ plain: true })));
-  } catch (error) {
-    console.error(error.message);
-    res
-      .status(500)
-      .json({ message: "Произошла ошибка при получении списка книг" });
-  }
-})
+router
+  .get("/", async (req, res) => {
+    try {
+      const books = await Book.findAll({
+        include: { model: User, attributes: ["city"] },
+      });
+      res.json(books.map((el) => el.get({ plain: true })));
+    } catch (error) {
+      console.error(error.message);
+      res
+        .status(500)
+        .json({ message: "Произошла ошибка при получении списка книг" });
+    }
+  })
 
   .delete("/:bookId", verifyAccessToken, async (req, res) => {
     const { bookId } = req.params;
@@ -44,12 +46,10 @@ router.get("/", async (req, res) => {
         .status(201)
         .json({ message: "Книга успешно создано", book: newBook });
     } catch (error) {
-      return res
-        .status(500)
-        .json({
-          message: "Произошла ошибка при создании книги",
-          error: error.message,
-        });
+      return res.status(500).json({
+        message: "Произошла ошибка при создании книги",
+        error: error.message,
+      });
     }
   })
 
@@ -62,10 +62,24 @@ router.get("/", async (req, res) => {
       res.json(data);
     } catch (error) {
       console.error(error.message);
-      res
-       .status(500)
-       .json({ message: "Произошла ошибка при получении списка книг пользователя" });
+      res.status(500).json({
+        message: "Произошла ошибка при получении списка книг пользователя",
+      });
     }
   })
+
+  .get("/oneBook/:bookId", async (req, res) => {
+    const { bookId } = req.params;
+    try {
+      const book = await Book.findOne({
+        where: { id: bookId },
+        include: { model: User, attributes: ["username", "id"] },
+      });
+      res.json(book);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Произошла ошибка при получении книги" });
+    }
+  });
 
 module.exports = router;

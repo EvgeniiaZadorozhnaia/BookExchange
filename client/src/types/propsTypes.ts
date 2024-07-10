@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { IBook, IBooks } from "./stateTypes";
 
 export interface AuthFormProps {
@@ -16,5 +17,14 @@ export interface Book {
 }
 
 export interface displayedBooks {
-  displayedBooks: IBooks;
+  books: IBooks;
+}
+
+export interface SearchInputType {
+  input: string;
+  setInput: Dispatch<SetStateAction<string>>;
+  setSelectedCity: Dispatch<SetStateAction<string>>;
+  setOptions: Dispatch<SetStateAction<string[]>>;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  options: string[];
 }
