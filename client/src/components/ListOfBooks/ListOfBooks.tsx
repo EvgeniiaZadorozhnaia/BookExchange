@@ -5,13 +5,13 @@ import styles from "./ListOfBooks.module.css";
 import { displayedBooks } from "../../types/propsTypes";
 
 
-function ListOfBooks({ displayedBooks }: displayedBooks) {
+function ListOfBooks({ books }) {
 
   return (
     <>
       <div className={styles.list}>
-        {displayedBooks.length > 0 &&
-          displayedBooks.map((book) => <OneCard key={book.id} book={book} />)}
+        {books.length > 0 &&
+          books.map((book) => <OneCard key={book.id} book={book} />)}
       </div>
     </>
   );

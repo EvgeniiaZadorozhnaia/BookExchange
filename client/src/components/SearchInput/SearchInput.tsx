@@ -6,37 +6,21 @@ import { useAppSelector } from "../../redux/hooks";
 
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 
-function SearchInput({ displayedBooks, setDisplayedBooks }) {
-  const [input, setInput] = useState("");
-  const [options, setOptions] = useState([]);
-  const [city, setCity] = useState<string>("");
-  const { books } = useAppSelector((state) => state.booksSlice);
-
+function SearchInput({
+  input,
+  setInput,
+  setSelectedCity,
+  setOptions,
+  handleSubmit,
+  options,
+}) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCity(e.target.value);
+    setSelectedCity(e.target.value);
   };
-
-  function filterBooks() {
-    let filteredBooks = books;
-    if (input) {
-      filteredBooks = filteredBooks.filter(
-        (book) =>
-          book.title.toLowerCase().includes(input.toLowerCase()) ||
-          book.author.toLowerCase().includes(input.toLowerCase())
-      );
-    }
-    if (city) {
-      filteredBooks = filteredBooks.filter((book) => book.User.city === city);
-    }
-    if (city === "") {
-      setDisplayedBooks(books);
-    }
-    setDisplayedBooks(filteredBooks);
-  }
 
   useEffect(() => {
     async function getCities() {
@@ -52,12 +36,6 @@ function SearchInput({ displayedBooks, setDisplayedBooks }) {
     getCities();
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    filterBooks();
-    setCity("");
-  };
-
   return (
     <>
       <form onSubmit={handleSubmit} className="chakra-form">
@@ -71,9 +49,7 @@ function SearchInput({ displayedBooks, setDisplayedBooks }) {
         <FormControl>
           <Select placeholder="Выберите город" onChange={handleCityChange}>
             {options.length > 0 &&
-              options.map((option, index) => (
-                <option key={index}>{option}</option>
-              ))}
+              options.map((option) => <option key={option}>{option}</option>)}
           </Select>
         </FormControl>
         <button type="submit" className="chakra-button">
