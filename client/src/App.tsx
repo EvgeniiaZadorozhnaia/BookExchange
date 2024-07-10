@@ -22,7 +22,7 @@ function App() {
       element: <Root />,
       children: [
         {
-          path: "/homepage",
+          path: "/",
           element: user?.id !== 0 ? (
               <HomePage />     
           )  : (

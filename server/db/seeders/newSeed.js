@@ -167,6 +167,13 @@ module.exports = {
           likes: 0,
           dislikes: 8,
         },
+        {
+          userId: 3,
+          bookId: 2,
+          content: "Не знаю, по-моему так себе",
+          likes: 3,
+          dislikes: 2,
+        },
       ],
       {}
     );
