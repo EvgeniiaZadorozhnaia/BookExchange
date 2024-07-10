@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import axiosInstance from "../../axiosInstance";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Card,
@@ -26,7 +26,6 @@ function OneBookPage() {
   const { bookId } = useParams();
 
   console.log(book);
-  
 
   useEffect(() => {
     async function getBook() {
@@ -44,21 +43,7 @@ function OneBookPage() {
     getBook();
   }, []);
 
-//   useEffect(() => {
-//     async function getRewiews() {
-//       try {
-//         const { data }: AxiosResponse = await axiosInstance.get(
-//           `${VITE_BASE_URL}${VITE_API}/reviews/${bookId}`
-//         );
-//         setRewiews(() => data);
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     }
-//     getRewiews();
-//   }, []);
-
-//   console.log(reviews);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -76,6 +61,7 @@ function OneBookPage() {
                 <Heading size="md">
                   <div>Владелец: {book.Owner?.username}</div>
                   <Button
+                    onClick={() => navigate(`/Book/${book.id}/owner`)}
                     colorScheme={"teal"}
                     mr={2}
                     mb={2}
