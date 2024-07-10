@@ -53,7 +53,9 @@ export const deleteBook = createAsyncThunk("books/delete", async (bookId) => {
   const res: AxiosResponse = await axiosInstance.delete(
     `${VITE_BASE_URL}${VITE_API}/books/${bookId}`
   );
-  return res.status === 200;
+  if (res.status === 204) {
+    return bookId
+  }
 });
 
 export const createBook = createAsyncThunk(

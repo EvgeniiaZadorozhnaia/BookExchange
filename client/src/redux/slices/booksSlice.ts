@@ -52,6 +52,8 @@ const booksSlice: BooksSlice = createSlice({
     })
     builder.addCase(deleteBook.fulfilled, (state, action: PayloadAction<number>) => {
       state.books = state.books.filter((book) => book.id !== action.payload);
+      console.log("state.books", state.books); 
+      console.log("action.payload", action.payload); 
       state.loading = false;
     })
     builder.addCase(deleteBook.rejected, (state: Draft<BooksState>, action: RejectedAction): void => {
@@ -64,7 +66,6 @@ const booksSlice: BooksSlice = createSlice({
     })
     builder.addCase(createBook.fulfilled, (state: Draft<BooksState>, action: PayloadAction<IBook>): void => {
       state.books.push(action.payload)
-      console.log("state.books", state.books);
       state.loading = false;
     })
     builder.addCase(createBook.rejected, (state: Draft<BooksState>, action: RejectedAction): void => {
