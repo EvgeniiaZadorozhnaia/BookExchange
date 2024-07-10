@@ -7,7 +7,6 @@ import {
   GridItem,
   Image,
   Input,
-  Spacer,
   Tag,
   TagLabel,
   Text,
@@ -31,7 +30,7 @@ export default function Profile(): JSX.Element {
   const [exchanges, setExchanges] = useState([]);
   const [activeExchange, setActiveExchange] = useState(null);
   const [activeUser, setActiveUser] = useState(null);
-  const [incomeOrOutcome, setIncomeOrOutcome] = useState("income");
+  const [incomeOrOutcome, setIncomeOrOutcome] = useState("outcome");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [exchangeHistoryIncoming, setExchangeHistoryIncoming] = useState();
   const [exchangeHistoryOutcoming, setExchangeHistoryOutcoming] = useState();
@@ -40,6 +39,9 @@ export default function Profile(): JSX.Element {
   const [activeStatusOutcomeExchange, setActiveStatusOutcomeExchange] =
     useState();
   const messageContainerRef = useRef(null);
+
+  console.log(exchanges);
+  
 
   const fetchExchangeHistory = async () => {
     try {

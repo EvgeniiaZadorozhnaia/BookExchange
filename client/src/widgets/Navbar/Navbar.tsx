@@ -18,7 +18,7 @@ export default function Navbar(): JSX.Element {
       <div className={styles.left}>
         {user?.username ? (
           <div className={styles.left}>
-            <Link to="/homepage">Главная</Link>
+            <Link to="/">Главная</Link>
             <Link to="/favorites">Избранное</Link>
             <Link to="/mybooks">Мои книги</Link>
           </div>

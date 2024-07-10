@@ -11,8 +11,6 @@ import MyBooksPage from "./pages/MyBooksPage/MyBooksPage";
 import OneBookPage from "./pages/OneBookPage/OneBookPage";
 import BookOwnerPage from "./pages/BookOwnerPage/BookOwnerPage";
 
-
-
 function App() {
   const { user } = useAppSelector((state) => state.authSlice);
 
@@ -22,7 +20,7 @@ function App() {
       element: <Root />,
       children: [
         {
-          path: "/homepage",
+          path: "/",
           element: user?.id !== 0 ? (
               <HomePage />     
           )  : (
