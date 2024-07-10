@@ -9,6 +9,7 @@ import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import HomePage from "./pages/HomePage/HomePage";
 import MyBooksPage from "./pages/MyBooksPage/MyBooksPage";
 import OneBookPage from "./pages/OneBookPage/OneBookPage";
+import BookOwnerPage from "./pages/BookOwnerPage/BookOwnerPage";
 
 
 
@@ -59,6 +60,10 @@ function App() {
           )  : (
             <Navigate to="/signup" />
           ),
+        },
+        {
+          path: "/Book/:id/owner",
+          element: <BookOwnerPage />,
         },
         {
           path: "/*",

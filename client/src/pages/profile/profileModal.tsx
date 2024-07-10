@@ -12,10 +12,7 @@ import {
   Button,
   Box,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import axiosInstance from "../../axiosInstance";
 import { useAppSelector } from "../../redux/hooks";
-const { VITE_BASE_URL, VITE_API } = import.meta.env;
 
 export default function ProfileModal({
   isOpen,
@@ -31,11 +28,13 @@ export default function ProfileModal({
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader display='flex' justifyContent="center" padding='40px'>Моя история обменов</ModalHeader>
+        <ModalHeader display="flex" justifyContent="center" padding="40px">
+          Моя история обменов
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Box bg={"#a4e8af"} borderRadius='7px' padding='50px' margin='10px'>
-            <Text fontWeight="bold" mb="1rem" textAlign='center'>
+          <Box bg={"#a4e8af"} borderRadius="7px" padding="50px" margin="10px">
+            <Text fontWeight="bold" mb="1rem" textAlign="center">
               Входящие обмены
             </Text>
             {exchangeHistoryIncoming && (
@@ -52,24 +51,24 @@ export default function ProfileModal({
               </Text>
             )}
           </Box>
-          <Box bg={"#b3cde0"} borderRadius='7px' padding='50px' margin='10px'>
-          <Text fontWeight="bold" mb="1rem">
-            Исходящие обмены
-          </Text>
-          {exchangeHistoryOutcoming && (
-            <Text>Всего: {exchangeHistoryOutcoming.length}</Text>
-          )}{" "}
-          {activeStatusOutcomeExchange && (
-            <Text>Активные: {activeStatusOutcomeExchange.length}</Text>
-          )}
-          {activeStatusOutcomeExchange && (
-            <Text>
-              Завершенные:{" "}
-              {exchangeHistoryOutcoming.length -
-                activeStatusOutcomeExchange.length}
+          <Box bg={"#b3cde0"} borderRadius="7px" padding="50px" margin="10px">
+            <Text fontWeight="bold" mb="1rem">
+              Исходящие обмены
             </Text>
-          )}
-           </Box>
+            {exchangeHistoryOutcoming && (
+              <Text>Всего: {exchangeHistoryOutcoming.length}</Text>
+            )}{" "}
+            {activeStatusOutcomeExchange && (
+              <Text>Активные: {activeStatusOutcomeExchange.length}</Text>
+            )}
+            {activeStatusOutcomeExchange && (
+              <Text>
+                Завершенные:{" "}
+                {exchangeHistoryOutcoming.length -
+                  activeStatusOutcomeExchange.length}
+              </Text>
+            )}
+          </Box>
         </ModalBody>
 
         <ModalFooter>

@@ -67,19 +67,44 @@ router
       });
     }
   })
-
-  .get("/oneBook/:bookId", async (req, res) => {
-    const { bookId } = req.params;
+  .get("/:id/owner", verifyAccessToken, async (req, res) => {
+    const { id } = req.params;
     try {
-      const book = await Book.findOne({
-        where: { id: bookId },
-        include: { model: User, attributes: ["username", "id"] },
+      const booksWithOwner = await Book.findAll({
+        where: { id },
+        include: [
+          {
+            model: User,
+            as: "Owner",
+          },
+        ],
       });
-      res.json(book);
+      res.json(booksWithOwner);
     } catch (error) {
       console.error(error.message);
-      res.status(500).json({ message: "Произошла ошибка при получении книги" });
+      res
+        .status(500)
+        .json({ message: "Произошла ошибка при получении владельца книги" });
+    }
+  })
+  .get("/:ownerId/all", verifyAccessToken, async (req, res) => {
+    const { ownerId } = req.params;
+    try {
+      const booksByOneOwner = await Book.findAll({
+        where: { ownerId },
+        include: [
+          {
+            model: User,
+            as: "Owner",
+          },
+        ],
+      });
+      res.json(booksByOneOwner);
+    } catch (error) {
+      console.error(error.message);
+      res
+        .status(500)
+        .json({ message: "Произошла ошибка при получении владельца книги" });
     }
   });
-
 module.exports = router;
