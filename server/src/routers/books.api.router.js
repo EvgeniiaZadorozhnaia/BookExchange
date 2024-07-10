@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const { verifyAccessToken } = require("../middlewares/verifyToken");
-const { Book } = require("../../db/models");
-const { User } = require("../../db/models");
+const { Book, User, Review } = require("../../db/models");
 
 router
   .get("/", async (req, res) => {
@@ -29,8 +28,12 @@ router
         where: { id: bookId },
         include: [
           {
+            model: Review,
+            as: 'Review'
+          },
+          {
             model: User,
-            as: "Owner",
+            as: 'Owner'
           },
         ],
       });
