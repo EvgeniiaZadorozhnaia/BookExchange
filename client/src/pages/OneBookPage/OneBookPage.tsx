@@ -31,6 +31,8 @@ function OneBookPage() {
         const { data }: AxiosResponse = await axiosInstance.get(
           `${VITE_BASE_URL}${VITE_API}/books/oneBook/${bookId}`
         );
+
+        
         setBook(() => data);
       } catch (error) {
         console.log(error);
@@ -69,7 +71,7 @@ function OneBookPage() {
               />
               <Stack mt="6" spacing="3">
                 <Heading size="md">
-                  <div>Владелец: {book.User.username}</div>
+                  {/* <div>Владелец: {book.Owner.username}</div> */}
                   <Button
                     colorScheme={"teal"}
                     mr={2}
