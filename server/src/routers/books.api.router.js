@@ -6,10 +6,15 @@ const { User } = require("../../db/models");
 router
   .get("/", async (req, res) => {
     try {
-      const books = await Book.findAll({
-        include: { model: User, attributes: ["city"] },
+      const booksByOneOwner = await Book.findAll({
+        include: [
+          {
+            model: User,
+            as: "Owner",
+          },
+        ],
       });
-      res.json(books.map((el) => el.get({ plain: true })));
+      res.json(booksByOneOwner);
     } catch (error) {
       console.error(error.message);
       res
@@ -17,7 +22,6 @@ router
         .json({ message: "Произошла ошибка при получении списка книг" });
     }
   })
-
   .delete("/:bookId", verifyAccessToken, async (req, res) => {
     const { bookId } = req.params;
 
@@ -107,4 +111,5 @@ router
         .json({ message: "Произошла ошибка при получении владельца книги" });
     }
   });
+
 module.exports = router;
