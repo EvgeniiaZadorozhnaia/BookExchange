@@ -35,8 +35,10 @@ export default function Profile(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [exchangeHistoryIncoming, setExchangeHistoryIncoming] = useState();
   const [exchangeHistoryOutcoming, setExchangeHistoryOutcoming] = useState();
-  const [activeStatusIncomeExchange, setActiveStatusIncomeExchange] = useState();
-  const [activeStatusOutcomeExchange, setActiveStatusOutcomeExchange] = useState();
+  const [activeStatusIncomeExchange, setActiveStatusIncomeExchange] =
+    useState();
+  const [activeStatusOutcomeExchange, setActiveStatusOutcomeExchange] =
+    useState();
   const messageContainerRef = useRef(null);
 
   const fetchExchangeHistory = async () => {
@@ -44,8 +46,16 @@ export default function Profile(): JSX.Element {
       const { data } = await axiosInstance.get(
         `${VITE_BASE_URL}${VITE_API}/exchanges/history/${user.id}`
       );
-      setActiveStatusOutcomeExchange(data.exchangesOutcoming.filter((el) => el.status === 'pending' || el.status === 'processing'))
-      setActiveStatusIncomeExchange(data.exchangesIncoming.filter((el) => el.status === 'pending' || el.status === 'processing'));
+      setActiveStatusOutcomeExchange(
+        data.exchangesOutcoming.filter(
+          (el) => el.status === "pending" || el.status === "processing"
+        )
+      );
+      setActiveStatusIncomeExchange(
+        data.exchangesIncoming.filter(
+          (el) => el.status === "pending" || el.status === "processing"
+        )
+      );
       setExchangeHistoryIncoming(data.exchangesIncoming);
       setExchangeHistoryOutcoming(data.exchangesOutcoming);
     } catch (error) {
@@ -150,13 +160,13 @@ export default function Profile(): JSX.Element {
 
   return (
     <>
-      <Box className="profile-top" display='flex'>
+      <Box className="profile-top" display="flex">
         <Text
           style={{
             backgroundColor: "rgba(22, 9, 156, 0.3)",
             padding: "20px",
             borderRadius: "5px",
-            marginRight: "30px"
+            marginRight: "30px",
           }}
         >
           Мой рейтинг: ⭐ {user.rating}
@@ -181,7 +191,7 @@ export default function Profile(): JSX.Element {
             borderRadius: "20px",
           }}
         >
-          Входящие
+          Отдать
         </Button>
         <Button
           onClick={() => setIncomeOrOutcome("outcome")}
@@ -195,7 +205,7 @@ export default function Profile(): JSX.Element {
             borderRadius: "20px",
           }}
         >
-          Исходящие
+          Забрать
         </Button>
       </Box>
 
@@ -212,9 +222,9 @@ export default function Profile(): JSX.Element {
               exchanges.map((exchange) => (
                 <Tag
                   key={exchange.id}
-                  size="lg"
+                  width="150px"
                   borderRadius="full"
-                  margin="10px"
+                  margin="5px"
                   cursor="pointer"
                   bg={exchange.id === activeExchange ? "teal.300" : "gray.200"}
                   onClick={() => {
@@ -228,7 +238,8 @@ export default function Profile(): JSX.Element {
                   <TagLabel>
                     {incomeOrOutcome === "income"
                       ? exchange.Author.username
-                      : exchange.Reciever.username}
+                      : exchange.Reciever.username}{" "}
+                    Обмен №{exchange.id}
                   </TagLabel>
                 </Tag>
               ))}
@@ -272,7 +283,7 @@ export default function Profile(): JSX.Element {
                         : message.Author.username}
                     </TagLabel>
                   </Tag>
-                  <Text>{message.text}</Text>
+                  <Text margin="5px">{message.text}</Text>
                   <span style={{ fontSize: "0.8em", opacity: 0.7 }}>
                     {new Date(message.createdAt).toLocaleString()}
                   </span>

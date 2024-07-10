@@ -11,7 +11,6 @@ function OneCardForMyBooks({ book, onEditClick }) {
     if (book.id) dispatch(deleteBook(book.id));
   };
 
-
   return (
     <Card maxW="sm" m='20px' >
       <CardBody>
