@@ -3,9 +3,7 @@ const { User } = require("../../db/models");
 router.get("/allCities", async (req, res) => {
   try {
     const cities = await User.findAll({ attributes: ["city"] });
-    console.log(cities);
     const uniqueCities = [...new Set(cities)]
-    console.log(uniqueCities);
     res.json(uniqueCities.map((el) => el.city));
   } catch (error) {
     console.log(error.message);
