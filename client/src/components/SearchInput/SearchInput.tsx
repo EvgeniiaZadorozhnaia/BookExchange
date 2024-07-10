@@ -1,8 +1,8 @@
 import { FormControl, Select } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axiosInstance from "../../axiosInstance";
 import { AxiosResponse } from "axios";
-import { useAppSelector } from "../../redux/hooks";
+import { SearchInputType } from "../../types/propsTypes";
 
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 
@@ -13,7 +13,7 @@ function SearchInput({
   setOptions,
   handleSubmit,
   options,
-}) {
+}: SearchInputType) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };

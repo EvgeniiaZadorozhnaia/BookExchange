@@ -2,7 +2,6 @@ import { Card, CardBody, Image, Stack, Heading, Text, Divider, CardFooter, Butto
 import { Book } from "../../types/propsTypes";
 import { deleteBook } from "../../redux/thunkActions";
 import { useAppDispatch } from "../../redux/hooks";
-import { useEffect } from "react";
 
 
 function OneCardForMyBooks({ book }: Book) {
@@ -14,8 +13,6 @@ function OneCardForMyBooks({ book }: Book) {
     
     if (book.id) dispatch(deleteBook(book.id));
   };
-
-
 
   return (
     <Card maxW="sm" m='20px' >
