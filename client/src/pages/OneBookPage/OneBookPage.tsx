@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import axiosInstance from "../../axiosInstance";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Card,
@@ -22,8 +22,10 @@ const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 
 function OneBookPage() {
   const [book, setBook] = useState<IBook>(BookState);
-  const [reviews, setRewiews] = useState([]);
+  const [reviews, setRewiews] = useState();
   const { bookId } = useParams();
+
+  console.log(book);
 
   useEffect(() => {
     async function getBook() {
@@ -31,6 +33,8 @@ function OneBookPage() {
         const { data }: AxiosResponse = await axiosInstance.get(
           `${VITE_BASE_URL}${VITE_API}/books/oneBook/${bookId}`
         );
+        console.log(data);
+
         setBook(() => data);
       } catch (error) {
         console.log(error);
@@ -39,21 +43,7 @@ function OneBookPage() {
     getBook();
   }, []);
 
-  useEffect(() => {
-    async function getRewiews() {
-      try {
-        const { data }: AxiosResponse = await axiosInstance.get(
-          `${VITE_BASE_URL}${VITE_API}/reviews/${bookId}`
-        );
-        setRewiews(() => data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getRewiews();
-  }, []);
-
-  console.log(reviews);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -69,8 +59,9 @@ function OneBookPage() {
               />
               <Stack mt="6" spacing="3">
                 <Heading size="md">
-                  <div>Владелец: {book.User.username}</div>
+                  <div>Владелец: {book.Owner?.username}</div>
                   <Button
+                    onClick={() => navigate(`/Book/${book.id}/owner`)}
                     colorScheme={"teal"}
                     mr={2}
                     mb={2}
@@ -83,7 +74,7 @@ function OneBookPage() {
             </CardBody>
           </Card>
           <CardInfo book={book} />
-          <Reviews reviews={reviews} />
+          <Reviews book={book} />
         </div>
       ) : (
         <CircularProgress isIndeterminate color="green.300" />

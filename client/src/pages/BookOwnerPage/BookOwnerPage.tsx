@@ -35,6 +35,7 @@ export default function BookOwnerPage(): JSX.Element {
   const [exchangeOffer, setExchangeOffer] = useState();
   const [rateClick, setRateClick] = useState(false);
   const [rateOwner, setRateOwner] = useState(0);
+  console.log(rateOwner);
 
   useEffect((): void => {
     const fetchBookData = async (): Promise<void> => {
@@ -49,6 +50,8 @@ export default function BookOwnerPage(): JSX.Element {
           `${VITE_BASE_URL}${VITE_API}/books/${user.id}`
         );
 
+        // console.log(ownerBooks);
+        
         setOwner(data[0].Owner);
         setBooksToTake(ownerBooks);
         setBooksToGive(myBooks);
@@ -137,44 +140,66 @@ export default function BookOwnerPage(): JSX.Element {
               justifyContent="center"
               alignItems="center"
             >
-              <Text as="span" fontSize="xl">
-                Оцените пользователя
-              </Text>
-              <Text
-                as="span"
-                fontSize="xl"
-                _hover={{ transform: "scale(1.4)", color: "gold" }}
-              >
-                ⭐
-              </Text>
-              <Text
-                as="span"
-                fontSize="xl"
-                _hover={{ transform: "scale(1.4)", color: "gold" }}
-              >
-                ⭐
-              </Text>
-              <Text
-                as="span"
-                fontSize="xl"
-                _hover={{ transform: "scale(1.4)", color: "gold" }}
-              >
-                ⭐
-              </Text>
-              <Text
-                as="span"
-                fontSize="xl"
-                _hover={{ transform: "scale(1.4)", color: "gold" }}
-              >
-                ⭐
-              </Text>
-              <Text
-                as="span"
-                fontSize="xl"
-                _hover={{ transform: "scale(1.4)", color: "gold" }}
-              >
-                ⭐
-              </Text>
+              {rateOwner ? (
+                <>
+                  <Text as="span" fontSize="xl">
+                    Ваша оценка {rateOwner}
+                  </Text>
+                  <Text
+                    as="span"
+                    fontSize="xl"
+                    _hover={{ transform: "scale(1.4)", color: "gold" }}
+                  >
+                    ⭐
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Text as="span" fontSize="xl">
+                    Оцените пользователя
+                  </Text>
+                  <Text
+                    onClick={() => setRateOwner(1)}
+                    as="span"
+                    fontSize="xl"
+                    _hover={{ transform: "scale(1.4)", color: "gold" }}
+                  >
+                    ⭐
+                  </Text>
+                  <Text
+                    onClick={() => setRateOwner(2)}
+                    as="span"
+                    fontSize="xl"
+                    _hover={{ transform: "scale(1.4)", color: "gold" }}
+                  >
+                    ⭐
+                  </Text>
+                  <Text
+                    onClick={() => setRateOwner(3)}
+                    as="span"
+                    fontSize="xl"
+                    _hover={{ transform: "scale(1.4)", color: "gold" }}
+                  >
+                    ⭐
+                  </Text>
+                  <Text
+                    onClick={() => setRateOwner(4)}
+                    as="span"
+                    fontSize="xl"
+                    _hover={{ transform: "scale(1.4)", color: "gold" }}
+                  >
+                    ⭐
+                  </Text>
+                  <Text
+                    onClick={() => setRateOwner(5)}
+                    as="span"
+                    fontSize="xl"
+                    _hover={{ transform: "scale(1.4)", color: "gold" }}
+                  >
+                    ⭐
+                  </Text>
+                </>
+              )}
             </CardBody>
             <CardFooter display="flex" justifyContent="center">
               <Button

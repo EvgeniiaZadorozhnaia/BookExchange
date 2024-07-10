@@ -18,8 +18,10 @@ function HomePage(): JSX.Element {
   const [filteredBooks, setFilteredBooks] = useState<IBooks>([]);
   const [displayedBooks, setDisplayedBooks] = useState<IBooks>([]);
 
+
   useEffect(() => {
     dispatch(getBooks());
+    console.log(books);
   }, []);
 
   useEffect(() => {
@@ -51,7 +53,7 @@ function HomePage(): JSX.Element {
 
     if (selectedCity) {
       updatedBooks = updatedBooks.filter(
-        (book) => book.User.city === selectedCity
+        (book) => book.Owner.city === selectedCity
       );
     }
 
