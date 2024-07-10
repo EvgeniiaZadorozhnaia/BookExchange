@@ -16,4 +16,5 @@ export type BooksState = {
     books: IBook[],
     loading: boolean,
     error: object
+    book: IBook
 }
