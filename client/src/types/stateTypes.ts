@@ -25,6 +25,7 @@ export interface IUser {
 }
 
 export interface IBook {
+    User: {city: string},
     id: number,
     ownerId: number,
     title: string,
@@ -42,5 +43,4 @@ export interface IType {
   }
 
 export type IBooks = IBook[]
-
 

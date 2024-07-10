@@ -1,21 +1,15 @@
 import { Card, CardBody, Image, Stack, Heading, Text, Divider, CardFooter, ButtonGroup, Button,  } from "@chakra-ui/react";
-import { Book } from "../../types/propsTypes";
 import { deleteBook } from "../../redux/thunkActions";
 import { useAppDispatch } from "../../redux/hooks";
-import { useEffect } from "react";
 
 
-function OneCardForMyBooks({ book }: Book) {
+
+function OneCardForMyBooks({ book, onEditClick }) {
   const dispatch = useAppDispatch();
 
-  
   const deleteHandler = () => {
-    console.log("book.id", book.id);
-    
     if (book.id) dispatch(deleteBook(book.id));
   };
-
-
 
   return (
     <Card maxW="sm" m='20px' >
@@ -31,7 +25,7 @@ function OneCardForMyBooks({ book }: Book) {
       <Divider />
       <CardFooter display="flex" justifyContent="center" >
         <ButtonGroup >
-          <Button variant="solid" colorScheme="blue">
+          <Button variant="solid" colorScheme="blue" onClick={() => onEditClick(book)}>
             Редактировать
           </Button>     
           <Button variant="outline" colorScheme="red" onClick={deleteHandler}>

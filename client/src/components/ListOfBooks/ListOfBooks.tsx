@@ -1,11 +1,9 @@
-import { useAppSelector } from "../../redux/hooks";
+import { displayedBooks } from "../../types/propsTypes";
 
 import OneCard from "../OneCard/OneCard";
 import styles from "./ListOfBooks.module.css";
-import { displayedBooks } from "../../types/propsTypes";
 
-
-function ListOfBooks({ books }) {
+function ListOfBooks({ books }: displayedBooks) {
 
   return (
     <>
