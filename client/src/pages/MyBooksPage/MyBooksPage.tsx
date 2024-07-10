@@ -9,6 +9,7 @@ import { InputsBookCreationState } from "../../components/initState";
 import { IInputsBookCreationState } from "../../types/stateTypes";
 import OneCardForMyBooks from "../../components/OneCardForMyBooks/OneCardForMyBooks";
 
+
 function MyBooksPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.authSlice);
@@ -26,6 +27,8 @@ function MyBooksPage(): JSX.Element {
   useEffect(() => {
     dispatch(getBooksByUser(user.id));
   }, [user]);
+
+  
 
   function inputsHandler(e: React.ChangeEvent<HTMLInputElement>): void {
     setInputs(
@@ -50,6 +53,8 @@ function MyBooksPage(): JSX.Element {
           flexWrap: "wrap",
           gap: "16px",
           marginBottom: "16px",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         {books.length > 0 &&
@@ -72,5 +77,6 @@ function MyBooksPage(): JSX.Element {
     </div>
   );
 }
+
 
 export default MyBooksPage;

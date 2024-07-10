@@ -2,20 +2,23 @@ import { Card, CardBody, Image, Stack, Heading, Text, Divider, CardFooter, Butto
 import { Book } from "../../types/propsTypes";
 import { deleteBook } from "../../redux/thunkActions";
 import { useAppDispatch } from "../../redux/hooks";
-import styles from './OneCard.module.css'
+import { useEffect } from "react";
+
 
 function OneCardForMyBooks({ book }: Book) {
   const dispatch = useAppDispatch();
 
-
+  
   const deleteHandler = () => {
+    console.log("book.id", book.id);
+    
     if (book.id) dispatch(deleteBook(book.id));
   };
 
- 
+
 
   return (
-    <Card className={styles.card} maxW="sm" m='20px' >
+    <Card maxW="sm" m='20px' >
       <CardBody>
         <Image h='450px' src={book.pictureUrl} alt="Picture" borderRadius="lg" />
         <Stack mt="6" spacing="3">
@@ -26,8 +29,8 @@ function OneCardForMyBooks({ book }: Book) {
         </Stack>
       </CardBody>
       <Divider />
-      <CardFooter display="flex" justifyContent="space-between" mt="auto">
-        <ButtonGroup display="flex" justifyContent="space-between" mt="auto">
+      <CardFooter display="flex" justifyContent="center" >
+        <ButtonGroup >
           <Button variant="solid" colorScheme="blue">
             Редактировать
           </Button>     
