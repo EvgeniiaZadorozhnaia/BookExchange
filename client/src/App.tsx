@@ -3,7 +3,7 @@ import "./App.css";
 import Root from "./Root";
 import SigninPage from "./pages/SigninPage/SigninPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
-import Profile from "./pages/profile/profile"; 
+import Profile from "./pages/profile/Profile"; 
 import { useAppSelector } from "./redux/hooks";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import OneCard from "./components/OneCard/OneCard";
