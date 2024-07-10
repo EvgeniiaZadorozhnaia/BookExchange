@@ -6,9 +6,9 @@ import SignupPage from "./pages/SignupPage/SignupPage";
 import Profile from "./pages/profile/Profile"; 
 import { useAppSelector } from "./redux/hooks";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-import OneCard from "./components/OneCard/OneCard";
 import HomePage from "./pages/HomePage/HomePage";
 import MyBooksPage from "./pages/MyBooksPage/MyBooksPage";
+import BookOwnerPage from "./pages/BookOwnerPage/BookOwnerPage";
 
 
 
@@ -51,6 +51,10 @@ function App() {
           )  : (
             <Navigate to="/signup" />
           ),
+        },
+        {
+          path: "/Book/:id/owner",
+          element: <BookOwnerPage />,
         },
         {
           path: "/*",
