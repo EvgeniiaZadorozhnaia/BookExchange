@@ -81,6 +81,21 @@ router
       console.error(error.message);
       res.status(500).json({ message: "Произошла ошибка" });
     }
+  })
+  .post("/", async (req, res) => {
+    const { fromUser, toUser, toBook } = req.body;
+    try {
+      const newExchange = await Exchange.create({
+        fromUser,
+        toUser,
+        toBook,
+        status: "processing",
+      });
+      res.json(newExchange);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Произошла ошибка" });
+    }
   });
 
 module.exports = router;

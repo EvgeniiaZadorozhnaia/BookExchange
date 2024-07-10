@@ -21,6 +21,7 @@ export default function Navbar(): JSX.Element {
             <Link to="/homepage">Главная</Link>
             <Link to="/favorites">Избранное</Link>
             <Link to="/mybooks">Мои книги</Link>
+            <Link to="/book/12/owner">шаблон</Link>
           </div>
         ) : null}
       </div>
