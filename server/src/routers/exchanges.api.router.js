@@ -1,8 +1,24 @@
 const router = require("express").Router();
 
+const { json } = require("sequelize");
 const { Exchange, User } = require("../../db/models");
 
 router
+  .post("/", async (req, res) => {
+    const { fromUser, toUser, toBook } = req.body;
+    try {
+      const newExchange = await Exchange.create({
+        fromUser,
+        toUser,
+        toBook,
+        status: "pending",
+      });
+      res.json(newExchange);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Произошла ошибка" });
+    }
+  })
   .get("/incoming/:id", async (req, res) => {
     const { id } = req.params;
     try {
@@ -84,16 +100,31 @@ router
       res.status(500).json({ message: "Произошла ошибка" });
     }
   })
-  .post("/", async (req, res) => {
-    const { fromUser, toUser, toBook } = req.body;
+  .put("/:exchangeId", async (req, res) => {
+    const { exchangeId } = req.params;
+    const { status } = req.body;
     try {
-      const newExchange = await Exchange.create({
-        fromUser,
-        toUser,
-        toBook,
-        status: "processing",
-      });
-      res.json(newExchange);
+      const [numberOfUpdatedRows] = await Exchange.update(
+        { status },
+        { where: { id: exchangeId } }
+      );
+
+      if (numberOfUpdatedRows === 0) {
+        return res.status(404).json({ message: "Пользователь не найден" });
+      }
+
+      const updatedExchange = await Exchange.findByPk(exchangeId);
+      res.json(updatedExchange);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Произошла ошибка" });
+    }
+  })
+  .get("/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+      const exchange = await Exchange.findByPk(id);
+      res.json(exchange)
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ message: "Произошла ошибка" });

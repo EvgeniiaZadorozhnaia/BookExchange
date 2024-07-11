@@ -80,12 +80,12 @@ export default function BookOwnerPage(): JSX.Element {
     fetchBookData();
   }, [id, user.id]);
 
+  // ! РЕЙТИНГ ⭐⭐⭐
   const rateUser = async (currentRating: number) => {
     try {
       const numberOfRating = owner?.numberOfRating + 1;
       const currentRate = owner?.rating + currentRating;
-      const divide = numberOfRating + 1;
-      const rating = currentRate / divide;
+      const rating = currentRate / numberOfRating;
 
       setCurrentRating(rating);
 

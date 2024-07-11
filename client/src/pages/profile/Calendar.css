@@ -1,0 +1,10 @@
+/* Уменьшение размеров календаря */
+.fc {
+  transform: scale(0.6);
+  margin-top: -90px;
+}
+
+/* Уменьшение высоты заголовка */
+.fc-header-toolbar {
+  font-size: 2rem;
+}
