@@ -21,7 +21,6 @@ function HomePage(): JSX.Element {
 
   useEffect(() => {
     dispatch(getBooks());
-    console.log(books);
   }, []);
 
   useEffect(() => {

@@ -12,47 +12,65 @@ import {
   Select,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../axiosInstance";
 import { useAppSelector } from "../../redux/hooks";
+import OneCard from "../../components/OneCard/OneCard";
+import { Book } from "../../types/propsTypes";
+import MyBooks from "./MyBooks";
 const { VITE_BASE_URL, VITE_API } = import.meta.env;
 
 interface Owner {
-  username: string;
+  avatarUrl: string;
+  city: string;
   createdAt: string;
+  email: string;
+  id: number;
+  numberOfRating: number;
+  password: string;
+  placeOfMeeting: string;
   rating: number;
+  updatedAt: string;
+  username: string;
 }
 
 export default function BookOwnerPage(): JSX.Element {
   const { user } = useAppSelector((state) => state.authSlice);
   const { id } = useParams<{ id: string }>();
-  const [owner, setOwner] = useState<Owner | null>(null);
+  const [owner, setOwner] = useState<Owner>({});
+  const [book, setBook] = useState<Book>({});
   const [booksToTake, setBooksToTake] = useState([]);
   const [booksToGive, setBooksToGive] = useState([]);
-  const [bookToTake, setBookToTake] = useState<string>("");
+  const [bookToTake, setBookToTake] = useState<string | undefined>(id);
   const [bookToGive, setBookToGive] = useState<string>("");
   const [exchangeOffer, setExchangeOffer] = useState();
-  const [rateClick, setRateClick] = useState(false);
-  const [rateOwner, setRateOwner] = useState(0);
-  console.log(rateOwner);
+  const [rateClick, setRateClick] = useState<boolean>(false);
+  const [rateOwner, setRateOwner] = useState<number>(0);
+  const [isForExchange, setIsForExchange] = useState<boolean>(true);
+  const [currentRating, setCurrentRating] = useState<number | undefined>();
+  const navigate = useNavigate();
+  console.log(booksToGive);
 
-  useEffect((): void => {
-    const fetchBookData = async (): Promise<void> => {
+  useEffect(() => {
+    const fetchBookData = async () => {
       try {
-        const { data } = await axiosInstance.get(
+        const { data: book } = await axiosInstance.get(
           `${VITE_BASE_URL}${VITE_API}/books/${id}/owner`
         );
+
+        setBook(book[0]);
+
         const { data: ownerBooks } = await axiosInstance.get(
-          `${VITE_BASE_URL}${VITE_API}/books/${data[0].Owner.id}/all`
+          `${VITE_BASE_URL}${VITE_API}/books/${book[0].Owner.id}/all`
         );
         const { data: myBooks } = await axiosInstance.get(
           `${VITE_BASE_URL}${VITE_API}/books/${user.id}`
         );
 
-        // console.log(ownerBooks);
-        
-        setOwner(data[0].Owner);
+        const ownerData = book[0].Owner;
+        setOwner(ownerData);
+        setCurrentRating(ownerData.rating);
         setBooksToTake(ownerBooks);
         setBooksToGive(myBooks);
       } catch (error) {
@@ -60,13 +78,37 @@ export default function BookOwnerPage(): JSX.Element {
       }
     };
     fetchBookData();
-  }, [id]);
+  }, [id, user.id]);
+
+  const rateUser = async (currentRating: number) => {
+    try {
+      const numberOfRating = owner?.numberOfRating + 1;
+      const currentRate = owner?.rating + currentRating;
+      const divide = numberOfRating + 1;
+      const rating = currentRate / divide;
+
+      setCurrentRating(rating);
+
+      const { data } = await axiosInstance.put(
+        `${VITE_BASE_URL}${VITE_API}/users/rate/${owner?.id}`,
+        { rating, numberOfRating }
+      );
+
+      setOwner((prev) => ({
+        ...prev,
+        rating: data.rating,
+        numberOfRating: data.numberOfRating,
+      }));
+    } catch (error) {
+      console.error("Ошибка при обновлении рейтинга:", error);
+    }
+  };
 
   const sendOfferForExchange = async () => {
     try {
       const newExchange = {
         fromUser: user.id,
-        toUser: owner.id,
+        toUser: owner?.id,
         toBook: bookToTake,
       };
       const { data } = await axiosInstance.post(
@@ -76,7 +118,7 @@ export default function BookOwnerPage(): JSX.Element {
       const offerMessage = {
         text: `Пользователь ${user.username} отправил(а) Вам запрос на обмен`,
         authorId: user.id,
-        toUser: owner.id,
+        toUser: owner?.id,
         exchangeId: data.id,
       };
       await axiosInstance.post(
@@ -117,21 +159,6 @@ export default function BookOwnerPage(): JSX.Element {
                     src="https://bit.ly/dan-abramov"
                     alt="userProfilePicture"
                   />
-                  <Box textAlign="center" ml={3}>
-                    {owner ? (
-                      <>
-                        <Heading size="sm">{owner.username}</Heading>
-                        <Text>Дата регистрации</Text>
-                        <Text>
-                          {new Date(owner.createdAt).toLocaleString()}
-                        </Text>
-                        <Text>Рейтинг {owner.rating} ⭐</Text>
-                        <Text>Контакты для связи</Text>
-                      </>
-                    ) : (
-                      <Text>Загрузка...</Text>
-                    )}
-                  </Box>
                 </Flex>
               </Flex>
             </CardHeader>
@@ -155,56 +182,38 @@ export default function BookOwnerPage(): JSX.Element {
                 </>
               ) : (
                 <>
-                  <Text as="span" fontSize="xl">
+                  <Text
+                    bg="whitesmoke"
+                    borderRadius="30px"
+                    padding="5px"
+                    as="span"
+                    fontSize="xl"
+                  >
                     Оцените пользователя
                   </Text>
-                  <Text
-                    onClick={() => setRateOwner(1)}
-                    as="span"
-                    fontSize="xl"
-                    _hover={{ transform: "scale(1.4)", color: "gold" }}
-                  >
-                    ⭐
-                  </Text>
-                  <Text
-                    onClick={() => setRateOwner(2)}
-                    as="span"
-                    fontSize="xl"
-                    _hover={{ transform: "scale(1.4)", color: "gold" }}
-                  >
-                    ⭐
-                  </Text>
-                  <Text
-                    onClick={() => setRateOwner(3)}
-                    as="span"
-                    fontSize="xl"
-                    _hover={{ transform: "scale(1.4)", color: "gold" }}
-                  >
-                    ⭐
-                  </Text>
-                  <Text
-                    onClick={() => setRateOwner(4)}
-                    as="span"
-                    fontSize="xl"
-                    _hover={{ transform: "scale(1.4)", color: "gold" }}
-                  >
-                    ⭐
-                  </Text>
-                  <Text
-                    onClick={() => setRateOwner(5)}
-                    as="span"
-                    fontSize="xl"
-                    _hover={{ transform: "scale(1.4)", color: "gold" }}
-                  >
-                    ⭐
-                  </Text>
+                  {[1, 2, 3, 4, 5].map((rating) => (
+                    <Text
+                      key={rating}
+                      onClick={() => {
+                        setRateOwner(rating);
+                        rateUser(rating);
+                      }}
+                      as="span"
+                      fontSize="xl"
+                      _hover={{ transform: "scale(1.8)", color: "gold" }}
+                    >
+                      ⭐
+                    </Text>
+                  ))}
                 </>
               )}
             </CardBody>
+
             <CardFooter display="flex" justifyContent="center">
               <Button
                 onClick={() => setRateClick((prev) => !prev)}
                 borderRadius="20px"
+                width="500px"
               >
                 Вернуться
               </Button>
@@ -234,141 +243,170 @@ export default function BookOwnerPage(): JSX.Element {
                     src="https://bit.ly/dan-abramov"
                     alt="userProfilePicture"
                   />
-                  <Box textAlign="center" ml={3}>
-                    {owner ? (
-                      <>
-                        <Heading size="sm">{owner.username}</Heading>
-                        <Text>Дата регистрации</Text>
-                        <Text>
-                          {new Date(owner.createdAt).toLocaleString()}
-                        </Text>
-                        <Text>Рейтинг {owner.rating} ⭐</Text>
-                        <Text>Контакты для связи</Text>
-                      </>
-                    ) : (
-                      <Text>Загрузка...</Text>
-                    )}
-                  </Box>
                 </Flex>
               </Flex>
             </CardHeader>
-            <CardBody
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
+            <Box
+              bg="whitesmoke"
+              textAlign="center"
+              padding="42px"
+              m={10}
+              borderRadius="100px"
             >
-              Удобная локация для встречи
-            </CardBody>
+              {owner ? (
+                <>
+                  <Heading size="sm">
+                    {owner.username}, {owner.city}
+                  </Heading>
+                  <Text>
+                    Дата регистрации:{" "}
+                    {new Date(owner.createdAt).toLocaleDateString()}
+                  </Text>
+                  <Text>Место встречи: {owner.placeOfMeeting}</Text>
+                  <Text>Рейтинг {currentRating} ⭐</Text>
+                </>
+              ) : (
+                <Text>Загрузка...</Text>
+              )}
+            </Box>
             <CardFooter display="flex" justifyContent="center">
-              <Button
-                onClick={() => setRateClick((prev) => !prev)}
-                borderRadius="20px"
-              >
-                Поставить оценку
-              </Button>
+              {owner.id === user.id ? null : (
+                <Button
+                  onClick={() => setRateClick((prev) => !prev)}
+                  borderRadius="20px"
+                  width="500px"
+                >
+                  Поставить оценку
+                </Button>
+              )}
             </CardFooter>
           </Card>
         )}
 
         {/* Карточка 2 */}
-        {exchangeOffer ? (
-          <Card
-            maxW="md"
-            bg="whitesmoke"
-            border="solid 10px rgba(22, 9, 156, 0.3)"
-            borderRadius="20px"
-            width="500px"
-            height="700px"
-            boxShadow="lg"
-            p={5}
-            m={5}
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Box>
-              <Heading size="md" mb={4} textAlign="center">
-                Запрос на обмен №{exchangeOffer.id}
-              </Heading>
-              <Text fontSize="lg" mb={2} textAlign="center" marginTop="30px">
-                Ваш запрос успешно создан
-              </Text>{" "}
-              <Text fontSize="lg" mb={2} textAlign="center" marginTop="30px">
-                Пользователю {owner.username} отправлено сообщение о Вашем
-                запросе
-              </Text>
-            </Box>
-            <Button
-              onClick={() => {
-                setExchangeOffer("");
-                setBookToTake("");
-              }}
-              bg="rgba(22, 9, 156, 0.3)"
+        <>
+          {exchangeOffer ? (
+            <Card
+              maxW="md"
+              bg="whitesmoke"
+              border="solid 10px rgba(22, 9, 156, 0.3)"
               borderRadius="20px"
-              mt="auto"
+              width="500px"
+              height="700px"
+              boxShadow="lg"
+              p={5}
+              m={5}
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
             >
-              Закрыть
-            </Button>
-          </Card>
-        ) : (
-          <Card
-            maxW="md"
-            bg="whitesmoke"
-            border="solid 10px rgba(22, 9, 156, 0.3)"
-            borderRadius="20px"
-            width="500px"
-            height="700px"
-            boxShadow="lg"
-            p={5}
-            m={5}
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Box>
-              <Heading size="md" mb={4} textAlign="center">
-                Запрос на обмен
-              </Heading>
-              <Text fontSize="lg" mb={2} textAlign="center" marginTop="30px">
-                Выберите книгу
-              </Text>
-              <Select
-                placeholder="Забрать"
-                mb={4}
-                value={bookToTake}
-                onChange={(e) => setBookToTake(e.target.value)}
+              <Box>
+                <Text textAlign="center">
+                  Пользователю {owner.username} отправлено сообщение о Вашем
+                  запросе
+                </Text>
+                <OneCard book={book} isForExchange={isForExchange} />
+              </Box>
+              <Button
+                onClick={() => navigate("/profile")}
+                bg="rgba(22, 9, 156, 0.3)"
+                borderRadius="20px"
+                mt="auto"
               >
-                {booksToTake &&
-                  booksToTake.map((book) => (
-                    <option key={book.id} value={book.id}>
-                      {book.title}
-                    </option>
-                  ))}
-              </Select>
-              <Select
-                placeholder="Отдать"
-                mb={4}
-                value={bookToGive}
-                onChange={(e) => setBookToGive(e.target.value)}
-              >
-                {booksToGive &&
-                  booksToGive.map((book) => (
-                    <option key={book.id} value={book.id}>
-                      {book.title}
-                    </option>
-                  ))}
-              </Select>
-            </Box>
-            <Button
-              onClick={sendOfferForExchange}
-              bg="rgba(22, 9, 156, 0.3)"
+                Написать владельцу
+              </Button>
+            </Card>
+          ) : (
+            <Card
+              maxW="md"
+              bg="whitesmoke"
+              border="solid 10px rgba(22, 9, 156, 0.3)"
               borderRadius="20px"
-              mt="auto"
+              width="500px"
+              height="700px"
+              boxShadow="lg"
+              p={5}
+              m={5}
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-around"
             >
-              Отправить предложение
-            </Button>
-          </Card>
-        )}
+              {owner.id === user.id ? (
+                <>
+                  <Text
+                    bg="rgba(22, 9, 156, 0.3)"
+                    m={2}
+                    textAlign="center"
+                    borderRadius="20px"
+                    height="26px"
+                  >
+                    Мои книги
+                  </Text>
+                  {booksToGive &&
+                    booksToGive.map((book) => <MyBooks key={book.id} book={book} />)}
+                  <Button
+                    onClick={() => navigate("/")}
+                    bg="rgba(22, 9, 156, 0.3)"
+                    textAlign="center"
+                    borderRadius="20px"
+                  >
+                    Найти книги для обмена
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Box>
+                    <Heading size="md" mb={4} textAlign="center">
+                      Запрос на обмен
+                    </Heading>
+                    <Text
+                      fontSize="lg"
+                      mb={2}
+                      textAlign="center"
+                      marginTop="30px"
+                    >
+                      Выберите книгу
+                    </Text>
+                    <Select
+                      placeholder="Забрать"
+                      mb={4}
+                      value={bookToTake}
+                      onChange={(e) => setBookToTake(e.target.value)}
+                    >
+                      {booksToTake &&
+                        booksToTake.map((book) => (
+                          <option key={book.id} value={book.id}>
+                            {book.title}
+                          </option>
+                        ))}
+                    </Select>
+                    <Select
+                      placeholder="Отдать"
+                      mb={4}
+                      value={bookToGive}
+                      onChange={(e) => setBookToGive(e.target.value)}
+                    >
+                      {booksToGive &&
+                        booksToGive.map((book) => (
+                          <option key={book.id} value={book.id}>
+                            {book.title}
+                          </option>
+                        ))}
+                    </Select>
+                  </Box>
+                  <Button
+                    onClick={sendOfferForExchange}
+                    bg="rgba(22, 9, 156, 0.3)"
+                    borderRadius="20px"
+                    mt="auto"
+                  >
+                    Отправить предложение
+                  </Button>
+                </>
+              )}
+            </Card>
+          )}
+        </>
       </SimpleGrid>
     </Box>
   );

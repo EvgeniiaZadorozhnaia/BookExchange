@@ -18,6 +18,7 @@ router
             as: "Reciever",
           },
         ],
+        order: [["createdAt", "DESC"]],
       });
       res.json(exchanges);
     } catch (error) {
@@ -40,6 +41,7 @@ router
             as: "Reciever",
           },
         ],
+        order: [["createdAt", "DESC"]],
       });
       res.json(exchanges);
     } catch (error) {

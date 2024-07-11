@@ -7,11 +7,9 @@ import {
   Card,
   CardBody,
   CircularProgress,
-  Divider,
   Heading,
   Image,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { BookState } from "../../components/initState";
 import { IBook } from "../../types/stateTypes";
@@ -19,13 +17,17 @@ import styles from "./OneBookPage.module.css";
 import CardInfo from "./CardInfo";
 import Reviews from "./Reviews";
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 function OneBookPage() {
   const [book, setBook] = useState<IBook>(BookState);
-  const [reviews, setRewiews] = useState();
   const { bookId } = useParams();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [reviews, setReviews] = useState();
 
-  console.log(book);
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
 
   useEffect(() => {
     async function getBook() {
@@ -33,15 +35,14 @@ function OneBookPage() {
         const { data }: AxiosResponse = await axiosInstance.get(
           `${VITE_BASE_URL}${VITE_API}/books/oneBook/${bookId}`
         );
-        console.log(data);
-
         setBook(() => data);
+        setReviews(() => data.Review);
       } catch (error) {
         console.log(error);
       }
     }
     getBook();
-  }, []);
+  }, [bookId, setReviews]);
 
   const navigate = useNavigate();
 
@@ -62,19 +63,34 @@ function OneBookPage() {
                   <div>Владелец: {book.Owner?.username}</div>
                   <Button
                     onClick={() => navigate(`/Book/${book.id}/owner`)}
-                    colorScheme={"teal"}
+                    colorScheme="teal"
                     mr={2}
                     mb={2}
                     _hover={{ bg: "teal.700" }}
                   >
                     Предложить обмен
                   </Button>
+                  <Button
+                    onClick={toggleFavorite}
+                    colorScheme={isFavorite ? "red" : "gray"}
+                    variant="ghost"
+                    aria-label={
+                      isFavorite ? "Remove from favorites" : "Add to favorites"
+                    }
+                    _hover={{ color: isFavorite ? "red.500" : "gray.500" }}
+                  >
+                    {isFavorite ? (
+                      <MdFavorite size={24} />
+                    ) : (
+                      <MdFavoriteBorder size={24} />
+                    )}
+                  </Button>
                 </Heading>
               </Stack>
             </CardBody>
           </Card>
           <CardInfo book={book} />
-          <Reviews book={book} />
+          <Reviews book={book} reviews={reviews} setReviews={setReviews} />
         </div>
       ) : (
         <CircularProgress isIndeterminate color="green.300" />

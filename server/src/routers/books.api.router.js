@@ -29,7 +29,13 @@ router
         include: [
           {
             model: Review,
-            as: 'Review'
+            as: 'Review',
+            include: [
+              {
+                model: User,
+                as: 'User'
+              }
+            ]
           },
           {
             model: User,
