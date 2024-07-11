@@ -12,13 +12,10 @@ function FavoritesPage() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        console.log("books", books)
-        dispatch(getFavoriteBooks(user.id))
-        console.log("books", books);
-        ;
-    }, [user, dispatch]);
+        dispatch(getFavoriteBooks())    
+    }, [user]);
 
-    console.log("books", books)
+    
 
     function handleDeleteBook(bookId: number): void {
         dispatch(deleteBookFromFavorites({ bookId, userId: user.id })

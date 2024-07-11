@@ -4,6 +4,7 @@ const { verifyAccessToken } = require("../middlewares/verifyToken");
 
 router
   .get("/", async (req, res) => {
+    console.log("zashel v ruchku");
     try {
       const favoriteBooks = await Book.findAll({
         include: [
@@ -21,6 +22,17 @@ router
     }
   })
 
+  .delete("/:userId/:bookId", verifyAccessToken, async (req, res) => {
+    const { bookId, userId } = req.params;
+    try {
+      await Favorite.destroy({ where: { bookId, userId } });
+      res.status(204).send();
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Произошла ошибка при удалении книги" });
+    }
+  })
+
   .post("/", async (req, res) => {
     try {
       const { bookId, userId } = req.body;
@@ -29,8 +41,8 @@ router
     } catch (error) {
       console.log(error);
       res
-      .status(500)
-      .json({ message: "Произошла ошибка при добавлении книги в избранное" });
+        .status(500)
+        .json({ message: "Произошла ошибка при добавлении книги в избранное" });
     }
   });
 

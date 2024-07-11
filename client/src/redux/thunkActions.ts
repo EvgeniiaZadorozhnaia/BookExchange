@@ -85,6 +85,7 @@ export const editBook = createAsyncThunk(
 export const getFavoriteBooks = createAsyncThunk(
   "favorite/getting",
   async () => {
+    console.log(userId);
     const res: AxiosResponse = await axiosInstance.get(
       `${VITE_BASE_URL}${VITE_API}/favorite`
     );
@@ -93,6 +94,15 @@ export const getFavoriteBooks = createAsyncThunk(
     return data;
   }
 );
+
+export const deleteBookFromFavorites = createAsyncThunk("favorite/delete", async ({bookId, userId}) => {
+  const res: AxiosResponse = await axiosInstance.delete(
+    `${VITE_BASE_URL}${VITE_API}/favorite/${userId}/${bookId}`
+  );
+  if (res.status === 204) {
+    return bookId;
+  }
+});
 
 export const addToFavorite = createAsyncThunk(
   "favorite/add",
