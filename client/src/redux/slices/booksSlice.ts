@@ -11,6 +11,7 @@ import {
   editBook,
   getBooks,
   getBooksByUser,
+  getFavoriteBooks,
 } from "../thunkActions";
 import { BookAction, BooksSlice, RejectedAction } from "../types/reducers";
 import { IBook } from "../../types/stateTypes";
@@ -131,6 +132,24 @@ const booksSlice: BooksSlice = createSlice({
       editBook.rejected,
       (state: Draft<BooksState>, action: RejectedAction): void => {
         console.log("Ошибка редактирования", action.error);
+        state.error = action.error;
+        state.loading = false;
+      }
+    );
+    builder.addCase(getFavoriteBooks.pending, (state: Draft<BooksState>): void => {
+      state.loading = true;
+    });
+    builder.addCase(
+      getFavoriteBooks.fulfilled,
+      (state: Draft<BooksState>, action: BookAction): void => {
+        state.books = action.payload;
+        state.loading = false;
+      }
+    );
+    builder.addCase(
+      getFavoriteBooks.rejected,
+      (state: Draft<BooksState>, action: RejectedAction): void => {
+        console.log("Книги не найдены", action.error);
         state.error = action.error;
         state.loading = false;
       }
