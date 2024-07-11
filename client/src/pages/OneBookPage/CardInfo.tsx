@@ -9,13 +9,13 @@ function CardInfo({ book, description }) {
         borderRadius="lg"
         overflow="hidden"
         display="grid"
-        gridTemplateColumns="1fr 2fr"
+        gridTemplateColumns="0.8fr 3fr"
         gap={4}
         m="20px"
       >
         <Box p="6">
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="2" colorScheme="teal">
+            <Badge borderRadius="full" px="5" colorScheme="teal">
               Автор
             </Badge>
             <Box
@@ -31,7 +31,7 @@ function CardInfo({ book, description }) {
           </Box>
           <p></p>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="2" colorScheme="teal">
+            <Badge borderRadius="full" px="5" colorScheme="teal">
               Cтраницы
             </Badge>
             <Box
@@ -69,10 +69,10 @@ function CardInfo({ book, description }) {
           </Box>
         </Box>
         <Box
-          p="6"
+          p="4"
           borderWidth="1px"
           borderRadius="lg"
-          boxShadow="md"
+          boxShadow="2xl"
           bg="purple.50"
         >
           {description ? (
@@ -83,6 +83,8 @@ function CardInfo({ book, description }) {
               overflowY="auto"
               maxHeight="100px"
               marginBottom={0}
+              pr="20px"
+              textAlign="justify"
             >
               {description}
             </Box>
