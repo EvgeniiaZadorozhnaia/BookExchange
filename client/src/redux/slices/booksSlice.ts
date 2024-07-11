@@ -9,6 +9,7 @@ import {
   addToFavorite,
   createBook,
   deleteBook,
+  deleteBookFromFavorites,
   editBook,
   getBooks,
   getBooksByUser,
@@ -85,8 +86,6 @@ const booksSlice: BooksSlice = createSlice({
       deleteBook.fulfilled,
       (state, action: PayloadAction<number>) => {
         state.books = state.books.filter((book) => book.id !== action.payload);
-        console.log("state.books", state.books);
-        console.log("action.payload", action.payload);
         state.loading = false;
       }
     );
@@ -151,6 +150,24 @@ const booksSlice: BooksSlice = createSlice({
       getFavoriteBooks.rejected,
       (state: Draft<BooksState>, action: RejectedAction): void => {
         console.log("Книги не найдены", action.error);
+        state.error = action.error;
+        state.loading = false;
+      }
+    );
+    builder.addCase(deleteBookFromFavorites.pending, (state: Draft<BooksState>): void => {
+      state.loading = true;
+    });
+    builder.addCase(
+      deleteBookFromFavorites.fulfilled,
+      (state, action: PayloadAction<number>) => {
+        state.books = state.books.filter((book) => book.id !== action.payload);
+        state.loading = false;
+      }
+    );
+    builder.addCase(
+      deleteBookFromFavorites.rejected,
+      (state: Draft<BooksState>, action: RejectedAction): void => {
+        console.log("Ошибка удаления", action.error);
         state.error = action.error;
         state.loading = false;
       }
