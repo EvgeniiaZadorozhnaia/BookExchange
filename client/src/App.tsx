@@ -10,6 +10,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import MyBooksPage from "./pages/MyBooksPage/MyBooksPage";
 import OneBookPage from "./pages/OneBookPage/OneBookPage";
 import BookOwnerPage from "./pages/BookOwnerPage/BookOwnerPage";
+import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
 
 
 
@@ -25,6 +26,14 @@ function App() {
           path: "/homepage",
           element: user?.id !== 0 ? (
               <HomePage />     
+          )  : (
+            <Navigate to="/signup" />
+          ),
+        },
+        {
+          path: "/favorites",
+          element: user?.id !== 0 ? (
+              <FavoritesPage />     
           )  : (
             <Navigate to="/signup" />
           ),

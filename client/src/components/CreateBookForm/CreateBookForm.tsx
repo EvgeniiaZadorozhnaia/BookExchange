@@ -26,7 +26,7 @@ function CreateBookForm({ onOpen, isOpen, onClose, finalRef, initialRef, inputsH
       >
         <ModalOverlay />
         <ModalContent>
-        <ModalHeader>Create your account</ModalHeader>
+        <ModalHeader>Создай книгу</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
       <FormControl>

@@ -81,3 +81,15 @@ export const createBook = createAsyncThunk(
       return data;
     });
 
+    export const getFavoriteBooks = createAsyncThunk(
+      "favorite/getting",
+      async () => {
+        const res: AxiosResponse = await axiosInstance.get(
+          `${VITE_BASE_URL}${VITE_API}/favorite`
+        );
+        const data = res.data as IBooks[];
+      
+        return data;
+      });
+
+
