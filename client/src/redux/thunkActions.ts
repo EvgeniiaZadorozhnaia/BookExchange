@@ -84,10 +84,10 @@ export const editBook = createAsyncThunk(
 
 export const getFavoriteBooks = createAsyncThunk(
   "favorite/getting",
-  async () => {
+  async (userId) => {
     console.log(userId);
     const res: AxiosResponse = await axiosInstance.get(
-      `${VITE_BASE_URL}${VITE_API}/favorite`
+      `${VITE_BASE_URL}${VITE_API}/favorite/${userId}`,
     );
     const data = res.data as IBooks[];
 

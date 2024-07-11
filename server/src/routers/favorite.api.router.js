@@ -2,25 +2,23 @@ const router = require("express").Router();
 const { Book, User, Favorite } = require("../../db/models");
 const { verifyAccessToken } = require("../middlewares/verifyToken");
 
-router
-  .get("/", async (req, res) => {
-    console.log("zashel v ruchku");
-    try {
-      const favoriteBooks = await Book.findAll({
-        include: [
-          {
-            model: Favorite,
-          },
-        ],
-      });
-      res.json(favoriteBooks);
-    } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "Произошла ошибка при получении списка книг" });
-    }
-  })
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const favoriteBooks = await Book.findAll({
+      include:[
+        { model: User, where: { id }, required: true },
+        { model: User, as: "Owner"}
+      ] 
+    });
+    res.json(favoriteBooks);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Произошла ошибка при получении списка книг" });
+  }
+})
 
   .delete("/:userId/:bookId", verifyAccessToken, async (req, res) => {
     const { bookId, userId } = req.params;

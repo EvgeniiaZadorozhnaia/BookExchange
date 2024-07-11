@@ -12,7 +12,7 @@ function FavoritesPage() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(getFavoriteBooks())    
+        dispatch(getFavoriteBooks(user.id))    
     }, [user]);
 
     
