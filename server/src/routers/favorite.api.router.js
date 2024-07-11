@@ -1,14 +1,15 @@
 const router = require("express").Router();
-const { Book, Favorite } = require("../../db/models");
+const { Book, User, Favorite } = require("../../db/models");
+const { verifyAccessToken } = require("../middlewares/verifyToken");
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
   try {
     const favoriteBooks = await Book.findAll({
-      include: [
-        {
-          model: Favorite,
-        },
-      ],
+      include:[
+        { model: User, where: { id }, required: true },
+        { model: User, as: "Owner"}
+      ] 
     });
     res.json(favoriteBooks);
   } catch (error) {
@@ -17,6 +18,17 @@ router.get("/", async (req, res) => {
       .status(500)
       .json({ message: "Произошла ошибка при получении списка книг" });
   }
-});
+})
+
+.delete("/:userId/:bookId", verifyAccessToken, async (req, res) => {
+  const { bookId, userId } = req.params;
+  try {
+    await Favorite.destroy({ where: { bookId, userId } });
+    res.status(204).send();
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Произошла ошибка при удалении книги" });
+  }
+})
 
 module.exports = router;

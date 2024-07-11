@@ -240,6 +240,22 @@ module.exports = {
           bookId: 10,
         },
         {
+          userId: 2,
+          bookId: 11,
+        },
+        {
+          userId: 2,
+          bookId: 12,
+        },
+        {
+          userId: 2,
+          bookId: 2,
+        },
+        {
+          userId: 2,
+          bookId: 3,
+        },
+        {
           userId: 3,
           bookId: 4,
         },

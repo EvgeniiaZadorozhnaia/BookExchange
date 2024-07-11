@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 
 
-// Component for displaying individual book card
 function OneCardForMyBooks({ book, onEditClick, onDelete }) {
 
   const deleteHandler = () => {
