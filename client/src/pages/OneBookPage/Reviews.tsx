@@ -26,7 +26,9 @@ function Reviews({ book, reviews, setReviews }) {
 
   async function handleDislike(id) {
     try {
-      await axiosInstance.put(`${VITE_BASE_URL}${VITE_API}/reviews/dislike/${id}`);
+      await axiosInstance.put(
+        `${VITE_BASE_URL}${VITE_API}/reviews/dislike/${id}`
+      );
       const updatedReviews = reviews.map((review) => {
         if (review.id === id) {
           return { ...review, dislikes: (review.dislikes || 0) + 1 };
