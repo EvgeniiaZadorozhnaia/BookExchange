@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { BooksState } from "../types/states";
 import {
+  addToFavorite,
   createBook,
   deleteBook,
   deleteBookFromFavorites,
@@ -153,20 +154,20 @@ const booksSlice: BooksSlice = createSlice({
         state.loading = false;
       }
     );
-    builder.addCase(deleteBookFromFavorites.pending, (state: Draft<BooksState>): void => {
+    builder.addCase(addToFavorite.pending, (state: Draft<BooksState>): void => {
       state.loading = true;
     });
     builder.addCase(
-      deleteBookFromFavorites.fulfilled,
-      (state, action: PayloadAction<number>) => {
-        state.books = state.books.filter((book) => book.id !== action.payload);
+      addToFavorite.fulfilled,
+      (state: Draft<BooksState>, action: PayloadAction<IBook>): void => {
+        state.books.push(action.payload);
         state.loading = false;
       }
     );
     builder.addCase(
-      deleteBookFromFavorites.rejected,
+      addToFavorite.rejected,
       (state: Draft<BooksState>, action: RejectedAction): void => {
-        console.log("Ошибка удаления", action.error);
+        console.log("Ошибка добавления", action.error);
         state.error = action.error;
         state.loading = false;
       }
