@@ -54,7 +54,7 @@ export const deleteBook = createAsyncThunk("books/delete", async (bookId) => {
     `${VITE_BASE_URL}${VITE_API}/books/${bookId}`
   );
   if (res.status === 204) {
-    return bookId
+    return bookId;
   }
 });
 
@@ -67,29 +67,41 @@ export const createBook = createAsyncThunk(
     );
     const data = res.data.book as IBook;
     return data;
-  });
+  }
+);
 
- 
-  export const editBook = createAsyncThunk(
-    "books/edit",
-    async ({ bookId, inputs }) => {
-      const res: AxiosResponse = await axiosInstance.put(
-        `${VITE_BASE_URL}${VITE_API}/books/${bookId}`,
-        inputs
-      );
-      const data = res.data
-      return data;
-    });
+export const editBook = createAsyncThunk(
+  "books/edit",
+  async ({ bookId, inputs }) => {
+    const res: AxiosResponse = await axiosInstance.put(
+      `${VITE_BASE_URL}${VITE_API}/books/${bookId}`,
+      inputs
+    );
+    const data = res.data;
+    return data;
+  }
+);
 
-    export const getFavoriteBooks = createAsyncThunk(
-      "favorite/getting",
-      async () => {
-        const res: AxiosResponse = await axiosInstance.get(
-          `${VITE_BASE_URL}${VITE_API}/favorite`
-        );
-        const data = res.data as IBooks[];
-      
-        return data;
-      });
+export const getFavoriteBooks = createAsyncThunk(
+  "favorite/getting",
+  async () => {
+    const res: AxiosResponse = await axiosInstance.get(
+      `${VITE_BASE_URL}${VITE_API}/favorite`
+    );
+    const data = res.data as IBooks[];
 
+    return data;
+  }
+);
 
+export const addToFavorite = createAsyncThunk(
+  "favorite/add",
+  async ({ bookId, userId }) => {
+    const res: AxiosResponse = await axiosInstance.post(
+      `${VITE_BASE_URL}${VITE_API}/favorite`,
+      { bookId, userId }
+    );
+    const data = res.data;
+    return data;
+  }
+);

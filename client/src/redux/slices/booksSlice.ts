@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { BooksState } from "../types/states";
 import {
+  addToFavorite,
   createBook,
   deleteBook,
   editBook,
@@ -150,6 +151,24 @@ const booksSlice: BooksSlice = createSlice({
       getFavoriteBooks.rejected,
       (state: Draft<BooksState>, action: RejectedAction): void => {
         console.log("Книги не найдены", action.error);
+        state.error = action.error;
+        state.loading = false;
+      }
+    );
+    builder.addCase(addToFavorite.pending, (state: Draft<BooksState>): void => {
+      state.loading = true;
+    });
+    builder.addCase(
+      addToFavorite.fulfilled,
+      (state: Draft<BooksState>, action: PayloadAction<IBook>): void => {
+        state.books.push(action.payload);
+        state.loading = false;
+      }
+    );
+    builder.addCase(
+      addToFavorite.rejected,
+      (state: Draft<BooksState>, action: RejectedAction): void => {
+        console.log("Ошибка добавления", action.error);
         state.error = action.error;
         state.loading = false;
       }
