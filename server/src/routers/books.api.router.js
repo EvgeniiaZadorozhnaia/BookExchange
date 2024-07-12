@@ -4,24 +4,27 @@ const multer = require("../middlewares/multer");
 const { Book, User, Review } = require("../../db/models");
 
 router
-  .get("/", async (req, res) => {
-    try {
-      const booksByOneOwner = await Book.findAll({
-        include: [
-          {
-            model: User,
-            as: "Owner",
-          },
-        ],
-      });
-      res.json(booksByOneOwner);
-    } catch (error) {
-      console.error(error.message);
-      res
-        .status(500)
-        .json({ message: "Произошла ошибка при получении списка книг" });
-    }
-  })
+.get("/", async (req, res) => {
+  try {
+    const booksByOneOwner = await Book.findAll({
+      include: [
+        {
+          model: User,
+          as: "Owner",
+        },
+      ],
+      order: [
+        ['rating', 'DESC']
+      ],
+    });
+    res.json(booksByOneOwner);
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(500)
+      .json({ message: "Произошла ошибка при получении списка книг" });
+  }
+})
   .get("/oneBook/:bookId", async (req, res) => {
     const { bookId } = req.params;
     try {
