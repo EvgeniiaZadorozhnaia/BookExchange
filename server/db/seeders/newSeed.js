@@ -12,7 +12,7 @@ module.exports = {
           password: await bcrypt.hash("admin123", 10),
           avatarUrl: "",
           rating: 5.0,
-          numberOfRating: 0,
+          numberOfRating: 1,
           placeOfMeeting: "Тайланд",
           city: "Пхукет",
         },
@@ -22,7 +22,7 @@ module.exports = {
           password: await bcrypt.hash("admin123", 10),
           avatarUrl: "",
           rating: 5.0,
-          numberOfRating: 0,
+          numberOfRating: 1,
           placeOfMeeting: "УралМаш",
           city: "Екатеринбург",
         },
@@ -32,9 +32,19 @@ module.exports = {
           password: await bcrypt.hash("admin123", 10),
           avatarUrl: "",
           rating: 5.0,
-          numberOfRating: 0,
+          numberOfRating: 1,
           placeOfMeeting: "Ботанический сад",
           city: "Астана",
+        },
+        {
+          username: "BookExchange",
+          email: "admin@bookExchange.com",
+          password: await bcrypt.hash("admin123", 10),
+          avatarUrl: "https://sun9-67.userapi.com/c812325/u403943870/-3/x_bf7e9e5688.jpg",
+          rating: 5.0,
+          numberOfRating: 1,
+          placeOfMeeting: "none",
+          city: "Москва",
         },
       ],
       {}
@@ -49,6 +59,7 @@ module.exports = {
           author: "Джордж Оруэлл",
           pages: 320,
           rating: 4.8,
+          numberOfRating: 1,
           pictureUrl: "1984.webp",
         },
         {
@@ -57,6 +68,7 @@ module.exports = {
           author: "Дуглас Адамс",
           pages: 640,
           rating: 4.6,
+          numberOfRating: 1,
           pictureUrl: "Avtostopom.webp",
         },
         {
@@ -65,6 +77,7 @@ module.exports = {
           author: "Курт Воннегут",
           pages: 224,
           rating: 4.2,
+          numberOfRating: 1,
           pictureUrl: "Boinya.webp",
         },
         {
@@ -73,6 +86,7 @@ module.exports = {
           author: "Фёдор Достоевский",
           pages: 672,
           rating: 5.0,
+          numberOfRating: 1,
           pictureUrl: "crime.webp",
         },
         {
@@ -81,6 +95,7 @@ module.exports = {
           author: "Теодор Драйзер",
           pages: 736,
           rating: 4.0,
+          numberOfRating: 1,
           pictureUrl: "Genii.webp",
         },
         {
@@ -89,6 +104,7 @@ module.exports = {
           author: "Джейн Остен",
           pages: 416,
           rating: 5.0,
+          numberOfRating: 1,
           pictureUrl: "Gordost.webp",
         },
         {
@@ -97,6 +113,7 @@ module.exports = {
           author: "Фрэнсис Скотт Фицджеральд",
           pages: 256,
           rating: 4.8,
+          numberOfRating: 1,
           pictureUrl: "Great_Gatsby.webp",
         },
         {
@@ -105,6 +122,7 @@ module.exports = {
           author: "Джон Стейнбек",
           pages: 256,
           rating: 4.6,
+          numberOfRating: 1,
           pictureUrl: "O_myshax.webp",
         },
         {
@@ -113,6 +131,7 @@ module.exports = {
           author: "Эмили Бронте",
           pages: 384,
           rating: 5.0,
+          numberOfRating: 1,
           pictureUrl: "Pereval.webp",
         },
         {
@@ -121,6 +140,7 @@ module.exports = {
           author: "Уильям Шекспир",
           pages: 192,
           rating: 4.5,
+          numberOfRating: 1,
           pictureUrl: "Romeo.webp",
         },
         {
@@ -129,6 +149,7 @@ module.exports = {
           author: "Джордж Оруэлл",
           pages: 160,
           rating: 4.2,
+          numberOfRating: 1,
           pictureUrl: "Skotny_dvor.webp",
         },
         {
@@ -137,6 +158,7 @@ module.exports = {
           author: "Харпер Ли",
           pages: 416,
           rating: 3.9,
+          numberOfRating: 1,
           pictureUrl: "Ubit_peresmeshnika.webp",
         },
       ],
