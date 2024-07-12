@@ -10,8 +10,10 @@ export default function Navbar(): JSX.Element {
   const { user } = useAppSelector((state) => state.authSlice);
 
   const logoutHandler = () => {
+    console.log("logged out");
     dispatch(logoutUser());
-  };
+    localStorage.removeItem("user") 
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -28,7 +30,7 @@ export default function Navbar(): JSX.Element {
         {user?.username ? (
           <>
             <Link to="/profile">{user.username}</Link>
-            <Link to="/signin" onClick={logoutHandler}>
+            <Link to="/signup" onClick={logoutHandler}>
               Выйти
             </Link>
           </>

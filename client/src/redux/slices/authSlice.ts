@@ -19,6 +19,7 @@ const authSlice: AuthSlice = createSlice({
       (state: Draft<AuthState>, action: UserAction): void => {
         state.user = action.payload;
         state.loading = false;
+        localStorage.setItem("user", JSON.stringify(state.user));
       }
     );
     builder.addCase(
