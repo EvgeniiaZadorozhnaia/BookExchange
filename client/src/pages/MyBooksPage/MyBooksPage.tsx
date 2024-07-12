@@ -7,7 +7,7 @@ import CreateBookForm from "../../components/CreateBookForm/CreateBookForm";
 import { InputsBookCreationState } from "../../components/initState";
 import OneCardForMyBooks from "../../components/OneCardForMyBooks/OneCardForMyBooks";
 import { IBook } from "../../types/stateTypes";
-import FavoritesPage from "../FavoritesPage/FavoritesPage";
+
 
 
 function MyBooksPage(): JSX.Element {
@@ -20,6 +20,8 @@ function MyBooksPage(): JSX.Element {
   const [editMode, setEditMode] = useState(false);
   const [currentBookId, setCurrentBookId] = useState(null);
   const [currentStartIndex, setCurrentStartIndex] = useState(0); 
+  
+  
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
@@ -54,7 +56,6 @@ function MyBooksPage(): JSX.Element {
     onClose();
   }
 
-  
   function handleEditClick(book: IBook): void {
     setInputs(book);
     setCurrentBookId(book.id);
@@ -62,7 +63,6 @@ function MyBooksPage(): JSX.Element {
     onOpen();
   }
 
-  
   function handleModalClose(): void {
     onClose();
     setEditMode(false);
@@ -78,7 +78,6 @@ function MyBooksPage(): JSX.Element {
     setCurrentStartIndex((prev) => Math.min(prev + 1, books.length - 4));
   }
 
-  
   function handleDeleteBook(bookId: number): void {
     dispatch(deleteBook(bookId)).then(() => {
   
@@ -129,13 +128,6 @@ function MyBooksPage(): JSX.Element {
         inputs={inputs}
         setInputs={setInputs}
       />
-      {/* <FavoritesPage
-      currentStartIndex={currentStartIndex}
-      setCurrentStartIndex={setCurrentStartIndex}
-      slideLeft={slideLeft}
-      slideRight={slideRight}
-      /> */}
-
       
     </div>
   );

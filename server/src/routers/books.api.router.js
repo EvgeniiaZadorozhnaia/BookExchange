@@ -93,7 +93,8 @@ router
 
   .post("/:ownerId", verifyAccessToken, async (req, res) => {
     const { ownerId } = req.params;
-    const { title, author, pages, pictureUrl } = req.body;
+    const { title, author, pages } = req.body;
+    const { pictureUrl } = req.file;
 
     try {
       const newBook = await Book.create({

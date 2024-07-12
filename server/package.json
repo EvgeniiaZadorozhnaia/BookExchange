@@ -22,6 +22,8 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.5",
     "pg-hstore": "^2.3.4",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
