@@ -17,10 +17,24 @@ import { refreshToken } from "./redux/thunkActions";
 function App() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.authSlice);
+  const [loading, setLoading] = useState(true)
+  const [localUser, setLocalUser] = useState({})
+  
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser){
+      setLoading(false)
+      setLocalUser(JSON.parse(storedUser))
+    }
+  }, [user]);
+  console.log('user', user);
   
   useEffect(() => {
     dispatch(refreshToken())
   }, []);
+
+  console.log("localUser", localUser);
+  
 
   const router = createBrowserRouter([
     {
@@ -29,7 +43,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: user?.id !== 0 ? (
+          element: localUser.id ? (
               <HomePage />     
           )  : (
             <Navigate to="/signup" />
@@ -37,7 +51,7 @@ function App() {
         },
         {
           path: "/favorites",
-          element: user?.id !== 0 ? (
+          element: localUser.id ? (
               <FavoritesPage />     
           )  : (
             <Navigate to="/signup" />
@@ -45,7 +59,7 @@ function App() {
         },
         {
           path: "/mybooks",
-          element: user?.id !== 0 ? (
+          element: localUser.id ? (
               <MyBooksPage />     
           )  : (
             <Navigate to="/signup" />
@@ -53,7 +67,7 @@ function App() {
         },
         {
           path: "/books/oneBook/:bookId",
-          element: user?.id !== 0 ? (
+          element: localUser.id ? (
               <OneBookPage />     
           )  : (
             <Navigate to="/signup" />
@@ -69,7 +83,7 @@ function App() {
         },
         {
           path: "/profile",
-          element: user?.id !== 0 ? (
+          element: localUser.id ? (
               <Profile />     
           )  : (
             <Navigate to="/signup" />
