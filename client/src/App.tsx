@@ -4,16 +4,23 @@ import Root from "./Root";
 import SigninPage from "./pages/SigninPage/SigninPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
 import Profile from "./pages/profile/Profile"; 
-import { useAppSelector } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import HomePage from "./pages/HomePage/HomePage";
 import MyBooksPage from "./pages/MyBooksPage/MyBooksPage";
 import OneBookPage from "./pages/OneBookPage/OneBookPage";
 import BookOwnerPage from "./pages/BookOwnerPage/BookOwnerPage";
 import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
+import { useEffect, useState } from "react";
+import { refreshToken } from "./redux/thunkActions";
 
 function App() {
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.authSlice);
+  
+  useEffect(() => {
+    dispatch(refreshToken())
+  }, []);
 
   const router = createBrowserRouter([
     {
