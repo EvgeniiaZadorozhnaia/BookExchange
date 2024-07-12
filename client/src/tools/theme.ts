@@ -8,9 +8,10 @@ const theme = extendTheme({
         color: '#f8f9fb',   
       },
       a: {
-        color: '#f8f9fb',
+        color: '#b9b5e1',
         _hover: {
           textDecoration: 'underline',
+          color: '#b9b5e1',
         },
       },
       h1: {

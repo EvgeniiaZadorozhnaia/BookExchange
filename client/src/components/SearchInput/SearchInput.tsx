@@ -1,4 +1,4 @@
-import { FormControl, Select } from "@chakra-ui/react";
+import { Button, Flex, FormControl, Input, Select } from "@chakra-ui/react";
 import { useEffect } from "react";
 import axiosInstance from "../../axiosInstance";
 import { AxiosResponse } from "axios";
@@ -38,23 +38,34 @@ function SearchInput({
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="chakra-form">
-        <input
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Введите текст для поиска"
-          className="chakra-input"
-        />
-        <FormControl>
-          <Select placeholder="Выберите город" onChange={handleCityChange}>
-            {options.length > 0 &&
-              options.map((option) => <option key={option}>{option}</option>)}
-          </Select>
-        </FormControl>
-        <button type="submit" className="chakra-button">
-          Искать
-        </button>
+      <form onSubmit={handleSubmit}>
+        <Flex align="center">
+          <Input
+            type="text"
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Ключевые слова"
+            flexGrow={1}
+            mr={2}
+          />
+          <FormControl>
+            <Select placeholder="Выберите город" onChange={handleCityChange}>
+              {options.length > 0 &&
+                options.map((option) => <option key={option}>{option}</option>)}
+            </Select>
+          </FormControl>
+          <Button
+            type="submit"
+            ml={2}
+            minWidth="100px"
+            variant="outline"
+            colorScheme="purple"
+            opacity="0.8"
+            _hover={{ bg: "purple.100" }}
+          >
+            Искать
+          </Button>
+        </Flex>
       </form>
     </>
   );

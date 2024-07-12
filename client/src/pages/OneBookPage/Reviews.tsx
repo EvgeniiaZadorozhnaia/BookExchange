@@ -3,10 +3,12 @@ import {
   AlertIcon,
   Avatar,
   Badge,
+  Button,
   CloseButton,
   Icon,
   IconButton,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import axiosInstance from "../../axiosInstance";
@@ -48,7 +50,7 @@ function Reviews({ book, reviews, setReviews }) {
       );
       const newReview = response.data;
 
-      console.log(newReview)
+      console.log(newReview);
       setReviews((prevReviews) => [...prevReviews, newReview]);
       setReviewContent("");
       setShowSuccessAlert(true);
@@ -111,66 +113,73 @@ function Reviews({ book, reviews, setReviews }) {
         padding: "10px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+        marginTop: "20px",
+        display: "flex",
+        flexDirection: "column",
+        maxHeight: "522px",
+        overflow: "hidden",
       }}
     >
-      <h4 style={{ marginBottom: "15px" }}>Отзывы</h4>
-      {reviews?.length > 0 ? (
-        reviews?.map((review) => (
-          <div
-            key={review.id}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "20px",
-              padding: "10px",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              backgroundColor: "#f7f7f7",
-            }}
-          >
-            <Avatar src="https://bit.ly/sage-adebayo" />
-            <div style={{ marginLeft: "15px", flexGrow: 1 }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div>
-                  <Text fontWeight="bold">
-                    {review.User?.username}
-                    <Badge ml="1" colorScheme="green">
-                      {formatDate(review.createdAt)}
-                    </Badge>
-                  </Text>
-                  <Text fontSize="sm">{review.content}</Text>
-                </div>
-                <div style={{ marginLeft: "15px" }}>
-                  <IconButton
-                    aria-label="Лайк"
-                    icon={<Icon as={AiOutlineLike} />}
-                    onClick={() => handleLike(review.id)}
-                  />
-                  {review.likes !== undefined && (
-                    <Badge colorScheme="green">{review.likes}</Badge>
-                  )}
-                  <IconButton
-                    aria-label="Дизлайк"
-                    icon={<Icon as={AiOutlineDislike} />}
-                    onClick={() => handleDislike(review.id)}
-                  />
-                  {review.dislikes !== undefined && (
-                    <Badge colorScheme="red">{review.dislikes}</Badge>
-                  )}
+      <div style={{ overflowY: "auto" }}>
+        <h4 style={{ marginBottom: "15px" }}>Отзывы</h4>
+        {reviews?.length > 0 ? (
+          reviews.map((review) => (
+            <div
+              key={review.id}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "20px",
+                padding: "10px",
+                borderRadius: "8px",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                backgroundColor: "#f7f7f7",
+              }}
+            >
+              <Avatar src="https://bit.ly/sage-adebayo" />
+              <div style={{ marginLeft: "15px", flexGrow: 1 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    <Text fontWeight="bold">
+                      {review.User?.username}
+                      <Badge ml="1" colorScheme="green">
+                        {formatDate(review.createdAt)}
+                      </Badge>
+                    </Text>
+                    <Text fontSize="sm">{review.content}</Text>
+                  </div>
+                  <div style={{ marginLeft: "15px" }}>
+                    <IconButton
+                      aria-label="Лайк"
+                      icon={<Icon as={AiOutlineLike} />}
+                      onClick={() => handleLike(review.id)}
+                    />
+                    {review.likes !== undefined && (
+                      <Badge colorScheme="green">{review.likes}</Badge>
+                    )}
+                    <IconButton
+                      aria-label="Дизлайк"
+                      icon={<Icon as={AiOutlineDislike} />}
+                      onClick={() => handleDislike(review.id)}
+                    />
+                    {review.dislikes !== undefined && (
+                      <Badge colorScheme="red">{review.dislikes}</Badge>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <h1>Отзывов на данную книгу пока нет</h1>
-      )}
+          ))
+        ) : (
+          <h6>Отзывов на данную книгу пока нет</h6>
+        )}
+      </div>
 
       {showSuccessAlert && (
         <Alert status="success" mb={4}>
@@ -187,43 +196,43 @@ function Reviews({ book, reviews, setReviews }) {
 
       <form
         style={{
-          marginTop: "20px",
           border: "1px solid black",
           padding: "10px",
           borderRadius: "8px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+          boxShadow: "0 2px 4px #b9b5e1",
           backgroundColor: "#f7f7f7",
         }}
         onSubmit={handleSubmitReview}
       >
-        <h4 style={{ marginBottom: "10px" }}>Оставить отзыв</h4>
-        <textarea
+        <h4 style={{ marginBottom: "5px" }}>Оставить отзыв</h4>
+        <Textarea
           rows="3"
           style={{
             width: "100%",
             padding: "8px",
             marginBottom: "10px",
             borderRadius: "4px",
-            border: "1px solid #ccc",
+            borderColor: "#b9b5e1",
+            borderWidth: "1px",
+            outline: "none", // Убираем стандартную подсветку
+            boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)", // Фиолетовая подсветка при фокусе
           }}
           placeholder="Введите ваш отзыв здесь..."
           onChange={(e) => setReviewContent(e.target.value)}
           value={reviewContent}
           required
         />
-        <button
+        <Button
           type="submit"
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#4CAF50",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
+          ml={2}
+          minWidth="100px"
+          variant="outline"
+          colorScheme="purple"
+          opacity="0.8"
+          _hover={{ bg: "purple.100" }}
         >
           Отправить
-        </button>
+        </Button>
       </form>
     </div>
   );
