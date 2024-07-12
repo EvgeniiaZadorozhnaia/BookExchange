@@ -4,7 +4,7 @@ const multer = require("../middlewares/multer");
 const { Book, User, Review } = require("../../db/models");
 
 router
-  .get("/", async (req, res) => {
+  .get("/", verifyAccessToken, async (req, res) => {
     try {
       const booksByOneOwner = await Book.findAll({
         include: [
