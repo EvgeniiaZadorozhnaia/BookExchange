@@ -167,6 +167,32 @@ router
         .status(500)
         .json({ message: "Произошла ошибка при получении владельца книги" });
     }
+  })
+
+  .put("/rate/:bookId", async (req, res) => {
+    const { bookId } = req.params;
+    const { rating } = req.body;
+
+    try {
+      const [numberOfUpdatedRows] = await Book.update(
+        {
+          rating
+        },
+        { where: { id: bookId } }
+      );
+
+      if (numberOfUpdatedRows === 0) {
+        return res.status(404).json({ message: "Книга не найдена" });
+      }
+
+      const updatedBook = await Book.findByPk(bookId);
+      res.json(updatedBook);
+    } catch (error) {
+      console.log(error.message);
+      res
+        .status(500)
+        .json({ message: "Произошла ошибка при обновлении рейтинга" });
+    }
   });
 
 module.exports = router;

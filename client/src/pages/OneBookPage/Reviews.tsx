@@ -21,10 +21,12 @@ import {
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
-function Reviews({ book, reviews, setReviews }) {
+function Reviews({ book, reviews, setReviews, setBook }) {
   const { user } = useAppSelector((state) => state.authSlice);
   const [reviewContent, setReviewContent] = useState("");
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [currentRating, setCurrentRating] = useState<number | undefined>();
+  const [rateBook, setRateBook] = useState<number>(0);
 
   useEffect(() => {
     let timeout;
@@ -58,9 +60,6 @@ function Reviews({ book, reviews, setReviews }) {
       );
       const newReview = response.data;
 
-      console.log('rev', reviews);
-      console.log('newrev', newReview);
-
       setReviews((prev) => [...prev, newReview]);
       setReviewContent("");
       setShowSuccessAlert(true);
@@ -68,6 +67,28 @@ function Reviews({ book, reviews, setReviews }) {
       console.error("Ошибка при создании отзыва:", error);
     }
   }
+
+  const rateBookHandler = async (currentRating: number) => {
+    try {
+      const currentRate = book?.rating + currentRating;
+      let rating = currentRate / 2;
+      rating = parseFloat(rating.toFixed(1));
+
+      setCurrentRating(rating);
+
+      const { data } = await axiosInstance.put(
+        `${VITE_BASE_URL}${VITE_API}/books/rate/${book?.id}`,
+        { rating }
+      );
+
+      setBook((prev) => ({
+        ...prev,
+        rating: data.rating,
+      }));
+    } catch (error) {
+      console.error("Ошибка при обновлении рейтинга:", error);
+    }
+  };
 
   async function handleLike(id) {
     try {
@@ -233,67 +254,120 @@ function Reviews({ book, reviews, setReviews }) {
 
       <form
         style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
           border: "1px solid black",
           padding: "10px",
           borderRadius: "8px",
           boxShadow: "0 2px 4px #b9b5e1",
           backgroundColor: "#f7f7f7",
+          marginTop: "10px",
         }}
         onSubmit={handleSubmitReview}
       >
-        <h4 style={{ marginBottom: "5px" }}>Оставить отзыв</h4>
-        {book?.Owner?.id !== user?.id ? (
-          <Textarea
-            rows="3"
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginBottom: "10px",
-              borderRadius: "4px",
-              borderColor: "#b9b5e1",
-              borderWidth: "1px",
-              outline: "none",
-              boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
-              cursor: "pointer",
-            }}
-            placeholder="Введите ваш отзыв здесь..."
-            onChange={(e) => setReviewContent(e.target.value)}
-            value={reviewContent}
-            required
-          />
-        ) : (
-          <Textarea
-            rows="3"
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginBottom: "10px",
-              borderRadius: "4px",
-              borderColor: "#b9b5e1",
-              borderWidth: "1px",
-              outline: "none",
-              boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
-              cursor: "not-allowed",
-            }}
-            placeholder="Введите ваш отзыв здесь..."
-            onChange={(e) => setReviewContent(e.target.value)}
-            value={reviewContent}
-            required
-            disabled
-          />
-        )}
-        <Button
-          type="submit"
-          ml={2}
-          minWidth="100px"
-          variant="outline"
-          colorScheme="purple"
-          opacity="0.8"
-          _hover={{ bg: "purple.100" }}
-          disabled={reviewContent.trim() === ""}
-        >
-          Отправить
-        </Button>
+        <div style={{ width: "100%", marginBottom: "10px" }}>
+          <h4 style={{ marginBottom: "5px" }}>Оставить отзыв</h4>
+          {book?.Owner?.id !== user?.id ? (
+            <Textarea
+              rows="3"
+              style={{
+                width: "100%",
+                padding: "8px",
+                marginBottom: "10px",
+                borderRadius: "4px",
+                borderColor: "#b9b5e1",
+                borderWidth: "1px",
+                outline: "none",
+                boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
+                cursor: "pointer",
+              }}
+              placeholder="Введите ваш отзыв здесь..."
+              onChange={(e) => setReviewContent(e.target.value)}
+              value={reviewContent}
+              required
+            />
+          ) : (
+            <Textarea
+              rows="3"
+              style={{
+                width: "100%",
+                padding: "8px",
+                marginBottom: "10px",
+                borderRadius: "4px",
+                borderColor: "#b9b5e1",
+                borderWidth: "1px",
+                outline: "none",
+                boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
+                cursor: "not-allowed",
+              }}
+              placeholder="Введите ваш отзыв здесь..."
+              onChange={(e) => setReviewContent(e.target.value)}
+              value={reviewContent}
+              required
+              disabled
+            />
+          )}
+          <Button
+            type="submit"
+            minWidth="100px"
+            variant="outline"
+            colorScheme="purple"
+            opacity="0.8"
+            _hover={{ bg: "purple.100" }}
+            disabled={reviewContent.trim() === ""}
+          >
+            Отправить
+          </Button>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {rateBook ? (
+            <>
+              <Text as="span" fontSize="xl">
+                Ваша оценка {rateBook}
+              </Text>
+              <Text
+                as="span"
+                fontSize="xl"
+                _hover={{ transform: "scale(1.4)", color: "gold" }}
+              >
+                ⭐
+              </Text>
+            </>
+          ) : (
+            <>
+              <Text
+                bg="whitesmoke"
+                borderRadius="30px"
+                padding="5px"
+                as="span"
+                fontSize="xl"
+              >
+                Оцените книгу
+              </Text>
+              {[1, 2, 3, 4, 5].map((rating) => (
+                <Text
+                  key={rating}
+                  onClick={() => {
+                    setRateBook(rating);
+                    rateBookHandler(rating);
+                  }}
+                  as="span"
+                  fontSize="xl"
+                  _hover={{
+                    transform: "scale(1.2)",
+                    color: "gold",
+                    cursor: "pointer",
+                  }}
+                  ml={1}
+                >
+                  ⭐
+                </Text>
+              ))}
+            </>
+          )}
+        </div>
       </form>
     </div>
   );

@@ -158,7 +158,7 @@ function OneBookPage() {
             </div>
 
             <div className={styles.reviews}>
-              <Reviews book={book} reviews={reviews} setReviews={setReviews} />
+              <Reviews book={book} reviews={reviews} setReviews={setReviews} setBook={setBook} />
             </div>
           </div>
         </div>
