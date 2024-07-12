@@ -62,10 +62,9 @@ export default function AuthForm({
   
     if(type === "signin") {
       if ( 
-        user.password === inputs.password ||
-        user.email === inputs.email   
-      )
-      
+        user?.password === inputs.password ||
+        user?.email === inputs.email   
+      )  
       {
         setTimeout(() => {
           showErrorModal("Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)");
