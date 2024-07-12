@@ -28,11 +28,13 @@ function OneBookPage() {
   const { bookId } = useParams();
   const [isFavorite, setIsFavorite] = useState(false);
   const [reviews, setReviews] = useState();
-  const { books } = useAppSelector((state) => state.booksSlice);
+  const [description, setDescription] = useState("");
+
+  const back = useNavigate();
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
-    dispatch(addToFavorite({bookId, userId: user.id}));
+    dispatch(addToFavorite({ bookId, userId: user.id }));
   };
 
   useEffect(() => {
@@ -52,51 +54,129 @@ function OneBookPage() {
 
   const navigate = useNavigate();
 
+  async function searchBookByTitle(title) {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
+      title
+    )}&langRestrict=ru`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.items && data.items.length > 0) {
+        const firstBook = data.items[0].volumeInfo;
+        const bookTitle = firstBook.title;
+        const bookAuthors = firstBook.authors
+          ? firstBook.authors.join(", ")
+          : "Автор не указан";
+        const bookDescription = firstBook.description || "Описание отсутствует";
+        setDescription(bookDescription);
+      }
+    } catch (error) {
+      console.error("Произошла ошибка при выполнении запроса:", error);
+    }
+  }
+
+  const bookTitle = book.title;
+  searchBookByTitle(bookTitle);
+
   return (
     <>
       {book ? (
         <div className={styles.container}>
-          <Card maxW="sm" m="20px">
-            <CardBody>
-              <Image
-                h="450px"
-                src={`/${book.pictureUrl}`}
-                alt="Picture"
-                borderRadius="lg"
-              />
-              <Stack mt="6" spacing="3">
-                <Heading size="md">
-                  <div>Владелец: {book.Owner?.username}</div>
-                  <Button
-                    onClick={() => navigate(`/Book/${book.id}/owner`)}
-                    colorScheme="teal"
-                    mr={2}
-                    mb={2}
-                    _hover={{ bg: "teal.700" }}
-                  >
-                    Предложить обмен
-                  </Button>
-                  <Button
-                    onClick={toggleFavorite}
-                    colorScheme={isFavorite ? "red" : "gray"}
-                    variant="ghost"
-                    aria-label={
-                      isFavorite ? "Remove from favorites" : "Add to favorites"
-                    }
-                    _hover={{ color: isFavorite ? "red.500" : "gray.500" }}
-                  >
-                    {isFavorite ? (
-                      <MdFavorite size={24} />
+          <div className={styles.card} style={{ display: "flex" }}>
+            <Card
+              maxW="xl"
+              m="20px"
+              borderWidth="1px"
+              borderRadius="lg"
+              boxShadow="md"
+              overflow="hidden"
+            >
+              <CardBody textAlign="center">
+                <Image
+                  h="550px"
+                  src={`/${book.pictureUrl}`}
+                  alt="Picture"
+                  borderRadius="lg"
+                />
+                <Stack mt="6" spacing="3">
+                  <Heading size="md" textAlign="center">
+                    {book?.Owner?.id !== user.id ? (
+                      <div>Владелец: {book.Owner?.username}</div>
                     ) : (
-                      <MdFavoriteBorder size={24} />
+                      <div>Моя книга</div>
                     )}
-                  </Button>
-                </Heading>
-              </Stack>
-            </CardBody>
-          </Card>
-          <CardInfo book={book} />
-          <Reviews book={book} reviews={reviews} setReviews={setReviews} />
+                    <p></p>
+                    {book?.Owner?.id !== user.id ? (
+                      <>
+                        {" "}
+                        <Button
+                          onClick={() => navigate(`/Book/${book.id}/owner`)}
+                          mr={2}
+                          mb={2}
+                          variant="outline"
+                          colorScheme="purple"
+                          opacity="0.8"
+                          _hover={{ bg: "purple.100" }}
+                        >
+                          Предложить обмен
+                        </Button>
+                        <Button
+                          onClick={toggleFavorite}
+                          colorScheme={isFavorite ? "red" : "gray"}
+                          variant="ghost"
+                          aria-label={
+                            isFavorite
+                              ? "Remove from favorites"
+                              : "Add to favorites"
+                          }
+                          _hover={{
+                            color: isFavorite ? "red.500" : "gray.500",
+                          }}
+                        >
+                          {isFavorite ? (
+                            <MdFavorite size={24} />
+                          ) : (
+                            <MdFavoriteBorder size={24} />
+                          )}
+                        </Button>
+                      </>
+                    ) : null}
+                  </Heading>
+                </Stack>
+              </CardBody>
+            </Card>
+          </div>
+          <div className={styles.container2}>
+            <div className={styles.cardInfo}>
+              <CardInfo book={book} description={description} />
+            </div>
+
+            <div className={styles.reviews}>
+              <Reviews
+                book={book}
+                reviews={reviews}
+                setReviews={setReviews}
+                setBook={setBook}
+              />
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <p></p>
+              <Button
+                onClick={() => back(-1)}
+                mr={2}
+                mb={2}
+                variant="outline"
+                colorScheme="purple"
+                opacity="0.8"
+                _hover={{ bg: "purple.100" }}
+                w="100px"
+              >
+                Назад
+              </Button>
+            </div>
+          </div>
         </div>
       ) : (
         <CircularProgress isIndeterminate color="green.300" />

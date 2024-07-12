@@ -18,7 +18,6 @@ function HomePage(): JSX.Element {
   const [filteredBooks, setFilteredBooks] = useState<IBooks>([]);
   const [displayedBooks, setDisplayedBooks] = useState<IBooks>([]);
 
-
   useEffect(() => {
     dispatch(getBooks());
   }, []);
@@ -73,10 +72,10 @@ function HomePage(): JSX.Element {
         <Button
           key={i}
           onClick={() => handlePageChange(i)}
-          colorScheme={i === currentPage ? "teal" : "gray"}
+          colorScheme={i === currentPage ? "purple" : "gray"}
           mr={2}
           mb={2}
-          _hover={{ bg: "teal.700" }}
+          _hover={{ bg: "purple.100" }}
         >
           {i}
         </Button>
@@ -85,11 +84,12 @@ function HomePage(): JSX.Element {
     return buttons;
   };
 
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     filterBooks();
     setInput("");
-    setSelectedCity("")
+    setSelectedCity("");
   };
 
   return (

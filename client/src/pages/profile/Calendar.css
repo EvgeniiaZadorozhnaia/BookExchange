@@ -1,10 +1,30 @@
-/* Уменьшение размеров календаря */
-.fc {
-  transform: scale(0.6);
-  margin-top: -90px;
+.demo-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Уменьшение высоты заголовка */
-.fc-header-toolbar {
-  font-size: 2rem;
+.demo-app-main {
+  width: 80%;
+  max-width: 800px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.demo-app-sidebar {
+  width: 80%;
+  max-width: 800px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.demo-app-sidebar-section {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  width: 100%;
+}
+
+.fc {
+  width: 100%;
+  height: auto;
 }

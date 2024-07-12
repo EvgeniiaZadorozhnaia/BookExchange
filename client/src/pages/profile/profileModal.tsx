@@ -13,6 +13,7 @@ import {
 import { useAppSelector } from "../../redux/hooks";
 import axiosInstance from "../../axiosInstance";
 import { useEffect, useState } from "react";
+import { ProfileModalProps } from "../../types/propsTypes";
 
 const { VITE_BASE_URL, VITE_API } = import.meta.env;
 
@@ -21,7 +22,7 @@ export default function ProfileModal({
   onClose,
   exchangeHistoryIncoming,
   exchangeHistoryOutcoming,
-}): JSX.Element {
+}: ProfileModalProps): JSX.Element {
   const { user } = useAppSelector((state) => state.authSlice);
   const [submissionStatus, setSubmissionStatus] = useState<{
     [key: string]: string;
@@ -33,13 +34,13 @@ export default function ProfileModal({
     }
   }, [isOpen]);
 
-  const submitTheExchangeHandler = async (exchangeId, submitType) => {
+  const submitTheExchangeHandler = async (exchangeId: number, submitType: string) => {
     try {
       if (submitType === "accept") {
         const { data } = await axiosInstance.put(
           `${VITE_BASE_URL}${VITE_API}/exchanges/${exchangeId}`,
           { status: "processing" }
-        );        
+        );
         await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/messages`, {
           text: `Пользователь ${user.username} принял Ваш запрос`,
           authorId: user.id,

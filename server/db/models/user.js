@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.hasMany(models.Message, { foreignKey: "authorId" });
       this.hasMany(models.Message, { foreignKey: "toUser" });
+      this.belongsToMany(models.Book, {
+        through: models.RatingBook,
+        foreignKey: "userId", as: "Book",
+      });
     }
   }
   User.init(

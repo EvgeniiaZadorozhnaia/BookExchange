@@ -1,23 +1,36 @@
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../../axiosInstance";
+import { useAppSelector } from "../../redux/hooks";
 import {
   Alert,
   AlertIcon,
   Avatar,
   Badge,
+  Button,
   CloseButton,
   Icon,
   IconButton,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
-import axiosInstance from "../../axiosInstance";
-import { useEffect, useState } from "react";
-import { useAppSelector } from "../../redux/hooks";
-const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
+import {
+  AiOutlineLike,
+  AiOutlineDislike,
+  AiOutlineDelete,
+} from "react-icons/ai";
+import { StarIcon } from "@chakra-ui/icons";
 
-function Reviews({ book, reviews, setReviews }) {
+const { VITE_API, VITE_BASE_URL } = import.meta.env;
+
+function Reviews({ book, reviews, setReviews, setBook }) {
   const { user } = useAppSelector((state) => state.authSlice);
   const [reviewContent, setReviewContent] = useState("");
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showLikeAlert, setshowLikeAlert] = useState(false);
+  const [currentRating, setCurrentRating] = useState<number | undefined>();
+  const [rateBook, setRateBook] = useState<number>(0);
+  const [likes, setLikes] = useState([]);
+  const [dislikes, setDislikes] = useState([]);
 
   useEffect(() => {
     let timeout;
@@ -31,6 +44,63 @@ function Reviews({ book, reviews, setReviews }) {
     };
   }, [showSuccessAlert]);
 
+  useEffect(() => {
+    let timeout;
+    if (showLikeAlert) {
+      timeout = setTimeout(() => {
+        setshowLikeAlert(false);
+      }, 1500);
+    }
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [showLikeAlert]);
+
+  useEffect(() => {
+    async function fetchUserRating() {
+      try {
+        const { data } = await axiosInstance.get(
+          `${VITE_BASE_URL}${VITE_API}/ratingBooks/${user.id}/${book.id}`
+        );
+
+        if (data.mark !== 0) {
+          setRateBook(data.mark);
+        }
+      } catch (error) {
+        console.error("Ошибка при получении оценки пользователя:", error);
+      }
+    }
+    fetchUserRating();
+  }, [book, user.id]);
+
+  useEffect(() => {
+    async function getUserLikes() {
+      try {
+        const { data } = await axiosInstance.get(
+          `${VITE_BASE_URL}${VITE_API}/likes/${user.id}`
+        );
+        setLikes(data);
+      } catch (error) {
+        console.error("Ошибка при получении лайков пользователя:", error);
+      }
+    }
+    getUserLikes();
+  }, []);
+
+  useEffect(() => {
+    async function getUserDislikes() {
+      try {
+        const { data } = await axiosInstance.get(
+          `${VITE_BASE_URL}${VITE_API}/dislikes/${user.id}`
+        );
+        setDislikes(data);
+      } catch (error) {
+        console.error("Ошибка при получении лайков пользователя:", error);
+      }
+    }
+    getUserDislikes();
+  }, []);
+
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString("ru-RU", options);
@@ -38,7 +108,10 @@ function Reviews({ book, reviews, setReviews }) {
 
   async function handleSubmitReview(event) {
     event.preventDefault();
-
+    if (reviewContent.trim() === "") {
+      alert("Отзыв не может быть пустым!");
+      return;
+    }
     try {
       const response = await axiosInstance.post(
         `${VITE_BASE_URL}${VITE_API}/reviews/${user.id}/${book.id}`,
@@ -48,8 +121,7 @@ function Reviews({ book, reviews, setReviews }) {
       );
       const newReview = response.data;
 
-      console.log(newReview)
-      setReviews((prevReviews) => [...prevReviews, newReview]);
+      setReviews((prev) => [...prev, newReview]);
       setReviewContent("");
       setShowSuccessAlert(true);
     } catch (error) {
@@ -59,21 +131,30 @@ function Reviews({ book, reviews, setReviews }) {
 
   async function handleLike(id) {
     try {
-      const like = { userId: user.id, reviewId: id };
-      const { data } = await axiosInstance.post(
-        `${VITE_BASE_URL}${VITE_API}/likes`,
-        like
-      );
-      if (data) {
-        await axiosInstance.put(
-          `${VITE_BASE_URL}${VITE_API}/reviews/like/${id}`
-        );
-        const updatedReviews = reviews.map((review) => {
-          if (review.id === id)
-            return { ...review, likes: (review.likes || 0) + 1 };
-          return review;
-        });
-        setReviews(updatedReviews);
+      if (!likes.includes(id)) {
+        const review = reviews.find((review) => review.id === id);
+        if (review && review.User?.id === user?.id) {
+          setshowLikeAlert(true);
+        } else {
+          const like = { userId: user.id, reviewId: id };
+          const { data } = await axiosInstance.post(
+            `${VITE_BASE_URL}${VITE_API}/likes`,
+            like
+          );
+          if (data) {
+            await axiosInstance.put(
+              `${VITE_BASE_URL}${VITE_API}/reviews/like/${id}`
+            );
+            setLikes((prev) => [...prev, id]);
+            setReviews((prevReviews) =>
+              prevReviews.map((review) =>
+                review.id === id
+                  ? { ...review, likes: (review.likes || 0) + 1 }
+                  : review
+              )
+            );
+          }
+        }
       }
     } catch (error) {
       console.log(error);
@@ -82,25 +163,78 @@ function Reviews({ book, reviews, setReviews }) {
 
   async function handleDislike(id) {
     try {
-      const dislike = { userId: user.id, reviewId: id };
-      const { data } = await axiosInstance.post(
-        `${VITE_BASE_URL}${VITE_API}/dislikes`,
-        dislike
-      );
-      if (data) {
-        await axiosInstance.put(
-          `${VITE_BASE_URL}${VITE_API}/reviews/dislike/${id}`
-        );
-        const updatedReviews = reviews.map((review) => {
-          if (review.id === id) {
-            return { ...review, dislikes: (review.dislikes || 0) + 1 };
+      if (!dislikes.includes(id)) {
+        const review = reviews.find((review) => review.id === id);
+        if (review && review.User?.id === user?.id) {
+          setshowLikeAlert(true);
+        } else {
+          const dislike = { userId: user.id, reviewId: id };
+          const { data } = await axiosInstance.post(
+            `${VITE_BASE_URL}${VITE_API}/dislikes`,
+            dislike
+          );
+          if (data) {
+            await axiosInstance.put(
+              `${VITE_BASE_URL}${VITE_API}/reviews/dislike/${id}`
+            );
+            setDislikes((prev) => [...prev, id]);
+            setReviews((prevReviews) =>
+              prevReviews.map((review) =>
+                review.id === id
+                  ? { ...review, dislikes: (review.dislikes || 0) + 1 }
+                  : review
+              )
+            );
           }
-          return review;
-        });
-        setReviews(updatedReviews);
+        }
       }
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  const rateBookHandler = async (currentRating: number) => {
+    try {
+      const ratingDone = {
+        userId: user.id,
+        bookId: book.id,
+        mark: currentRating,
+      };
+
+      const { data } = await axiosInstance.post(
+        `${VITE_BASE_URL}${VITE_API}/ratingBooks`,
+        ratingDone
+      );
+      if (data) {
+        const currentRate = book?.rating + currentRating;
+        let rating = currentRate / 2;
+        rating = parseFloat(rating.toFixed(1));
+
+        setCurrentRating(rating);
+
+        const { data } = await axiosInstance.put(
+          `${VITE_BASE_URL}${VITE_API}/books/rate/${book?.id}`,
+          { rating }
+        );
+
+        setBook((prev) => ({
+          ...prev,
+          rating: data.rating,
+        }));
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении рейтинга:", error);
+    }
+  };
+
+  async function handleReviewDelete(id) {
+    try {
+      await axiosInstance.delete(`${VITE_BASE_URL}${VITE_API}/reviews/${id}`);
+      setReviews((prevReviews) =>
+        prevReviews.filter((review) => review.id !== id)
+      );
+    } catch (error) {
+      console.error("Ошибка при удалении отзыва:", error);
     }
   }
 
@@ -111,66 +245,106 @@ function Reviews({ book, reviews, setReviews }) {
         padding: "10px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+        marginTop: "20px",
+        display: "flex",
+        flexDirection: "column",
+        maxHeight: "522px",
+        overflow: "hidden",
       }}
     >
-      <h4 style={{ marginBottom: "15px" }}>Отзывы</h4>
-      {reviews?.length > 0 ? (
-        reviews?.map((review) => (
-          <div
-            key={review.id}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "20px",
-              padding: "10px",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              backgroundColor: "#f7f7f7",
-            }}
-          >
-            <Avatar src="https://bit.ly/sage-adebayo" />
-            <div style={{ marginLeft: "15px", flexGrow: 1 }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div>
-                  <Text fontWeight="bold">
-                    {review.User?.username}
-                    <Badge ml="1" colorScheme="green">
-                      {formatDate(review.createdAt)}
-                    </Badge>
-                  </Text>
-                  <Text fontSize="sm">{review.content}</Text>
-                </div>
-                <div style={{ marginLeft: "15px" }}>
-                  <IconButton
-                    aria-label="Лайк"
-                    icon={<Icon as={AiOutlineLike} />}
-                    onClick={() => handleLike(review.id)}
-                  />
-                  {review.likes !== undefined && (
-                    <Badge colorScheme="green">{review.likes}</Badge>
-                  )}
-                  <IconButton
-                    aria-label="Дизлайк"
-                    icon={<Icon as={AiOutlineDislike} />}
-                    onClick={() => handleDislike(review.id)}
-                  />
-                  {review.dislikes !== undefined && (
-                    <Badge colorScheme="red">{review.dislikes}</Badge>
-                  )}
+      <div style={{ overflowY: "auto" }}>
+        <h4 style={{ marginBottom: "15px" }}>Отзывы</h4>
+        {reviews?.length > 0 ? (
+          reviews.map((review) => (
+            <div
+              key={review.id}
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                marginBottom: "20px",
+                padding: "10px",
+                borderRadius: "8px",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                backgroundColor: "#f7f7f7",
+                maxWidth: "100%",
+                wordBreak: "break-word",
+                overflowWrap: "break-word",
+              }}
+            >
+              <Avatar src="https://bit.ly/sage-adebayo" />
+              <div style={{ marginLeft: "15px", flexGrow: 1 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <div style={{ flex: "1 1 auto" }}>
+                    <Text fontWeight="bold">
+                      {review.User?.username}
+                      <Badge ml="1" colorScheme="green">
+                        {formatDate(review.createdAt)}
+                      </Badge>
+                    </Text>
+                    <Text fontSize="sm" style={{ marginTop: "5px" }}>
+                      {review.content}
+                    </Text>
+                  </div>
+                  <div
+                    style={{
+                      marginLeft: "15px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "3px",
+                    }}
+                  >
+                    <IconButton
+                      aria-label="Лайк"
+                      icon={<Icon as={AiOutlineLike} />}
+                      onClick={() => handleLike(review.id)}
+                    />
+                    {review.likes !== undefined && (
+                      <Badge colorScheme="green" ml={1}>
+                        {review.likes}
+                      </Badge>
+                    )}
+                    <IconButton
+                      aria-label="Дизлайк"
+                      icon={<Icon as={AiOutlineDislike} />}
+                      onClick={() => handleDislike(review.id)}
+                    />
+                    {review.dislikes !== undefined && (
+                      <Badge colorScheme="red" ml={1}>
+                        {review.dislikes}
+                      </Badge>
+                    )}
+                    {review.User?.id === user?.id && (
+                      <IconButton
+                        aria-label="Удалить"
+                        icon={<Icon as={AiOutlineDelete} />}
+                        onClick={() => handleReviewDelete(review.id)}
+                        colorScheme="red"
+                        ml={2}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <h1>Отзывов на данную книгу пока нет</h1>
-      )}
+          ))
+        ) : (
+          <h6>Отзывов на данную книгу пока нет</h6>
+        )}
+      </div>
+
+      {showLikeAlert ? (
+        <Alert status="warning">
+          <AlertIcon />
+          Вы не можете оценивать собственные комментарии!
+        </Alert>
+      ) : null}
 
       {showSuccessAlert && (
         <Alert status="success" mb={4}>
@@ -185,46 +359,130 @@ function Reviews({ book, reviews, setReviews }) {
         </Alert>
       )}
 
-      <form
-        style={{
-          marginTop: "20px",
-          border: "1px solid black",
-          padding: "10px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          backgroundColor: "#f7f7f7",
-        }}
-        onSubmit={handleSubmitReview}
-      >
-        <h4 style={{ marginBottom: "10px" }}>Оставить отзыв</h4>
-        <textarea
-          rows="3"
+      {book?.Owner?.id !== user?.id ? (
+        <form
           style={{
-            width: "100%",
-            padding: "8px",
-            marginBottom: "10px",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            border: "1px solid black",
+            padding: "10px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 4px #b9b5e1",
+            backgroundColor: "#f7f7f7",
+            marginTop: "10px",
           }}
-          placeholder="Введите ваш отзыв здесь..."
-          onChange={(e) => setReviewContent(e.target.value)}
-          value={reviewContent}
-          required
-        />
-        <button
-          type="submit"
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#4CAF50",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
+          onSubmit={handleSubmitReview}
         >
-          Отправить
-        </button>
-      </form>
+          <div style={{ width: "100%", marginBottom: "10px" }}>
+            <h4 style={{ marginBottom: "5px" }}>Оставить отзыв</h4>
+            {book?.Owner?.id !== user?.id ? (
+              <Textarea
+                rows="3"
+                style={{
+                  width: "100%",
+                  padding: "8px",
+                  marginBottom: "10px",
+                  borderRadius: "4px",
+                  borderColor: "#b9b5e1",
+                  borderWidth: "1px",
+                  outline: "none",
+                  boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
+                  cursor: "pointer",
+                }}
+                placeholder="Введите ваш отзыв здесь..."
+                onChange={(e) => setReviewContent(e.target.value)}
+                value={reviewContent}
+                required
+              />
+            ) : (
+              <Textarea
+                rows="3"
+                style={{
+                  width: "100%",
+                  padding: "8px",
+                  marginBottom: "10px",
+                  borderRadius: "4px",
+                  borderColor: "#b9b5e1",
+                  borderWidth: "1px",
+                  outline: "none",
+                  boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
+                  cursor: "not-allowed",
+                }}
+                placeholder="Введите ваш отзыв здесь..."
+                onChange={(e) => setReviewContent(e.target.value)}
+                value={reviewContent}
+                required
+                disabled
+              />
+            )}
+            <Button
+              type="submit"
+              minWidth="100px"
+              variant="outline"
+              colorScheme="purple"
+              opacity="0.8"
+              _hover={{ bg: "purple.100" }}
+              disabled={reviewContent.trim() === ""}
+            >
+              Отправить
+            </Button>
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {book?.Owner?.id !== user?.id && (
+              <>
+                {rateBook !== 0 ? (
+                  <>
+                    <Text as="span" fontSize="xl">
+                      Ваша оценка {rateBook}
+                    </Text>
+                    <Text
+                      as="span"
+                      display="inline-flex"
+                      alignItems="center"
+                      fontSize="xl"
+                      transition="transform 0.2s ease, color 0.2s ease"
+                    >
+                      <StarIcon color="yellow.400" />
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Text
+                      bg="whitesmoke"
+                      borderRadius="30px"
+                      padding="5px"
+                      as="span"
+                      fontSize="xl"
+                    >
+                      Оцените книгу
+                    </Text>
+                    {[1, 2, 3, 4, 5].map((rating) => (
+                      <Text
+                        key={rating}
+                        onClick={() => {
+                          rateBookHandler(rating);
+                          setRateBook(() => rating);
+                        }}
+                        as="span"
+                        fontSize="xl"
+                        _hover={{
+                          transform: "scale(1.2)",
+                          color: "gold",
+                          cursor: "pointer",
+                        }}
+                        ml={1}
+                      >
+                        <StarIcon color={"yellow.400"} />
+                      </Text>
+                    ))}
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </form>
+      ) : null}
     </div>
   );
 }

@@ -1,5 +1,16 @@
-.container {
-  width: 100%;
+.container2 {
+  width: 70%;
+  position: absolute;
+  left: 25%;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+}
+
+.card {
+  position: absolute;
+  left: 0%;
+}
+
+.cardInfo {
+  width: 100%;
 }
