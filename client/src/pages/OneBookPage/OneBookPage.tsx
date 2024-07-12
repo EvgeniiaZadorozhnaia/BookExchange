@@ -18,15 +18,21 @@ import CardInfo from "./CardInfo";
 import Reviews from "./Reviews";
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { addToFavorite } from "../../redux/thunkActions";
 
 function OneBookPage() {
+  const dispatch = useAppDispatch();
   const [book, setBook] = useState<IBook>(BookState);
+  const { user } = useAppSelector((state) => state.authSlice);
   const { bookId } = useParams();
   const [isFavorite, setIsFavorite] = useState(false);
   const [reviews, setReviews] = useState();
+  const { books } = useAppSelector((state) => state.booksSlice);
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
+    dispatch(addToFavorite({bookId, userId: user.id}));
   };
 
   useEffect(() => {

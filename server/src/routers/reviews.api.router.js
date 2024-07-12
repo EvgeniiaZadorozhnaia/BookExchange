@@ -47,6 +47,21 @@ router
     } catch (error) {
       console.error("Ошибка при обновлении лайков:", error);
     }
-  });
+  })
+
+  .post("/:userId/:bookId", async (req, res) => {
+    const { userId, bookId } = req.params;
+    const { content } = req.body;
+    try {
+      const newReview = await Review.create({
+        content,
+        userId,
+        bookId,
+      });
+      res.status(201).json(newReview);
+    } catch (error) {
+      res.status(500).json({ error: "Ошибка при создании отзыва." });
+    }
+  })
 
 module.exports = router;

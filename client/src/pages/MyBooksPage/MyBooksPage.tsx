@@ -7,30 +7,31 @@ import CreateBookForm from "../../components/CreateBookForm/CreateBookForm";
 import { InputsBookCreationState } from "../../components/initState";
 import OneCardForMyBooks from "../../components/OneCardForMyBooks/OneCardForMyBooks";
 import { IBook } from "../../types/stateTypes";
+import FavoritesPage from "../FavoritesPage/FavoritesPage";
 
-// MyBooksPage Component
+
 function MyBooksPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.authSlice);
   const { books } = useAppSelector((state) => state.booksSlice);
 
-  // State definitions
+  
   const [inputs, setInputs] = useState(InputsBookCreationState);
   const [editMode, setEditMode] = useState(false);
   const [currentBookId, setCurrentBookId] = useState(null);
-  const [currentStartIndex, setCurrentStartIndex] = useState(0); // State for slider current start index
+  const [currentStartIndex, setCurrentStartIndex] = useState(0); 
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const ownerId = user.id;
 
-  // Fetch user's books on mount
+  
   useEffect(() => {
     dispatch(getBooksByUser(user.id));
   }, [user]);
 
-  // Input handler for form fields
+
   function inputsHandler(e: React.ChangeEvent<HTMLInputElement>): void {
     setInputs((prev) => ({
       ...prev,
@@ -38,7 +39,7 @@ function MyBooksPage(): JSX.Element {
     }));
   }
 
-  // Form submit handler for adding or editing books
+  
   function submitHandler(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
 
@@ -53,7 +54,7 @@ function MyBooksPage(): JSX.Element {
     onClose();
   }
 
-  // Handler for edit button click
+  
   function handleEditClick(book: IBook): void {
     setInputs(book);
     setCurrentBookId(book.id);
@@ -61,14 +62,14 @@ function MyBooksPage(): JSX.Element {
     onOpen();
   }
 
-  // Handler for modal close
+  
   function handleModalClose(): void {
     onClose();
     setEditMode(false);
     setInputs(InputsBookCreationState);
   }
 
-  // Slider navigation handlers
+  
   function slideLeft() {
     setCurrentStartIndex((prev) => Math.max(prev - 1, 0));
   }
@@ -77,10 +78,10 @@ function MyBooksPage(): JSX.Element {
     setCurrentStartIndex((prev) => Math.min(prev + 1, books.length - 4));
   }
 
-  // Delete handler for a book
+  
   function handleDeleteBook(bookId: number): void {
     dispatch(deleteBook(bookId)).then(() => {
-      // Ensure currentStartIndex is valid after deletion
+  
       setCurrentStartIndex((prevIndex) => {
         const newMaxIndex = Math.max(books.length - 5, 0);
         if (prevIndex > newMaxIndex) {
@@ -128,6 +129,14 @@ function MyBooksPage(): JSX.Element {
         inputs={inputs}
         setInputs={setInputs}
       />
+      {/* <FavoritesPage
+      currentStartIndex={currentStartIndex}
+      setCurrentStartIndex={setCurrentStartIndex}
+      slideLeft={slideLeft}
+      slideRight={slideRight}
+      /> */}
+
+      
     </div>
   );
 }
