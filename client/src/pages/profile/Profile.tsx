@@ -18,6 +18,7 @@ import ProfileModal from "./profileModal";
 import Weather from "../../components/Weather/Weather";
 const { VITE_BASE_URL, VITE_API } = import.meta.env;
 import Calendar from "./Calendar";
+import { Exchange, Message } from "../../types/stateTypes";
 
 export default function Profile(): JSX.Element {
   const { user } = useAppSelector((state) => state.authSlice);
@@ -27,10 +28,10 @@ export default function Profile(): JSX.Element {
     toUser: 0,
     exchangeId: 0,
   });
-  const [messages, setMessages] = useState([]);
-  const [exchanges, setExchanges] = useState([]);
-  const [activeExchange, setActiveExchange] = useState(null);
-  const [activeUser, setActiveUser] = useState(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [exchanges, setExchanges] = useState<Exchange[]>([]);
+  const [activeExchange, setActiveExchange] = useState<number | null>(null);
+  const [activeUser, setActiveUser] = useState<number | null>(null);
   const [incomeOrOutcome, setIncomeOrOutcome] = useState("outcome");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [exchangeHistoryIncoming, setExchangeHistoryIncoming] = useState();
@@ -48,12 +49,12 @@ export default function Profile(): JSX.Element {
       );
       setActiveStatusOutcomeExchange(
         data.exchangesOutcoming.filter(
-          (el) => el.status === "pending" || el.status === "processing"
+          (el: Exchange) => el.status === "pending" || el.status === "processing"
         )
       );
       setActiveStatusIncomeExchange(
         data.exchangesIncoming.filter(
-          (el) => el.status === "pending" || el.status === "processing"
+          (el: Exchange) => el.status === "pending" || el.status === "processing"
         )
       );
       setExchangeHistoryIncoming(data.exchangesIncoming);
@@ -307,7 +308,7 @@ export default function Profile(): JSX.Element {
             >
               Прогноз погоды
             </Text>
-            {/* <Weather /> */}
+            <Weather />
             <Calendar />
           </Box>
         </GridItem>
