@@ -30,6 +30,8 @@ function OneBookPage() {
   const [reviews, setReviews] = useState();
   const [description, setDescription] = useState("");
 
+  const back = useNavigate();
+
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
     dispatch(addToFavorite({ bookId, userId: user.id }));
@@ -68,13 +70,7 @@ function OneBookPage() {
           ? firstBook.authors.join(", ")
           : "Автор не указан";
         const bookDescription = firstBook.description || "Описание отсутствует";
-
-        console.log("Название книги:", bookTitle);
-        console.log("Автор(ы):", bookAuthors);
-        console.log("Описание книги:", bookDescription);
         setDescription(bookDescription);
-      } else {
-        console.log("Книга не найдена");
       }
     } catch (error) {
       console.error("Произошла ошибка при выполнении запроса:", error);
@@ -158,7 +154,27 @@ function OneBookPage() {
             </div>
 
             <div className={styles.reviews}>
-              <Reviews book={book} reviews={reviews} setReviews={setReviews} setBook={setBook} />
+              <Reviews
+                book={book}
+                reviews={reviews}
+                setReviews={setReviews}
+                setBook={setBook}
+              />
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <p></p>
+              <Button
+                onClick={() => back(-1)}
+                mr={2}
+                mb={2}
+                variant="outline"
+                colorScheme="purple"
+                opacity="0.8"
+                _hover={{ bg: "purple.100" }}
+                w="100px"
+              >
+                Назад
+              </Button>
             </div>
           </div>
         </div>

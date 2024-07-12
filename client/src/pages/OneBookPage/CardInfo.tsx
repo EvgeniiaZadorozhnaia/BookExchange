@@ -9,7 +9,7 @@ function CardInfo({ book, description }) {
         borderRadius="lg"
         overflow="hidden"
         display="grid"
-        gridTemplateColumns="0.8fr 3fr"
+        gridTemplateColumns="1fr 3fr"
         gap={4}
         m="20px"
       >
@@ -45,22 +45,24 @@ function CardInfo({ book, description }) {
               {book.pages}
             </Box>
           </Box>
+          <p></p>
           <Box
             mt="1"
             fontWeight="semibold"
-            as="h4"
+            as="h6"
             lineHeight="tight"
             noOfLines={1}
           >
             {book.title}
           </Box>
+          <p></p>
           <Box display="flex" mt="2" alignItems="center">
             {Array(5)
               .fill("")
               .map((_, i) => (
                 <StarIcon
                   key={i}
-                  color={i < book.rating ? "yellow.400" : "gray.300"} // Золотой цвет для звездочек
+                  color={i < book.rating ? "yellow.400" : "gray.300"}
                 />
               ))}
             <Box as="span" ml="2" color="gray.600" fontSize="sm">
