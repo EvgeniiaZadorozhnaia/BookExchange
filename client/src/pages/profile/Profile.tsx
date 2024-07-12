@@ -5,7 +5,6 @@ import {
   Button,
   Grid,
   GridItem,
-  Image,
   Input,
   Tag,
   TagLabel,
@@ -16,7 +15,9 @@ import { useAppSelector } from "../../redux/hooks";
 import { useEffect, useState, useRef, useCallback } from "react";
 import axiosInstance from "../../axiosInstance";
 import ProfileModal from "./profileModal";
+import Weather from "../../components/Weather/Weather";
 const { VITE_BASE_URL, VITE_API } = import.meta.env;
+import Calendar from "./Calendar";
 
 export default function Profile(): JSX.Element {
   const { user } = useAppSelector((state) => state.authSlice);
@@ -39,9 +40,6 @@ export default function Profile(): JSX.Element {
   const [activeStatusOutcomeExchange, setActiveStatusOutcomeExchange] =
     useState();
   const messageContainerRef = useRef(null);
-
-  console.log(exchanges);
-  
 
   const fetchExchangeHistory = async () => {
     try {
@@ -162,151 +160,158 @@ export default function Profile(): JSX.Element {
 
   return (
     <>
-      <Box className="profile-top" display="flex">
-        <Text
-          style={{
-            backgroundColor: "rgba(22, 9, 156, 0.3)",
-            padding: "20px",
-            borderRadius: "5px",
-            marginRight: "30px",
-          }}
-        >
-          Мой рейтинг: ⭐ {user.rating}
-        </Text>
-        <Image
-          borderRadius="full"
-          boxSize="65px"
-          src="https://bit.ly/dan-abramov"
-          alt="Dan Abramov"
-        />
-      </Box>
-      <Box display="flex" justifyContent="space-around" mt={4}>
-        <Button
-          onClick={() => setIncomeOrOutcome("income")}
-          style={{
-            backgroundColor:
-              incomeOrOutcome === "income"
-                ? "rgba(22, 9, 156, 0.3)"
-                : "initial",
-            padding: "10px",
-            width: "200px",
-            borderRadius: "20px",
-          }}
-        >
-          Отдать
-        </Button>
-        <Button
-          onClick={() => setIncomeOrOutcome("outcome")}
-          style={{
-            backgroundColor:
-              incomeOrOutcome === "outcome"
-                ? "rgba(22, 9, 156, 0.3)"
-                : "initial",
-            padding: "10px",
-            width: "200px",
-            borderRadius: "20px",
-          }}
-        >
-          Забрать
-        </Button>
-      </Box>
+      <Grid templateColumns="1fr 1fr" gap={4}>
+        {/* Левая колонка с чатом */}
+        <GridItem>
+          <Box display="flex" justifyContent="space-around" mt={4}>
+            <Button
+              onClick={() => setIncomeOrOutcome("income")}
+              style={{
+                backgroundColor:
+                  incomeOrOutcome === "income"
+                    ? "rgba(22, 9, 156, 0.3)"
+                    : "initial",
+                padding: "10px",
+                width: "200px",
+                borderRadius: "20px",
+              }}
+            >
+              Отдать
+            </Button>
+            <Button
+              onClick={() => setIncomeOrOutcome("outcome")}
+              style={{
+                backgroundColor:
+                  incomeOrOutcome === "outcome"
+                    ? "rgba(22, 9, 156, 0.3)"
+                    : "initial",
+                padding: "10px",
+                width: "200px",
+                borderRadius: "20px",
+              }}
+            >
+              Забрать
+            </Button>
+          </Box>
 
-      <Box
-        border="solid 1px"
-        borderRadius="7px"
-        mt={8}
-        boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
-        p={4}
-      >
-        <Grid h="500px" templateColumns="repeat(5, 1fr)" gap={2}>
-          <GridItem colSpan={1} width="150px" margin="10px">
-            {exchanges &&
-              exchanges.map((exchange) => (
-                <Tag
-                  key={exchange.id}
-                  width="150px"
-                  borderRadius="full"
-                  margin="5px"
-                  cursor="pointer"
-                  bg={exchange.id === activeExchange ? "teal.300" : "gray.200"}
-                  onClick={() => {
-                    const userId =
-                      incomeOrOutcome === "income"
-                        ? exchange.Author.id
-                        : exchange.Reciever.id;
-                    handleExchangeClick(exchange.id, userId);
-                  }}
-                >
-                  <TagLabel>
-                    {incomeOrOutcome === "income"
-                      ? exchange.Author.username
-                      : exchange.Reciever.username}{" "}
-                    Обмен №{exchange.id}
-                  </TagLabel>
-                </Tag>
-              ))}
-          </GridItem>
-          <GridItem
-            colSpan={4}
-            bg="#f2f3f4"
-            display="flex"
-            flexDirection="column"
-            p={4}
+          <Box
+            border="solid 1px"
             borderRadius="7px"
-            className="message-container"
-            ref={messageContainerRef}
+            mt={8}
+            boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
+            p={4}
           >
-            {messages.length > 0 ? (
-              messages.map((message) => (
-                <Box
-                  key={message.id}
-                  alignSelf={
-                    message.authorId === user.id ? "flex-end" : "flex-start"
-                  }
-                  bg={message.authorId === user.id ? "#a4e8af" : "#b3cde0"}
-                  p={4}
-                  borderRadius="7px"
-                  mb={2}
-                  boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
-                >
-                  <Tag size="lg" borderRadius="full" marginBottom="5px">
-                    <Avatar
-                      src={
-                        message.authorId === user.id
-                          ? user.avatarUrl
-                          : message.Author.avatarUrl
+            <Grid h="500px" templateColumns="repeat(5, 1fr)" gap={2}>
+              <GridItem colSpan={1} width="150px" margin="10px">
+                {exchanges &&
+                  exchanges.map((exchange) => (
+                    <Tag
+                      key={exchange.id}
+                      width="150px"
+                      borderRadius="full"
+                      margin="5px"
+                      cursor="pointer"
+                      bg={
+                        exchange.id === activeExchange ? "teal.300" : "gray.200"
                       }
-                      size="xs"
-                      mr={2}
-                    />
-                    <TagLabel>
-                      {message.authorId === user.id
-                        ? user.username
-                        : message.Author.username}
-                    </TagLabel>
-                  </Tag>
-                  <Text margin="5px">{message.text}</Text>
-                  <span style={{ fontSize: "0.8em", opacity: 0.7 }}>
-                    {new Date(message.createdAt).toLocaleString()}
-                  </span>
-                </Box>
-              ))
-            ) : (
-              <Text>Начните обмениваться сообщениями!</Text>
-            )}
-          </GridItem>
-        </Grid>
-        <Box mt={4}>
-          <Input
-            size="lg"
-            placeholder="Введите сообщение"
-            name="text"
-            value={inputs.text}
-            onChange={changeHandler}
-            onKeyDown={handleKeyDown}
-          />
-        </Box>
-      </Box>
+                      onClick={() => {
+                        const userId =
+                          incomeOrOutcome === "income"
+                            ? exchange.Author.id
+                            : exchange.Reciever.id;
+                        handleExchangeClick(exchange.id, userId);
+                      }}
+                    >
+                      <TagLabel>
+                        {incomeOrOutcome === "income"
+                          ? exchange.Author.username
+                          : exchange.Reciever.username}{" "}
+                        Обмен №{exchange.id}
+                      </TagLabel>
+                    </Tag>
+                  ))}
+              </GridItem>
+              <GridItem
+                colSpan={4}
+                bg="#f2f3f4"
+                display="flex"
+                flexDirection="column"
+                p={4}
+                borderRadius="7px"
+                className="message-container"
+                ref={messageContainerRef}
+              >
+                {messages.length > 0 ? (
+                  messages.map((message) => (
+                    <Box
+                      key={message.id}
+                      alignSelf={
+                        message.authorId === user.id ? "flex-end" : "flex-start"
+                      }
+                      bg={message.authorId === user.id ? "#a4e8af" : "#b3cde0"}
+                      p={4}
+                      borderRadius="7px"
+                      mb={2}
+                      boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                    >
+                      <Tag size="lg" borderRadius="full" marginBottom="5px">
+                        <Avatar
+                          src={
+                            message.authorId === user.id
+                              ? user.avatarUrl
+                              : message.Author.avatarUrl
+                          }
+                          size="xs"
+                          mr={2}
+                        />
+                        <TagLabel>
+                          {message.authorId === user.id
+                            ? user.username
+                            : message.Author.username}
+                        </TagLabel>
+                      </Tag>
+                      <Text margin="5px">{message.text}</Text>
+                      <span style={{ fontSize: "0.8em", opacity: 0.7 }}>
+                        {new Date(message.createdAt).toLocaleString()}
+                      </span>
+                    </Box>
+                  ))
+                ) : (
+                  <Text>Начните обмениваться сообщениями!</Text>
+                )}
+              </GridItem>
+            </Grid>
+            <Box mt={4}>
+              <Input
+                size="lg"
+                placeholder="Введите сообщение"
+                name="text"
+                value={inputs.text}
+                onChange={changeHandler}
+                onKeyDown={handleKeyDown}
+              />
+            </Box>
+          </Box>
+        </GridItem>
+
+        {/* Правая колонка с погодой */}
+        <GridItem>
+          <Box>
+            {" "}
+            <Text
+              display={"flex"}
+              justifyContent={"center"}
+              fontWeight={"bold"}
+              fontFamily={"cursive"}
+              borderRadius={"20px"}
+            >
+              Прогноз погоды
+            </Text>
+            {/* <Weather /> */}
+            <Calendar />
+          </Box>
+        </GridItem>
+      </Grid>
       <Button
         onClick={onOpen}
         style={{
@@ -319,9 +324,8 @@ export default function Profile(): JSX.Element {
           justifyContent: "center",
         }}
       >
-        История обменов
+        Моя история обменов
       </Button>
-
       <ProfileModal
         isOpen={isOpen}
         onClose={onClose}
