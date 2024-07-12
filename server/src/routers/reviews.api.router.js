@@ -58,10 +58,29 @@ router
         userId,
         bookId,
       });
-      res.status(201).json(newReview);
+
+      const reviewWithUser = await Review.findOne({
+        where: { id: newReview.id },
+        include: {
+          model: User,
+          as: "User",
+        },
+      });
+
+      res.status(201).json(reviewWithUser);
     } catch (error) {
       res.status(500).json({ error: "Ошибка при создании отзыва." });
     }
   })
+
+  .delete("/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+      await Review.destroy({ where: { id } });
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error: "Ошибка при удалении отзыва." });
+    }
+  });
 
 module.exports = router;
