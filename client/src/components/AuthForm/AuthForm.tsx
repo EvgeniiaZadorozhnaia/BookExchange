@@ -57,6 +57,7 @@ export default function AuthForm({
         }, 200);
       } else {
         dispatch(addUser({ type, inputs }));
+        // localStorage.setItem('user', JSON.stringify(user));
       }
     }
   
@@ -71,13 +72,21 @@ export default function AuthForm({
         }, 200);
       } else {
         dispatch(addUser({ type, inputs }));
+        // localStorage.setItem('user', JSON.stringify(user));
       }
     }
   };
 
 
   useEffect(() => {
-    user?.id !== 0 ? navigate("/") : null;
+    const localUser = JSON.parse(localStorage.getItem('user'));
+    if(localUser){
+      navigate("/")
+    } else if (type === "signin") {
+      navigate("/signin")
+    } else {
+      navigate("/signup")
+    }   
   }, [user]);
 
 

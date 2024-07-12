@@ -22,7 +22,7 @@ export const addUser: NewUser = createAsyncThunk(
 export const refreshToken = createAsyncThunk(
   'auth/refreshToken',
  async () => {
-   const response: AxiosResponse = await axiosInstance.get(`${VITE_API}/tokens/refresh`);
+   const response: AxiosResponse = await axiosInstance.get(`${VITE_BASE_URL}${VITE_API}/tokens/refresh`);
    setAccessToken(response.data.accessToken);
    return response.data.user as IUser;
  });
@@ -33,7 +33,7 @@ export const logoutUser = createAsyncThunk("users/logout", async () => {
     `${VITE_BASE_URL}${VITE_API}/auth/logout`
   );
   if (res.status === 200) {
-    setAccessToken("");
+    setAccessToken(""); 
   }
 });
 
