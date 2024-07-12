@@ -1,3 +1,6 @@
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../../axiosInstance";
+import { useAppSelector } from "../../redux/hooks";
 import {
   Alert,
   AlertIcon,
@@ -10,11 +13,13 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
-import axiosInstance from "../../axiosInstance";
-import { useEffect, useState } from "react";
-import { useAppSelector } from "../../redux/hooks";
-const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
+import {
+  AiOutlineLike,
+  AiOutlineDislike,
+  AiOutlineDelete,
+} from "react-icons/ai";
+
+const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
 function Reviews({ book, reviews, setReviews }) {
   const { user } = useAppSelector((state) => state.authSlice);
@@ -40,7 +45,10 @@ function Reviews({ book, reviews, setReviews }) {
 
   async function handleSubmitReview(event) {
     event.preventDefault();
-
+    if (reviewContent.trim() === "") {
+      alert("Отзыв не может быть пустым!");
+      return;
+    }
     try {
       const response = await axiosInstance.post(
         `${VITE_BASE_URL}${VITE_API}/reviews/${user.id}/${book.id}`,
@@ -50,8 +58,10 @@ function Reviews({ book, reviews, setReviews }) {
       );
       const newReview = response.data;
 
-      console.log(newReview);
-      setReviews((prevReviews) => [...prevReviews, newReview]);
+      console.log('rev', reviews);
+      console.log('newrev', newReview);
+
+      setReviews((prev) => [...prev, newReview]);
       setReviewContent("");
       setShowSuccessAlert(true);
     } catch (error) {
@@ -70,12 +80,13 @@ function Reviews({ book, reviews, setReviews }) {
         await axiosInstance.put(
           `${VITE_BASE_URL}${VITE_API}/reviews/like/${id}`
         );
-        const updatedReviews = reviews.map((review) => {
-          if (review.id === id)
-            return { ...review, likes: (review.likes || 0) + 1 };
-          return review;
-        });
-        setReviews(updatedReviews);
+        setReviews((prevReviews) =>
+          prevReviews.map((review) =>
+            review.id === id
+              ? { ...review, likes: (review.likes || 0) + 1 }
+              : review
+          )
+        );
       }
     } catch (error) {
       console.log(error);
@@ -93,16 +104,27 @@ function Reviews({ book, reviews, setReviews }) {
         await axiosInstance.put(
           `${VITE_BASE_URL}${VITE_API}/reviews/dislike/${id}`
         );
-        const updatedReviews = reviews.map((review) => {
-          if (review.id === id) {
-            return { ...review, dislikes: (review.dislikes || 0) + 1 };
-          }
-          return review;
-        });
-        setReviews(updatedReviews);
+        setReviews((prevReviews) =>
+          prevReviews.map((review) =>
+            review.id === id
+              ? { ...review, dislikes: (review.dislikes || 0) + 1 }
+              : review
+          )
+        );
       }
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async function handleReviewDelete(id) {
+    try {
+      await axiosInstance.delete(`${VITE_BASE_URL}${VITE_API}/reviews/${id}`);
+      setReviews((prevReviews) =>
+        prevReviews.filter((review) => review.id !== id)
+      );
+    } catch (error) {
+      console.error("Ошибка при удалении отзыва:", error);
     }
   }
 
@@ -154,7 +176,13 @@ function Reviews({ book, reviews, setReviews }) {
                     </Text>
                     <Text fontSize="sm">{review.content}</Text>
                   </div>
-                  <div style={{ marginLeft: "15px" }}>
+                  <div
+                    style={{
+                      marginLeft: "15px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
                     <IconButton
                       aria-label="Лайк"
                       icon={<Icon as={AiOutlineLike} />}
@@ -170,6 +198,15 @@ function Reviews({ book, reviews, setReviews }) {
                     />
                     {review.dislikes !== undefined && (
                       <Badge colorScheme="red">{review.dislikes}</Badge>
+                    )}
+                    {review.User?.id === user?.id && (
+                      <IconButton
+                        aria-label="Удалить"
+                        icon={<Icon as={AiOutlineDelete} />}
+                        onClick={() => handleReviewDelete(review.id)}
+                        colorScheme="red"
+                        ml={2}
+                      />
                     )}
                   </div>
                 </div>
@@ -205,23 +242,46 @@ function Reviews({ book, reviews, setReviews }) {
         onSubmit={handleSubmitReview}
       >
         <h4 style={{ marginBottom: "5px" }}>Оставить отзыв</h4>
-        <Textarea
-          rows="3"
-          style={{
-            width: "100%",
-            padding: "8px",
-            marginBottom: "10px",
-            borderRadius: "4px",
-            borderColor: "#b9b5e1",
-            borderWidth: "1px",
-            outline: "none", // Убираем стандартную подсветку
-            boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)", // Фиолетовая подсветка при фокусе
-          }}
-          placeholder="Введите ваш отзыв здесь..."
-          onChange={(e) => setReviewContent(e.target.value)}
-          value={reviewContent}
-          required
-        />
+        {book?.Owner?.id !== user?.id ? (
+          <Textarea
+            rows="3"
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginBottom: "10px",
+              borderRadius: "4px",
+              borderColor: "#b9b5e1",
+              borderWidth: "1px",
+              outline: "none",
+              boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
+              cursor: "pointer",
+            }}
+            placeholder="Введите ваш отзыв здесь..."
+            onChange={(e) => setReviewContent(e.target.value)}
+            value={reviewContent}
+            required
+          />
+        ) : (
+          <Textarea
+            rows="3"
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginBottom: "10px",
+              borderRadius: "4px",
+              borderColor: "#b9b5e1",
+              borderWidth: "1px",
+              outline: "none",
+              boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
+              cursor: "not-allowed",
+            }}
+            placeholder="Введите ваш отзыв здесь..."
+            onChange={(e) => setReviewContent(e.target.value)}
+            value={reviewContent}
+            required
+            disabled
+          />
+        )}
         <Button
           type="submit"
           ml={2}
@@ -230,6 +290,7 @@ function Reviews({ book, reviews, setReviews }) {
           colorScheme="purple"
           opacity="0.8"
           _hover={{ bg: "purple.100" }}
+          disabled={reviewContent.trim() === ""}
         >
           Отправить
         </Button>

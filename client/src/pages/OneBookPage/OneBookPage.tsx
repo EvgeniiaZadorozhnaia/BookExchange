@@ -28,7 +28,6 @@ function OneBookPage() {
   const { bookId } = useParams();
   const [isFavorite, setIsFavorite] = useState(false);
   const [reviews, setReviews] = useState();
-  const { books } = useAppSelector((state) => state.booksSlice);
   const [description, setDescription] = useState("");
 
   const toggleFavorite = () => {
@@ -107,36 +106,47 @@ function OneBookPage() {
                 />
                 <Stack mt="6" spacing="3">
                   <Heading size="md" textAlign="center">
-                    <div>Владелец: {book.Owner?.username}</div>
+                    {book?.Owner?.id !== user.id ? (
+                      <div>Владелец: {book.Owner?.username}</div>
+                    ) : (
+                      <div>Моя книга</div>
+                    )}
                     <p></p>
-                    <Button
-                      onClick={() => navigate(`/Book/${book.id}/owner`)}
-                      mr={2}
-                      mb={2}
-                      variant="outline"
-                      colorScheme="purple"
-                      opacity="0.8"
-                      _hover={{ bg: "purple.100" }}
-                    >
-                      Предложить обмен
-                    </Button>
-                    <Button
-                      onClick={toggleFavorite}
-                      colorScheme={isFavorite ? "red" : "gray"}
-                      variant="ghost"
-                      aria-label={
-                        isFavorite
-                          ? "Remove from favorites"
-                          : "Add to favorites"
-                      }
-                      _hover={{ color: isFavorite ? "red.500" : "gray.500" }}
-                    >
-                      {isFavorite ? (
-                        <MdFavorite size={24} />
-                      ) : (
-                        <MdFavoriteBorder size={24} />
-                      )}
-                    </Button>
+                    {book?.Owner?.id !== user.id ? (
+                      <>
+                        {" "}
+                        <Button
+                          onClick={() => navigate(`/Book/${book.id}/owner`)}
+                          mr={2}
+                          mb={2}
+                          variant="outline"
+                          colorScheme="purple"
+                          opacity="0.8"
+                          _hover={{ bg: "purple.100" }}
+                        >
+                          Предложить обмен
+                        </Button>
+                        <Button
+                          onClick={toggleFavorite}
+                          colorScheme={isFavorite ? "red" : "gray"}
+                          variant="ghost"
+                          aria-label={
+                            isFavorite
+                              ? "Remove from favorites"
+                              : "Add to favorites"
+                          }
+                          _hover={{
+                            color: isFavorite ? "red.500" : "gray.500",
+                          }}
+                        >
+                          {isFavorite ? (
+                            <MdFavorite size={24} />
+                          ) : (
+                            <MdFavoriteBorder size={24} />
+                          )}
+                        </Button>
+                      </>
+                    ) : null}
                   </Heading>
                 </Stack>
               </CardBody>
