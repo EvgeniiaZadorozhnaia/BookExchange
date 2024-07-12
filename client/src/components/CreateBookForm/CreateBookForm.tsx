@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   Button,
   FormControl,
@@ -13,19 +14,15 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 
-
-function CreateBookForm({ isOpen, onClose, initialRef, finalRef, inputsHandler, submitHandler, inputs, onOpen, handleDrop}) {
+function CreateBookForm({ isOpen, onClose, initialRef, finalRef, inputsHandler, submitHandler, inputs, setInputs, img, setImg }) {
   const [dragActive, setDragActive] = useState(false);
   
-  const handleDrag = (e) => {
-    e.preventDefault();
-    setDragActive(true);
-  }
 
-  const handleLeave = (e) => {
-    e.preventDefault();
-    setDragActive(false);
-  }
+  const handleChangeFile = (e) => {
+    if (e.target.files.length > 0) {
+      setImg(e.target.files[0]);
+    }
+  };
 
   return (
     <Modal
@@ -67,18 +64,13 @@ function CreateBookForm({ isOpen, onClose, initialRef, finalRef, inputsHandler, 
               placeholder="Количество страниц"
               onChange={inputsHandler}
             />
-            <FormLabel className={`form ${dragActive} ? 'drag' : `}>Обложка</FormLabel>
+            <FormLabel>Обложка</FormLabel>
             <Input
-              type="file"
-              id="pictureUrl"
-              name="pictureUrl"
-              value={inputs.pictureUrl}
-              placeholder="URL обложки"
-              onChange={inputsHandler}
-              onDragEnter={handleDrag}
-              onDragOver={handleDrag}
-              onDragLeave={handleLeave}
-            />
+                type="file"
+                id="pictureUrl"
+                name="frontpage"
+                onChange={handleChangeFile}
+              />
           </FormControl>
         </ModalBody>
         <ModalFooter>

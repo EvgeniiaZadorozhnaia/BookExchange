@@ -10,6 +10,7 @@ function setAccessToken(newToken: string) {
   accessToken = newToken;
 }
 
+
 axiosInstance.interceptors.request.use((config) => {
   config.withCredentials = true;
   if (!config.headers.Authorization) {
