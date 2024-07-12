@@ -343,9 +343,7 @@ export default function BookOwnerPage(): JSX.Element {
                     Мои книги
                   </Text>
                   {booksToGive &&
-                    booksToGive.map((book) => (
-                      <MyBooks key={book.id} book={book} />
-                    ))}
+                    booksToGive.map((book) => <MyBooks key={book.id} book={book} />)}
                   <Button
                     onClick={() => navigate("/")}
                     bg="rgba(22, 9, 156, 0.3)"

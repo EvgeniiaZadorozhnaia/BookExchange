@@ -54,7 +54,7 @@ export default function Profile(): JSX.Element {
       );
       setActiveStatusIncomeExchange(
         data.exchangesIncoming.filter(
-          (el: Exchange) => el.status === "pending" || el.status === "processing"
+          (el: Exchange ) => el.status === "pending" || el.status === "processing"
         )
       );
       setExchangeHistoryIncoming(data.exchangesIncoming);
