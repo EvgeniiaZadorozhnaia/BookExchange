@@ -10,6 +10,7 @@ const reviewsRouter = require("./reviews.api.router");
 const favoriteRouter = require("./favorite.api.router");
 const likeRouter = require("./likes.api.router");
 const dislikeRouter = require("./dislikes.api.router");
+const ratingBookRouter = require("./ratingBooks.api.router");
 
 router.use("/tokens", tokensRouter);
 router.use("/auth", authRouter);
@@ -21,5 +22,6 @@ router.use("/reviews", reviewsRouter);
 router.use("/favorite", favoriteRouter);
 router.use("/likes", likeRouter);
 router.use("/dislikes", dislikeRouter);
+router.use("/ratingBooks", ratingBookRouter);
 
 module.exports = router;

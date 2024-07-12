@@ -1,7 +1,7 @@
 import { UserState } from "./../../components/initState";
 import { ActionReducerMapBuilder, Draft, createSlice } from "@reduxjs/toolkit";
 import { AuthState } from "../types/states";
-import { addUser, logoutUser } from "../thunkActions";
+import { addUser, logoutUser, refreshToken } from "../thunkActions";
 import { AuthSlice, RejectedAction, UserAction } from "../types/reducers";
 
 const initialState: AuthState = { user: UserState, loading: true, error: {} };
@@ -23,6 +23,24 @@ const authSlice: AuthSlice = createSlice({
     );
     builder.addCase(
       addUser.rejected,
+      (state: Draft<AuthState>, action: RejectedAction): void => {
+        console.log("Неправильно введены данные", action.error);
+        state.error = action.error;
+        state.loading = false;
+      }
+    );
+    builder.addCase(refreshToken.pending, (state: Draft<AuthState>): void => {
+      state.loading = true;
+    });
+    builder.addCase(
+      refreshToken.fulfilled,
+      (state: Draft<AuthState>, action: UserAction): void => {
+        state.user = action.payload;
+        state.loading = false;
+      }
+    );
+    builder.addCase(
+      refreshToken.rejected,
       (state: Draft<AuthState>, action: RejectedAction): void => {
         console.log("Неправильно введены данные", action.error);
         state.error = action.error;

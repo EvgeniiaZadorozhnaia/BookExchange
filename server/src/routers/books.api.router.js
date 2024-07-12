@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { verifyAccessToken } = require("../middlewares/verifyToken");
+const multer = require("../middlewares/multer");
 const { Book, User, Review } = require("../../db/models");
 
 router
@@ -61,9 +62,11 @@ router
     }
   })
 
-  .put("/:bookId", verifyAccessToken, async (req, res) => {
+  .put("/:bookId", verifyAccessToken, multer.single('frontpage'), async (req, res) => {
     const { bookId } = req.params;
-    const { title, author, pages, pictureUrl } = req.body;
+    const { title, author, pages } = req.body;
+    const pictureUrl = req.file ? `${req.file.originalname}` : null;
+    console.log("pictureUrl", pictureUrl);
 
     try {
       const updatedBook = await Book.update(
@@ -91,10 +94,11 @@ router
     }
   })
 
-  .post("/:ownerId", verifyAccessToken, async (req, res) => {
+  .post("/:ownerId", verifyAccessToken, multer.single('frontpage'), async (req, res) => {
     const { ownerId } = req.params;
-    const { title, author, pages, pictureUrl } = req.body;
-
+    const { title, author, pages } = req.body;
+    const pictureUrl = req.file ? `${req.file.originalname}` : null;
+  
     try {
       const newBook = await Book.create({
         ownerId,
@@ -166,6 +170,32 @@ router
       res
         .status(500)
         .json({ message: "Произошла ошибка при получении владельца книги" });
+    }
+  })
+
+  .put("/rate/:bookId", async (req, res) => {
+    const { bookId } = req.params;
+    const { rating } = req.body;
+
+    try {
+      const [numberOfUpdatedRows] = await Book.update(
+        {
+          rating
+        },
+        { where: { id: bookId } }
+      );
+
+      if (numberOfUpdatedRows === 0) {
+        return res.status(404).json({ message: "Книга не найдена" });
+      }
+
+      const updatedBook = await Book.findByPk(bookId);
+      res.json(updatedBook);
+    } catch (error) {
+      console.log(error.message);
+      res
+        .status(500)
+        .json({ message: "Произошла ошибка при обновлении рейтинга" });
     }
   });
 

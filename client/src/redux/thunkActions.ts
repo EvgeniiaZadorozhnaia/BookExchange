@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import axiosInstance, { setAccessToken } from "../axiosInstance";
-import { IBook, IBooks, IType, IUser } from "../types/stateTypes";
+import {  IBooks, IType, IUser } from "../types/stateTypes";
 import { NewUser } from "./types/thunk";
 
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
@@ -18,6 +18,15 @@ export const addUser: NewUser = createAsyncThunk(
     return data;
   }
 );
+
+export const refreshToken = createAsyncThunk(
+  'auth/refreshToken',
+ async () => {
+   const response: AxiosResponse = await axiosInstance.get(`${VITE_API}/tokens/refresh`);
+   setAccessToken(response.data.accessToken);
+   return response.data.user as IUser;
+ });
+  
 
 export const logoutUser = createAsyncThunk("users/logout", async () => {
   const res: AxiosResponse = await axiosInstance.get(
@@ -60,22 +69,32 @@ export const deleteBook = createAsyncThunk("books/delete", async (bookId) => {
 
 export const createBook = createAsyncThunk(
   "books/create",
-  async ({ ownerId, inputs }) => {
-    const res: AxiosResponse = await axiosInstance.post(
-      `${VITE_BASE_URL}${VITE_API}/books/${ownerId}`,
-      inputs
+  async ({ ownerId, formData }) => {
+    const res = await axiosInstance.post(
+      `${VITE_BASE_URL}${VITE_API}/books/${ownerId}`, 
+      formData, 
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
     );
-    const data = res.data.book as IBook;
+    const data = res.data.book;
     return data;
   }
 );
 
 export const editBook = createAsyncThunk(
   "books/edit",
-  async ({ bookId, inputs }) => {
+  async ({ bookId, formData }) => {
     const res: AxiosResponse = await axiosInstance.put(
       `${VITE_BASE_URL}${VITE_API}/books/${bookId}`,
-      inputs
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
     );
     const data = res.data;
     return data;
@@ -85,7 +104,6 @@ export const editBook = createAsyncThunk(
 export const getFavoriteBooks = createAsyncThunk(
   "favorite/getting",
   async (userId) => {
-    console.log(userId);
     const res: AxiosResponse = await axiosInstance.get(
       `${VITE_BASE_URL}${VITE_API}/favorite/${userId}`,
     );

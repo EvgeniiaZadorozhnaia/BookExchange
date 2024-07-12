@@ -50,7 +50,6 @@ export default function BookOwnerPage(): JSX.Element {
   const [isForExchange, setIsForExchange] = useState<boolean>(true);
   const [currentRating, setCurrentRating] = useState<number | undefined>();
   const navigate = useNavigate();
-  console.log(booksToGive);
 
   useEffect(() => {
     const fetchBookData = async () => {

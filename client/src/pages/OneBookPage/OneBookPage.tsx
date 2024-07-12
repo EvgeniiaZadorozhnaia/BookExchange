@@ -28,8 +28,9 @@ function OneBookPage() {
   const { bookId } = useParams();
   const [isFavorite, setIsFavorite] = useState(false);
   const [reviews, setReviews] = useState();
-  const { books } = useAppSelector((state) => state.booksSlice);
   const [description, setDescription] = useState("");
+
+  const back = useNavigate();
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -69,13 +70,7 @@ function OneBookPage() {
           ? firstBook.authors.join(", ")
           : "Автор не указан";
         const bookDescription = firstBook.description || "Описание отсутствует";
-
-        console.log("Название книги:", bookTitle);
-        console.log("Автор(ы):", bookAuthors);
-        console.log("Описание книги:", bookDescription);
         setDescription(bookDescription);
-      } else {
-        console.log("Книга не найдена");
       }
     } catch (error) {
       console.error("Произошла ошибка при выполнении запроса:", error);
@@ -107,36 +102,47 @@ function OneBookPage() {
                 />
                 <Stack mt="6" spacing="3">
                   <Heading size="md" textAlign="center">
-                    <div>Владелец: {book.Owner?.username}</div>
+                    {book?.Owner?.id !== user.id ? (
+                      <div>Владелец: {book.Owner?.username}</div>
+                    ) : (
+                      <div>Моя книга</div>
+                    )}
                     <p></p>
-                    <Button
-                      onClick={() => navigate(`/Book/${book.id}/owner`)}
-                      mr={2}
-                      mb={2}
-                      variant="outline"
-                      colorScheme="purple"
-                      opacity="0.8"
-                      _hover={{ bg: "purple.100" }}
-                    >
-                      Предложить обмен
-                    </Button>
-                    <Button
-                      onClick={toggleFavorite}
-                      colorScheme={isFavorite ? "red" : "gray"}
-                      variant="ghost"
-                      aria-label={
-                        isFavorite
-                          ? "Remove from favorites"
-                          : "Add to favorites"
-                      }
-                      _hover={{ color: isFavorite ? "red.500" : "gray.500" }}
-                    >
-                      {isFavorite ? (
-                        <MdFavorite size={24} />
-                      ) : (
-                        <MdFavoriteBorder size={24} />
-                      )}
-                    </Button>
+                    {book?.Owner?.id !== user.id ? (
+                      <>
+                        {" "}
+                        <Button
+                          onClick={() => navigate(`/Book/${book.id}/owner`)}
+                          mr={2}
+                          mb={2}
+                          variant="outline"
+                          colorScheme="purple"
+                          opacity="0.8"
+                          _hover={{ bg: "purple.100" }}
+                        >
+                          Предложить обмен
+                        </Button>
+                        <Button
+                          onClick={toggleFavorite}
+                          colorScheme={isFavorite ? "red" : "gray"}
+                          variant="ghost"
+                          aria-label={
+                            isFavorite
+                              ? "Remove from favorites"
+                              : "Add to favorites"
+                          }
+                          _hover={{
+                            color: isFavorite ? "red.500" : "gray.500",
+                          }}
+                        >
+                          {isFavorite ? (
+                            <MdFavorite size={24} />
+                          ) : (
+                            <MdFavoriteBorder size={24} />
+                          )}
+                        </Button>
+                      </>
+                    ) : null}
                   </Heading>
                 </Stack>
               </CardBody>
@@ -148,7 +154,27 @@ function OneBookPage() {
             </div>
 
             <div className={styles.reviews}>
-              <Reviews book={book} reviews={reviews} setReviews={setReviews} />
+              <Reviews
+                book={book}
+                reviews={reviews}
+                setReviews={setReviews}
+                setBook={setBook}
+              />
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <p></p>
+              <Button
+                onClick={() => back(-1)}
+                mr={2}
+                mb={2}
+                variant="outline"
+                colorScheme="purple"
+                opacity="0.8"
+                _hover={{ bg: "purple.100" }}
+                w="100px"
+              >
+                Назад
+              </Button>
             </div>
           </div>
         </div>
