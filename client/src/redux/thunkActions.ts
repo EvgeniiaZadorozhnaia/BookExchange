@@ -59,7 +59,7 @@ export const getBooks: bookGetting = createAsyncThunk(
   "books/getting",
   async () => {
     const res: AxiosResponse = await axiosInstance.get(
-      `${VITE_BASE_URL}${VITE_API}/books`
+      `${VITE_BASE_URL}${VITE_API}/books/`
     );
     const data = res.data as IBooks[];
 

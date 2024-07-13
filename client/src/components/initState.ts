@@ -19,6 +19,8 @@ export const UserState: IUser = {
   city: "",
   createdAt: "",
   updatedAt: "",
+  isAdmin: false,
+  isBlocked: false,
 };
 
 export const BookState: IBook = {
@@ -34,6 +36,8 @@ export const BookState: IBook = {
     city: "",
     createdAt: "",
     updatedAt: "",
+    isAdmin: false,
+    isBlocked: false,
   },
   id: 0,
   ownerId: 0,

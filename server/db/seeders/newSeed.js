@@ -40,11 +40,13 @@ module.exports = {
           username: "BookExchange",
           email: "admin@bookExchange.com",
           password: await bcrypt.hash("admin123", 10),
-          avatarUrl: "https://sun9-67.userapi.com/c812325/u403943870/-3/x_bf7e9e5688.jpg",
+          avatarUrl:
+            "https://sun9-67.userapi.com/c812325/u403943870/-3/x_bf7e9e5688.jpg",
           rating: 2.5,
           numberOfRating: 1,
           placeOfMeeting: "none",
           city: "Москва",
+          isAdmin: true,
         },
       ],
       {}
@@ -185,7 +187,8 @@ module.exports = {
         {
           userId: 2,
           bookId: 4,
-          content: "Переоцененная книга, на мой взгляд рейтинг должен быть намного ниже",
+          content:
+            "Переоцененная книга, на мой взгляд рейтинг должен быть намного ниже",
           likes: 0,
           dislikes: 8,
         },
@@ -208,35 +211,35 @@ module.exports = {
           fromBook: 1,
           toUser: 2,
           toBook: 5,
-          status: 'pending',
+          status: "pending",
         },
         {
           fromUser: 1,
           fromBook: 3,
           toUser: 3,
           toBook: 11,
-          status: 'pending',
+          status: "pending",
         },
         {
           fromUser: 2,
           fromBook: 6,
           toUser: 3,
           toBook: 12,
-          status: 'processing',
+          status: "processing",
         },
         {
           fromUser: 2,
           fromBook: 6,
           toUser: 1,
           toBook: 12,
-          status: 'processing',
+          status: "processing",
         },
         {
           fromUser: 3,
           fromBook: 5,
           toUser: 1,
           toBook: 10,
-          status: 'processing',
+          status: "processing",
         },
       ],
       {}
@@ -296,31 +299,31 @@ module.exports = {
           text: "Привет. Хочу забрать твою книгу!",
           authorId: 1,
           toUser: 2,
-          exchangeId: 4
+          exchangeId: 4,
         },
         {
           text: "Поскорее!",
           authorId: 1,
           toUser: 2,
-          exchangeId: 4
+          exchangeId: 4,
         },
         {
           text: "Добрый вечер! Забираю Вашу книгу!",
           authorId: 1,
           toUser: 3,
-          exchangeId: 5
+          exchangeId: 5,
         },
         {
           text: "Привет! Забираю!",
           authorId: 2,
           toUser: 1,
-          exchangeId: 1
+          exchangeId: 1,
         },
         {
           text: "Добрый вечер! I need this book!",
           authorId: 3,
           toUser: 1,
-          exchangeId: 2
+          exchangeId: 2,
         },
       ],
       {}

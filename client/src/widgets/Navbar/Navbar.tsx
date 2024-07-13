@@ -1,4 +1,3 @@
-
 import styles from "./Navbar.module.css";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -11,13 +10,19 @@ export default function Navbar(): JSX.Element {
 
   const logoutHandler = () => {
     dispatch(logoutUser());
-    localStorage.removeItem("user") 
-  }
+    localStorage.removeItem("user");
+  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.left}>
-        {user?.username ? (
+        {user?.isAdmin ? (
+          <>
+            <Link to="/adminPage">Админ</Link>
+            <Link to="/">Главная</Link>
+          </>
+        ) : null}
+        {user?.username && !user?.isAdmin ? (
           <div className={styles.left}>
             <Link to="/">Главная</Link>
             <Link to="/favorites">Избранное</Link>
@@ -28,7 +33,7 @@ export default function Navbar(): JSX.Element {
       <div className={styles.right}>
         {user?.username ? (
           <>
-            <Link to="/profile">{user.username}</Link>
+            {user?.isAdmin ? null : <Link to="/profile">{user.username}</Link>}
             <Link to="/signup" onClick={logoutHandler}>
               Выйти
             </Link>

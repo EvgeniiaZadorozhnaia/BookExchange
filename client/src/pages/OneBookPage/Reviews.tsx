@@ -296,7 +296,7 @@ function Reviews({
                   <div style={{ flex: "1 1 auto" }}>
                     <Text fontWeight="bold">
                       {review.User?.username}
-                      <Badge ml="1" colorScheme="green">
+                      <Badge ml="1" colorScheme="purple">
                         {formatDate(review.createdAt)}
                       </Badge>
                     </Text>

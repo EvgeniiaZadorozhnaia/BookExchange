@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { verifyAccessToken } = require("../middlewares/verifyToken");
 const { Review, User } = require("../../db/models");
 
 router

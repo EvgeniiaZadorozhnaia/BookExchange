@@ -3,24 +3,39 @@ import ListOfBooks from "../../components/ListOfBooks/ListOfBooks";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getBooks } from "../../redux/thunkActions";
 import { IBooks } from "../../types/stateTypes";
-import { Box, Button } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Text,
+} from "@chakra-ui/react";
 import SearchInput from "../../components/SearchInput/SearchInput";
+import { homePageProps } from "../../types/propsTypes";
 
-function HomePage(): JSX.Element {
-  const booksPerPage: number = 8;
+function HomePage({ usersWithComments }: homePageProps): JSX.Element {
+  const booksPerPage: number = 10;
   const dispatch = useAppDispatch();
   const { books } = useAppSelector((state) => state.booksSlice);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
   const [selectedCity, setSelectedCity] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [filteredBooks, setFilteredBooks] = useState<IBooks>([]);
   const [displayedBooks, setDisplayedBooks] = useState<IBooks>([]);
+  const [isNoResultsOpen, setIsNoResultsOpen] = useState<boolean>(false);
+  const AnimatedBox = motion(Box);
 
   useEffect(() => {
     dispatch(getBooks());
-  }, []);
+  }, [usersWithComments]);
 
   useEffect(() => {
     if (books.length > 0) {
@@ -54,12 +69,15 @@ function HomePage(): JSX.Element {
         (book) => book.Owner.city === selectedCity
       );
     }
-    
 
     setFilteredBooks(updatedBooks);
     const total = Math.ceil(updatedBooks.length / booksPerPage);
     setTotalPages(total);
     setCurrentPage(1);
+
+    if (updatedBooks.length === 0) {
+      setIsNoResultsOpen(true);
+    }
   }
 
   const handlePageChange = (page: number) => {
@@ -85,12 +103,15 @@ function HomePage(): JSX.Element {
     return buttons;
   };
 
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     filterBooks();
     setInput("");
     setSelectedCity("");
+  };
+
+  const handleCloseNoResults = () => {
+    setIsNoResultsOpen(false);
   };
 
   return (
@@ -103,12 +124,49 @@ function HomePage(): JSX.Element {
         setOptions={setOptions}
         handleSubmit={handleSubmit}
       />
-      <ListOfBooks books={displayedBooks} />
-      {totalPages > 1 && (
-        <Box mt={4} textAlign="center">
-          {generatePageButtons()}
-        </Box>
+      {!books.length ? (
+        <Spinner size="xl" color="purple.500" />
+      ) : (
+        <ListOfBooks books={displayedBooks} />
       )}
+      {totalPages > 1 && (
+        <AnimatedBox
+          mt={4}
+          textAlign="center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {generatePageButtons()}
+        </AnimatedBox>
+      )}
+      <Modal isOpen={isNoResultsOpen} onClose={handleCloseNoResults} size="lg">
+        <ModalOverlay />
+        <ModalContent borderRadius="lg" p={6}>
+          <ModalHeader textAlign="center" fontSize="xl" color="brand.500">
+            Нет результатов
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody textAlign="center">
+            <Text mb={4}>
+              По вашему запросу ничего не найдено. Пожалуйста, попробуйте
+              изменить условия поиска.
+            </Text>
+
+            <Button
+              onClick={handleCloseNoResults}
+              ml={2}
+              minWidth="100px"
+              variant="outline"
+              colorScheme="purple"
+              opacity="0.8"
+              _hover={{ bg: "purple.100" }}
+            >
+              Закрыть
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 }

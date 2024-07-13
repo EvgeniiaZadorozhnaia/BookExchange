@@ -206,6 +206,17 @@ router
         .status(500)
         .json({ message: "Произошла ошибка при обновлении рейтинга" });
     }
-  });
+  })
+
+  .delete('/:userId/allBooks', async (req, res) => {
+    const { userId } = req.params;
+    try {
+      await Book.destroy({where: {ownerId: userId}});
+      res.status(204).send();
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Произошла ошибка при удалении книг" });
+    }
+  })
 
 module.exports = router;

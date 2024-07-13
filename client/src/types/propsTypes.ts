@@ -7,6 +7,7 @@ import {
   IBooks,
   IInputsBookCreationState,
   IReviews,
+  IUserWithComments,
 } from "./stateTypes";
 
 export interface AuthFormProps {
@@ -20,7 +21,7 @@ export interface ErrorModalProps {
   error: string;
 }
 
-export interface Book {
+export interface BookProps {
   book: IBook;
 }
 
@@ -90,4 +91,16 @@ export interface CreateBookFormProps {
   submitHandler: (event: React.FormEvent<HTMLFormElement>) => void;
   inputs: IInputsBookCreationState;
   setImg: Dispatch<SetStateAction<File | null>>;
+}
+
+export interface adminPageProps {
+  usersWithComments: IUserWithComments[];
+  setUsersWithComments: Dispatch<SetStateAction<IUserWithComments[]>>;
+}
+
+export type homePageProps = Omit<adminPageProps, 'setUsersWithComments'>;
+
+export interface starProps {
+  filled: boolean;
+  partial: number;
 }

@@ -12,6 +12,8 @@ export interface IInputs {
   }
 
 export interface IUser {
+    isAdmin: boolean;
+    isBlocked: boolean;
     id: number,
     username: string,
     email: string,
@@ -145,3 +147,12 @@ export interface IReview {
 }
 
 export type IReviews = IReview[];
+
+export interface IUserWithComments {
+  email: string;
+  id: number;
+  isBlocked: boolean;
+  rating: number;
+  username: string;
+  reviews: IReview[];
+}
