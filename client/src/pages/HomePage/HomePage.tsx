@@ -54,6 +54,7 @@ function HomePage(): JSX.Element {
         (book) => book.Owner.city === selectedCity
       );
     }
+    
 
     setFilteredBooks(updatedBooks);
     const total = Math.ceil(updatedBooks.length / booksPerPage);

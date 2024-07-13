@@ -23,6 +23,7 @@ const initialState: BooksState = {
   loading: true,
   error: {},
   book: {
+    User: { city: "" },
     id: 0,
     ownerId: 0,
     title: "",
@@ -124,7 +125,7 @@ const booksSlice: BooksSlice = createSlice({
         state.books = state.books.map((book) =>
           book.id === action.payload.id ? action.payload : book
         );
-        
+
         state.loading = false;
       }
     );
@@ -136,9 +137,12 @@ const booksSlice: BooksSlice = createSlice({
         state.loading = false;
       }
     );
-    builder.addCase(getFavoriteBooks.pending, (state: Draft<BooksState>): void => {
-      state.loading = true;
-    });
+    builder.addCase(
+      getFavoriteBooks.pending,
+      (state: Draft<BooksState>): void => {
+        state.loading = true;
+      }
+    );
     builder.addCase(
       getFavoriteBooks.fulfilled,
       (state: Draft<BooksState>, action: BookAction): void => {
@@ -154,9 +158,12 @@ const booksSlice: BooksSlice = createSlice({
         state.loading = false;
       }
     );
-    builder.addCase(deleteBookFromFavorites.pending, (state: Draft<BooksState>): void => {
-      state.loading = true;
-    });
+    builder.addCase(
+      deleteBookFromFavorites.pending,
+      (state: Draft<BooksState>): void => {
+        state.loading = true;
+      }
+    );
     builder.addCase(
       deleteBookFromFavorites.fulfilled,
       (state, action: PayloadAction<number>) => {

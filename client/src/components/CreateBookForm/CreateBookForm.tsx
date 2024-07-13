@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import { ChangeEvent } from "react";
 import {
   Button,
   FormControl,
@@ -13,13 +12,20 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
+import { CreateBookFormProps } from "../../types/propsTypes";
 
-function CreateBookForm({ isOpen, onClose, initialRef, finalRef, inputsHandler, submitHandler, inputs, setInputs, img, setImg }) {
-  const [dragActive, setDragActive] = useState(false);
-  
-
-  const handleChangeFile = (e) => {
-    if (e.target.files.length > 0) {
+function CreateBookForm({
+  isOpen,
+  onClose,
+  initialRef,
+  finalRef,
+  inputsHandler,
+  submitHandler,
+  inputs,
+  setImg,
+}: CreateBookFormProps) {
+  const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
       setImg(e.target.files[0]);
     }
   };
@@ -66,15 +72,23 @@ function CreateBookForm({ isOpen, onClose, initialRef, finalRef, inputsHandler, 
             />
             <FormLabel>Обложка</FormLabel>
             <Input
-                type="file"
-                id="pictureUrl"
-                name="frontpage"
-                onChange={handleChangeFile}
-              />
+              type="file"
+              id="pictureUrl"
+              name="frontpage"
+              onChange={handleChangeFile}
+            />
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button type="submit" colorScheme="teal" variant="outline" onClick={(e) => { submitHandler(e); onClose(); }}>
+          <Button
+            type="submit"
+            colorScheme="teal"
+            variant="outline"
+            onClick={(e) => {
+              submitHandler(e);
+              onClose();
+            }}
+          >
             Создать книгу
           </Button>
         </ModalFooter>

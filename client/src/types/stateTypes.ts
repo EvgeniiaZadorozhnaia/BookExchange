@@ -18,6 +18,7 @@ export interface IUser {
     password: string,
     avatarUrl: string,
     rating: number,
+    numberOfRating: number,
     placeOfMeeting: string,
     city: string,
     createdAt: string,
@@ -25,7 +26,7 @@ export interface IUser {
 }
 
 export interface IBook {
-    User: {city: string},
+    Owner: IUser,
     id: number,
     ownerId: number,
     title: string,
@@ -122,3 +123,25 @@ export interface BookWithOwner {
   description: string;
   Owner: Owner;
 }
+
+
+export interface formData {
+  title: string;
+  author: string;
+  pages: number;
+  frontpage: string;
+}
+
+export interface IReview {
+  id: number;
+  User: IUser;
+  bookId: number;
+  content: string;
+  dislikes: number;
+  likes: number;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type IReviews = IReview[];

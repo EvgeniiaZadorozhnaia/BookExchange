@@ -1,7 +1,8 @@
 import { StarIcon } from "@chakra-ui/icons";
 import { Badge, Box, CircularProgress } from "@chakra-ui/react";
+import { cardInfoProps } from "../../types/propsTypes";
 
-function CardInfo({ book, description }) {
+function CardInfo({ book, description }: cardInfoProps): JSX.Element {
   return (
     <>
       <Box

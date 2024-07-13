@@ -13,12 +13,14 @@ import BookOwnerPage from "./pages/BookOwnerPage/BookOwnerPage";
 import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
 import { useEffect, useState } from "react";
 import { refreshToken } from "./redux/thunkActions";
+import { IUser } from "./types/stateTypes";
+import { UserState } from "./components/initState";
 
 function App() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.authSlice);
-  const [loading, setLoading] = useState(true)
-  const [localUser, setLocalUser] = useState({})
+  const [loading, setLoading] = useState<boolean>(true)
+  const [localUser, setLocalUser] = useState<IUser>(UserState)
   
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -31,6 +33,8 @@ function App() {
   
   useEffect(() => {
     dispatch(refreshToken())
+    console.log(loading);
+    
   }, []);
 
   console.log("localUser", localUser);

@@ -19,21 +19,28 @@ import {
   AiOutlineDelete,
 } from "react-icons/ai";
 import { StarIcon } from "@chakra-ui/icons";
+import { reviewsProps } from "../../types/propsTypes";
+import { IReviews } from "../../types/stateTypes";
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
-function Reviews({ book, reviews, setReviews, setBook }) {
+function Reviews({
+  book,
+  reviews,
+  setReviews,
+  setBook,
+}: reviewsProps): JSX.Element {
   const { user } = useAppSelector((state) => state.authSlice);
-  const [reviewContent, setReviewContent] = useState("");
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [showLikeAlert, setshowLikeAlert] = useState(false);
+  const [reviewContent, setReviewContent] = useState<string>("");
+  const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
+  const [showLikeAlert, setshowLikeAlert] = useState<boolean>(false);
   const [currentRating, setCurrentRating] = useState<number | undefined>();
   const [rateBook, setRateBook] = useState<number>(0);
-  const [likes, setLikes] = useState([]);
-  const [dislikes, setDislikes] = useState([]);
+  const [likes, setLikes] = useState<number[]>([]);
+  const [dislikes, setDislikes] = useState<number[]>([]);
 
   useEffect(() => {
-    let timeout;
+    let timeout: number;
     if (showSuccessAlert) {
       timeout = setTimeout(() => {
         setShowSuccessAlert(false);
@@ -45,7 +52,7 @@ function Reviews({ book, reviews, setReviews, setBook }) {
   }, [showSuccessAlert]);
 
   useEffect(() => {
-    let timeout;
+    let timeout: number;
     if (showLikeAlert) {
       timeout = setTimeout(() => {
         setshowLikeAlert(false);
@@ -80,6 +87,8 @@ function Reviews({ book, reviews, setReviews, setBook }) {
           `${VITE_BASE_URL}${VITE_API}/likes/${user.id}`
         );
         setLikes(data);
+        console.log(currentRating);
+        
       } catch (error) {
         console.error("Ошибка при получении лайков пользователя:", error);
       }
@@ -101,12 +110,16 @@ function Reviews({ book, reviews, setReviews, setBook }) {
     getUserDislikes();
   }, []);
 
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
+  const formatDate = (dateString: string): string => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
     return new Date(dateString).toLocaleDateString("ru-RU", options);
   };
 
-  async function handleSubmitReview(event) {
+  async function handleSubmitReview(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (reviewContent.trim() === "") {
       alert("Отзыв не может быть пустым!");
@@ -121,7 +134,7 @@ function Reviews({ book, reviews, setReviews, setBook }) {
       );
       const newReview = response.data;
 
-      setReviews((prev) => [...prev, newReview]);
+      setReviews((prev: IReviews) => [...prev, newReview]);
       setReviewContent("");
       setShowSuccessAlert(true);
     } catch (error) {
@@ -129,7 +142,7 @@ function Reviews({ book, reviews, setReviews, setBook }) {
     }
   }
 
-  async function handleLike(id) {
+  async function handleLike(id: number) {
     try {
       if (!likes.includes(id)) {
         const review = reviews.find((review) => review.id === id);
@@ -161,7 +174,7 @@ function Reviews({ book, reviews, setReviews, setBook }) {
     }
   }
 
-  async function handleDislike(id) {
+  async function handleDislike(id: number) {
     try {
       if (!dislikes.includes(id)) {
         const review = reviews.find((review) => review.id === id);
@@ -227,7 +240,7 @@ function Reviews({ book, reviews, setReviews, setBook }) {
     }
   };
 
-  async function handleReviewDelete(id) {
+  async function handleReviewDelete(id: number) {
     try {
       await axiosInstance.delete(`${VITE_BASE_URL}${VITE_API}/reviews/${id}`);
       setReviews((prevReviews) =>
@@ -378,7 +391,7 @@ function Reviews({ book, reviews, setReviews, setBook }) {
             <h4 style={{ marginBottom: "5px" }}>Оставить отзыв</h4>
             {book?.Owner?.id !== user?.id ? (
               <Textarea
-                rows="3"
+                rows={3}
                 style={{
                   width: "100%",
                   padding: "8px",
@@ -397,7 +410,7 @@ function Reviews({ book, reviews, setReviews, setBook }) {
               />
             ) : (
               <Textarea
-                rows="3"
+                rows={3}
                 style={{
                   width: "100%",
                   padding: "8px",

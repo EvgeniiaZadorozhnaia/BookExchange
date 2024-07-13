@@ -1,4 +1,4 @@
-import { IBook, IBook2, IInputsBookCreationState } from "./../types/stateTypes";
+import { IBook, IInputsBookCreationState } from "./../types/stateTypes";
 import { IInputs, IUser } from "../types/stateTypes";
 
 export const InputsState: IInputs = {
@@ -14,6 +14,7 @@ export const UserState: IUser = {
   password: "",
   avatarUrl: "",
   rating: 0,
+  numberOfRating: 0,
   placeOfMeeting: "",
   city: "",
   createdAt: "",
@@ -21,7 +22,19 @@ export const UserState: IUser = {
 };
 
 export const BookState: IBook = {
-  User: {city: ''},
+  Owner: {
+    id: 0,
+    username: "",
+    email: "",
+    password: "",
+    avatarUrl: "",
+    rating: 0,
+    numberOfRating: 0,
+    placeOfMeeting: "",
+    city: "",
+    createdAt: "",
+    updatedAt: "",
+  },
   id: 0,
   ownerId: 0,
   title: "",
@@ -39,4 +52,3 @@ export const InputsBookCreationState: IInputsBookCreationState = {
   pages: 0,
   pictureUrl: "",
 };
-

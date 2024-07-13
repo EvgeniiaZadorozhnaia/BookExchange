@@ -12,13 +12,9 @@ import {
   Box,
   HStack
 } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 function OneCardForFavorites({ book, onDelete }): JSX.Element {
-const dispatch = useAppDispatch();
-const { user } = useAppSelector((state) => state.authSlice);
-const { books } = useAppSelector((state) => state.booksSlice);
 
 const deleteHandler = () => {
   if (book.id) {

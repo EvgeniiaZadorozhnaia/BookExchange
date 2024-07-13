@@ -10,7 +10,6 @@ export default function Navbar(): JSX.Element {
   const { user } = useAppSelector((state) => state.authSlice);
 
   const logoutHandler = () => {
-    console.log("logged out");
     dispatch(logoutUser());
     localStorage.removeItem("user") 
   }

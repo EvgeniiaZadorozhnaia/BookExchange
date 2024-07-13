@@ -7,8 +7,9 @@ import {
   StackDivider,
   Box,
 } from "@chakra-ui/react";
+import { Book } from "../../types/propsTypes";
 
-export default function MyBooks({ book }): JSX.Element {
+export default function MyBooks({ book }: Book): JSX.Element {
   return (
     <Card>
       <CardBody>

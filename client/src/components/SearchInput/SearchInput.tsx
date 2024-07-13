@@ -13,7 +13,7 @@ function SearchInput({
   setOptions,
   handleSubmit,
   options,
-}: SearchInputType) {
+}: SearchInputType): JSX.Element {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
