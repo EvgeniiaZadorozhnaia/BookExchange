@@ -41,6 +41,20 @@ export const addUser: NewUser = createAsyncThunk(
   }
 );
 
+export const signIn: NewUser = createAsyncThunk(
+  "users/signIn",
+  async ({ type, inputs }) => {
+    const res: AxiosResponse = await axiosInstance.post(
+      `${VITE_BASE_URL}${VITE_API}/auth/${type}`,
+      inputs,
+    );
+    const data = res.data.user as IUser;
+    setAccessToken(res.data.accessToken);
+    return data;
+  }
+);
+
+
 export const refreshToken: refreshTokenI = createAsyncThunk(
   "auth/refreshToken",
   async () => {

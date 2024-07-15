@@ -5,7 +5,7 @@ import { AuthFormProps } from "../../types/propsTypes";
 import { IInputs, IUser } from "../../types/stateTypes";
 import { InputsState } from "../initState";
 import { useNavigate } from "react-router-dom";
-import { addUser } from "../../redux/thunkActions";
+import { addUser, signIn } from "../../redux/thunkActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ErrorModal from "../ErrorModal";
 import axiosInstance from "../../axiosInstance";
@@ -78,6 +78,8 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     }
 
     if (type === "signin") {
+      console.log("Нажал signin");
+      
       if (user?.password === inputs.password || user?.email === inputs.email) {
         setTimeout(() => {
           showErrorModal(
@@ -85,7 +87,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
           );
         }, 200);
       } else {
-        dispatch(addUser({ type, formData }));
+        dispatch(signIn({ type, inputs }));
       }
     }
   };
