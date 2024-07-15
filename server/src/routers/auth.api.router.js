@@ -8,6 +8,7 @@ const multer = require("../middlewares/multer");
 
 router
   .post("/signup", multer.single("avatarUrl"), async (req, res) => {
+    console.log('Ruchka');
     const { username, email, password, city, placeOfMeeting } = req.body;
     const avatarUrl = req.file ? `${req.file.originalname}` : null;
 
