@@ -8,8 +8,9 @@
   align-items: center;
   text-align: center;
   left: 0;
-  background-color: #95696b;
+  background-color: #B5C6B8;
   z-index: 1;
+  color: rgb(0, 0, 0);
 }
 
 .left, .right {

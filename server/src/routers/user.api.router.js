@@ -28,9 +28,10 @@ router
 
   .get("/allCities", async (req, res) => {
     try {
-      const cities = await User.findAll({ attributes: ["city"] });
-      const uniqueCities = [...new Set(cities)];
-      res.json(uniqueCities.map((el) => el.city));
+      const cities = await User.findAll({ attributes: ["city", "id"] });
+      const newCities = cities.map((el) => el.city)
+      const uniqueCities = [...new Set(newCities)];
+      res.json(uniqueCities);
     } catch (error) {
       console.log(error.message);
       res

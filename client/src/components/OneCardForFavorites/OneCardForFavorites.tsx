@@ -10,9 +10,12 @@ import {
   Button,
   Box,
   Badge,
+  IconButton,
+  Icon,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { starProps } from "../../types/propsTypes";
+import { AiOutlineDelete } from "react-icons/ai";
 
 function OneCardForFavorites({ book, onDelete }): JSX.Element {
   const navigate = useNavigate();
@@ -60,23 +63,42 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
   );
 
   return (
-    <Card maxW="sm" m="20px">
+    <Card
+      backgroundColor="#B5C6B8"
+      borderRadius="lg"
+      border="1px solid #2f855a"
+      maxW="sm"
+      m="20px"
+    >
       <CardBody>
+        <IconButton
+          mt="2"
+          ml={270}
+          position="absolute"
+          aria-label="Удалить"
+          icon={<Icon as={AiOutlineDelete} />}
+          onClick={deleteHandler}
+          colorScheme="red"
+          
+        />
         <Image
-          h="450px"
-          src={book.pictureUrl}
+          h={"450px"}
+          w={"320px"}
+          src={`http://localhost:3000/static/${book.pictureUrl}`}
           alt="Picture"
           borderRadius="lg"
           onClick={() => navigate(`/books/oneBook/${book.id}`)}
         />
+
         <Stack mt="4" spacing="2">
-          <Heading size="md">{book.title}</Heading>
+          <Heading textAlign="center" size="md">
+            {book.title}
+          </Heading>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5" colorScheme="purple">
+            <Badge borderRadius="full" px="5">
               Автор
             </Badge>
             <Box
-              color="gray.500"
               fontWeight="semibold"
               letterSpacing="wide"
               fontSize="xs"
@@ -87,11 +109,10 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
             </Box>
           </Box>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5" colorScheme="purple">
+            <Badge borderRadius="full" px="5">
               Владелец
             </Badge>
             <Box
-              color="gray.500"
               fontWeight="semibold"
               letterSpacing="wide"
               fontSize="xs"
@@ -102,25 +123,28 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
             </Box>
           </Box>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5" colorScheme="purple">
+            <Badge borderRadius="full" px="5">
               Рейтинг владельца
             </Badge>
             <Box
-              color="gray.500"
               fontWeight="semibold"
               letterSpacing="wide"
               fontSize="xs"
               textTransform="uppercase"
               ml="2"
-              display="flex"  // Здесь добавляем стили для звёзд
+              display="flex" // Здесь добавляем стили для звёзд
               alignItems="center"
             >
               {Array(5)
                 .fill("")
                 .map((_, i) => {
                   const isFull = i < Math.floor(book.Owner?.rating);
-                  const isPartial = i === Math.floor(book.Owner?.rating) && book.Owner?.rating % 1 > 0;
-                  const partialPercentage = isPartial ? (book.Owner?.rating % 1) * 100 : 0;
+                  const isPartial =
+                    i === Math.floor(book.Owner?.rating) &&
+                    book.Owner?.rating % 1 > 0;
+                  const partialPercentage = isPartial
+                    ? (book.Owner?.rating % 1) * 100
+                    : 0;
 
                   return (
                     <Star
@@ -134,14 +158,6 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
           </Box>
         </Stack>
       </CardBody>
-      
-      <CardFooter display="flex" justifyContent="center">
-        <ButtonGroup>
-          <Button variant="outline" colorScheme="red" onClick={deleteHandler}>
-            Удалить
-          </Button>
-        </ButtonGroup>
-      </CardFooter>
     </Card>
   );
 }

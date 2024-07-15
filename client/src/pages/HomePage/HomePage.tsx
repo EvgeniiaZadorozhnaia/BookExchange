@@ -20,7 +20,7 @@ import SearchInput from "../../components/SearchInput/SearchInput";
 import { homePageProps } from "../../types/propsTypes";
 
 function HomePage({ usersWithComments }: homePageProps): JSX.Element {
-  const booksPerPage: number = 10;
+  const booksPerPage: number = 8;
   const dispatch = useAppDispatch();
   const { books } = useAppSelector((state) => state.booksSlice);
   const [input, setInput] = useState<string>("");
@@ -91,10 +91,10 @@ function HomePage({ usersWithComments }: homePageProps): JSX.Element {
         <Button
           key={i}
           onClick={() => handlePageChange(i)}
-          colorScheme={i === currentPage ? "purple" : "gray"}
+          colorScheme={i === currentPage ? "green" : "gray"}
           mr={2}
           mb={2}
-          _hover={{ bg: "purple.100" }}
+          _hover={{ bg: "green.100" }}
         >
           {i}
         </Button>

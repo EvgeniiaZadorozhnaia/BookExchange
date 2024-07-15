@@ -3,10 +3,12 @@ import { AxiosResponse } from "axios";
 import axiosInstance from "../../axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  Box,
   Button,
   Card,
   CardBody,
   CircularProgress,
+  Flex,
   Heading,
   Image,
   Stack,
@@ -115,36 +117,52 @@ function OneBookPage(): JSX.Element {
                     {book?.Owner?.id !== user.id ? (
                       <>
                         {" "}
-                        <Button
-                          onClick={() => navigate(`/Book/${book.id}/owner`)}
-                          mr={2}
-                          mb={2}
-                          variant="outline"
-                          colorScheme="purple"
-                          opacity="0.8"
-                          _hover={{ bg: "purple.100" }}
-                        >
-                          Предложить обмен
-                        </Button>
-                        <Button
-                          onClick={toggleFavorite}
-                          colorScheme={isFavorite ? "red" : "gray"}
-                          variant="ghost"
-                          aria-label={
-                            isFavorite
-                              ? "Remove from favorites"
-                              : "Add to favorites"
-                          }
-                          _hover={{
-                            color: isFavorite ? "red.500" : "gray.500",
-                          }}
-                        >
-                          {isFavorite ? (
-                            <MdFavorite size={24} />
-                          ) : (
-                            <MdFavoriteBorder size={24} />
-                          )}
-                        </Button>
+                        <Flex alignItems={"center"} flexDirection={"column"}>
+                          <Button
+                            width={200}
+                            onClick={() => navigate(`/Book/${book.id}/owner`)}
+                            mr={2}
+                            mb={2}
+                            variant="outline"
+                            colorScheme="purple"
+                            opacity="0.8"
+                            _hover={{ bg: "purple.100" }}
+                          >
+                            Предложить обмен
+                          </Button>
+                          <Button
+                            onClick={toggleFavorite}
+                            colorScheme={isFavorite ? "red" : "gray"}
+                            variant="ghost"
+                            aria-label={
+                              isFavorite
+                                ? "Remove from favorites"
+                                : "Add to favorites"
+                            }
+                            _hover={{
+                              color: isFavorite ? "red.500" : "gray.500",
+                            }}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            {isFavorite ? (
+                              <>
+                                <MdFavorite size={24} />
+                                <span style={{ marginLeft: 8 }}>
+                                  В избранном
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <MdFavoriteBorder size={24} />
+                                <span style={{ marginLeft: 8 }}>
+                                  Добавить в избранное
+                                </span>
+                              </>
+                            )}
+                          </Button>
+                        </Flex>
                       </>
                     ) : null}
                   </Heading>
