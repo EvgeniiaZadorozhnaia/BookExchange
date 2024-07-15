@@ -5,7 +5,6 @@ import {
   Image,
   Stack,
   Heading,
-  Divider,
   CardFooter,
   ButtonGroup,
   Button,
@@ -14,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { starProps } from "../../types/propsTypes";
-
 
 function OneCardForFavorites({ book, onDelete }): JSX.Element {
   const navigate = useNavigate();
@@ -103,30 +101,26 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
               {book.Owner?.username}
             </Box>
           </Box>
-      <Box display="flex" justifyContent="space-between" p="6">
-        <Box display="flex" alignItems="center">
-          <Badge borderRadius="full" px="5" colorScheme="purple">
-            Рейтинг владельца
-          </Badge>
-          <Box
-            color="gray.500"
-            fontWeight="semibold"
-            letterSpacing="wide"
-            fontSize="xs"
-            textTransform="uppercase"
-            ml="2"
-          >
-            <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="baseline">
+            <Badge borderRadius="full" px="5" colorScheme="purple">
+              Рейтинг владельца
+            </Badge>
+            <Box
+              color="gray.500"
+              fontWeight="semibold"
+              letterSpacing="wide"
+              fontSize="xs"
+              textTransform="uppercase"
+              ml="2"
+              display="flex"  // Здесь добавляем стили для звёзд
+              alignItems="center"
+            >
               {Array(5)
                 .fill("")
                 .map((_, i) => {
                   const isFull = i < Math.floor(book.Owner?.rating);
-                  const isPartial =
-                    i === Math.floor(book.Owner?.rating) &&
-                    book.Owner?.rating % 1 > 0;
-                  const partialPercentage = isPartial
-                    ? (book.Owner?.rating % 1) * 100
-                    : 0;
+                  const isPartial = i === Math.floor(book.Owner?.rating) && book.Owner?.rating % 1 > 0;
+                  const partialPercentage = isPartial ? (book.Owner?.rating % 1) * 100 : 0;
 
                   return (
                     <Star
@@ -138,8 +132,6 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
                 })}
             </Box>
           </Box>
-        </Box>
-      </Box>
         </Stack>
       </CardBody>
       
