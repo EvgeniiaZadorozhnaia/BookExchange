@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../axiosInstance";
 import { AxiosResponse } from "axios";
 import { SearchInputType } from "../../types/propsTypes";
+import styles from "./SearchInput.module.css";
 
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 
@@ -17,7 +18,6 @@ function SearchInput({
   const [isActive, setIsActive] = useState(false);
 
   console.log(options);
-  
 
   const handleInputFocus = () => setIsActive(true);
   const handleInputBlur = () => setIsActive(false);
@@ -48,25 +48,26 @@ function SearchInput({
       <form onSubmit={handleSubmit}>
         <Flex align="center">
           <Input
+            className={styles.placeholder}
             type="text"
+            color="black"
             value={input}
             onChange={handleInputChange}
             placeholder="Ключевые слова"
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
             style={{
-              borderColor: isActive ? "#2f855a" : "initial",
-              borderWidth: "1px",
-              borderStyle: "solid",
+              borderColor: isActive ? "#2f855a" : "black",
+              border: "1px solid black",
             }}
             flexGrow={1}
             mr={2}
           />
-          <FormControl>
+          <FormControl color="black">
             <Select
               placeholder="Выберите город"
               onChange={handleCityChange}
-              borderWidth="1px"
+              border="1px solid black"
               borderRadius="md"
               _focus={{
                 borderColor: "green.500",

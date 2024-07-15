@@ -23,10 +23,10 @@ function OneCard({ book }: BookProps): JSX.Element {
         />
         <Stack mt="6" spacing="3">
           <Heading className={styles.title} size="md">
-            {book.title} ⭐{book.rating}
+            {book?.title} ⭐{book?.rating}
           </Heading>
           <Heading className={styles.title} size="md">
-            Владелец: {book.Owner.username}
+            Владелец: {book?.Owner?.username}
           </Heading>
         </Stack>
       </CardBody>
