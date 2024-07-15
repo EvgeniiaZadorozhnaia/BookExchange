@@ -3,7 +3,7 @@ export interface IInputs {
   email: string;
   password: string;
   city?: string;
-  place?: string;
+  placeOfMeeting?: string;
   avatarUrl?: string;
 }
 
