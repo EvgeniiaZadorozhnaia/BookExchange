@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(cors(corsConfig));
 app.use(removeHeader);
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/static', express.static(path.join(__dirname, '../images')));
 
 app.use("/api/v1", apiRouter);
 

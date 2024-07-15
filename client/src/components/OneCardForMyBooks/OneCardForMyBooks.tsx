@@ -23,7 +23,7 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
   return (
     <Card maxW="sm" m='20px'>
       <CardBody>
-        <Image h='450px' src={book.pictureUrl} alt="Picture" borderRadius="lg" />
+        <Image h='450px' src={`http://localhost:3000/static/${book.pictureUrl}`} alt="Picture" borderRadius="lg" />
         <Stack mt="6" spacing="3">
           <Heading size="md">{book.title}</Heading>
           <Text>Здесь будет аннотация к книге</Text>
