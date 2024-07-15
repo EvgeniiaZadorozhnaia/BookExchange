@@ -42,6 +42,11 @@ export default function Profile(): JSX.Element {
     useState();
   const messageContainerRef = useRef(null);
 
+  // console.log('messages', messages);
+  // console.log('user', user);
+  
+  
+
   const fetchExchangeHistory = async () => {
     try {
       const { data } = await axiosInstance.get(
@@ -49,12 +54,14 @@ export default function Profile(): JSX.Element {
       );
       setActiveStatusOutcomeExchange(
         data.exchangesOutcoming.filter(
-          (el: Exchange) => el.status === "pending" || el.status === "processing"
+          (el: Exchange) =>
+            el.status === "pending" || el.status === "processing"
         )
       );
       setActiveStatusIncomeExchange(
         data.exchangesIncoming.filter(
-          (el: Exchange ) => el.status === "pending" || el.status === "processing"
+          (el: Exchange) =>
+            el.status === "pending" || el.status === "processing"
         )
       );
       setExchangeHistoryIncoming(data.exchangesIncoming);
@@ -259,8 +266,8 @@ export default function Profile(): JSX.Element {
                         <Avatar
                           src={
                             message.authorId === user.id
-                              ? user.avatarUrl
-                              : message.Author.avatarUrl
+                              ? `http://localhost:3000/static/${user.avatarUrl}`
+                              : `http://localhost:3000/static/${message.Author.avatarUrl}`
                           }
                           size="xs"
                           mr={2}

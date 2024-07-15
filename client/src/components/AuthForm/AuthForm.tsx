@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./AuthForm.module.css";
-import { Input, Button, useDisclosure } from "@chakra-ui/react";
+import { Input, Button, useDisclosure, FormLabel } from "@chakra-ui/react";
 import { AuthFormProps } from "../../types/propsTypes";
 import { IInputs, IUser } from "../../types/stateTypes";
 import { InputsState } from "../initState";
@@ -14,6 +14,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
   const [inputs, setInputs] = useState<IInputs>(InputsState);
   const { user } = useAppSelector((state) => state.authSlice);
   const [error, setError] = useState<string>("");
+  const [avatar, setAvatar] = useState<File | null>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -23,6 +24,12 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     setInputs(
       (prev: IInputs): IInputs => ({ ...prev, [e.target.name]: e.target.value })
     );
+  };
+
+  const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setAvatar(e.target.files[0]);
+    }
   };
 
   const showErrorModal = (errorText: string): void => {
@@ -40,6 +47,13 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     e: React.FormEvent<HTMLFormElement>
   ): void => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("username", inputs.username);
+    formData.append("email", inputs.email);
+    formData.append("password", inputs.password);
+    formData.append("city", inputs.city);
+    formData.append("placeOfMeeting", inputs.placeOfMeeting);
+    formData.append("avatarUrl", avatar);
     if (type === "signup") {
       if (!inputs.email || !inputs.password || inputs.password.length < 8) {
         setTimeout(() => {
@@ -48,7 +62,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
           );
         }, 200);
       } else {
-        dispatch(addUser({ type, inputs }));
+        dispatch(addUser({ type, formData }));
       }
     }
 
@@ -60,7 +74,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
           );
         }, 200);
       } else {
-        dispatch(addUser({ type, inputs }));
+        dispatch(addUser({ type, formData }));
       }
     }
   };
@@ -126,6 +140,27 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 name="password"
                 value={inputs?.password || ""}
                 placeholder="Пароль"
+              />
+              <Input
+                onChange={changeHandler}
+                borderColor="#3f3e3e"
+                name="city"
+                value={inputs?.city || ""}
+                placeholder="Где вы проживаете"
+              />
+              <Input
+                onChange={changeHandler}
+                borderColor="#3f3e3e"
+                name="placeOfMeeting"
+                value={inputs?.placeOfMeeting || ""}
+                placeholder="Где вам удобно проводить обмен?"
+              />
+              <FormLabel>Загрузите ваш аватар</FormLabel>
+              <Input
+                type="file"
+                id="avatarUrl"
+                name="avatarUrl"
+                onChange={handleChangeFile}
               />
             </>
           )}

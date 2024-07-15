@@ -5,6 +5,9 @@ export const InputsState: IInputs = {
   username: "",
   email: "",
   password: "",
+  city: "",
+  placeOfMeeting: "",
+  avatarUrl: "",
 };
 
 export const UserState: IUser = {

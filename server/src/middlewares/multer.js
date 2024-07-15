@@ -18,8 +18,6 @@ const storage = multer.diskStorage({
 
 });
 
-
-
 const types = ['image/webp', 'image/png', 'image/gif', 'image/jpeg', 'image/jpg'];
 
 const fileFilter = (req, file, cb) => {

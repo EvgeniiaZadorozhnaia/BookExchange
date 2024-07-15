@@ -15,16 +15,25 @@ import {
   NewUser,
   refreshTokenI,
 } from "./types/thunk";
-import { createBookProps, deleteBookProps, editBookProps } from "../types/propsTypes";
+import {
+  createBookProps,
+  deleteBookProps,
+  editBookProps,
+} from "../types/propsTypes";
 
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 
 export const addUser: NewUser = createAsyncThunk(
   "users/create",
-  async ({ type, inputs }: IType) => {
+  async ({ type, formData }) => {
     const res: AxiosResponse = await axiosInstance.post(
       `${VITE_BASE_URL}${VITE_API}/auth/${type}`,
-      inputs
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     const data = res.data.user as IUser;
     setAccessToken(res.data.accessToken);
