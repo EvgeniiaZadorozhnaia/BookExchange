@@ -107,7 +107,6 @@ function HomePage({ usersWithComments }: homePageProps): JSX.Element {
     event.preventDefault();
     filterBooks();
     setInput("");
-    setSelectedCity("");
   };
 
   const handleCloseNoResults = () => {

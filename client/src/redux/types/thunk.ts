@@ -52,6 +52,6 @@ type AsyncThunkConfig = {
 
   export type FavoriteBook = AsyncThunk<IBooks[], number, AsyncThunkConfig>
 
-  export type BookDelete = AsyncThunk<number | undefined, deleteBookProps, AsyncThunkConfig>
+  export type BookDelete = AsyncThunk<number, deleteBookProps, AsyncThunkConfig>
 
-  export type addFavorite = AsyncThunk<number | undefined, deleteBookProps, AsyncThunkConfig>
+  export type addFavorite = AsyncThunk<number, deleteBookProps, AsyncThunkConfig>
