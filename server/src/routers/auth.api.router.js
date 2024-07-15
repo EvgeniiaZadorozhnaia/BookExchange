@@ -9,31 +9,16 @@ const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    user: "admin@bookExchange.com",
-    pass: "admin123",
+    user: "eu.skorobogatowa@gmail.com",
+    pass: "jjns jwze fhbs jyjt",
   },
 });
 
 router
-
-  .post("/send-email", (req, res) => {
-    const { to, subject, text } = req.body;
-
-    const mailOptions = {
-      from: "admin@bookExchange.com",
-      to,
-      subject,
-      text,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return res.status(500).send(error.toString());
-      }
-      res.status(200).send("Email sent: " + info.response);
-    });
-  })
   .post("/signup", multer.single("avatarUrl"), async (req, res) => {
     const { username, email, password, city, placeOfMeeting } = req.body;
     const avatarUrl = req.file ? `${req.file.originalname}` : null;
@@ -75,6 +60,26 @@ router
     res
       .cookie("refreshToken", refreshToken, cookiesConfig.refresh)
       .json({ user: plainUser, accessToken });
+  })
+
+  .post("/send", async (req, res) => {
+    const { to, subject, text } = req.body;
+
+
+    const mailOptions = {
+      from: "eu.skorobogatowa@gmail.com",
+      to,
+      subject,
+      text,
+    };
+
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      res.status(200).send(`Email sent: ${info.response}`);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      res.status(500).send(`Error sending email: ${error.toString()}`);
+    }
   })
   .post("/signin", async (req, res) => {
     const { email, password } = req.body;

@@ -28,12 +28,16 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     );
   };
 
-  const sendMail = async() => {
-    await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/auth/send-email`, {
-      to: user?.email,
-      subject: "Регистрация завершена",
-      text: `Привет ${user.username},\n\nВаша регистрация успешно завершена!`,
-    });
+  const sendMail = async (us) => {
+    try {
+      await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/auth/send`, {
+        to: us.email,
+        subject: "Регистрация завершена",
+        text: `Привет ${us.username},\n\nВаша регистрация успешно завершена!`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -72,14 +76,15 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
           );
         }, 200);
       } else {
-        dispatch(addUser({ type, formData }));
-        sendMail();
+        dispatch(addUser({ type, formData })).then((user) =>
+          sendMail(user.payload)
+        );
       }
     }
 
     if (type === "signin") {
       console.log("Нажал signin");
-      
+
       if (user?.password === inputs.password || user?.email === inputs.email) {
         setTimeout(() => {
           showErrorModal(
