@@ -1,5 +1,4 @@
 .wrapper {
-  background-image: url('pictures/black-patterned-texture-431613736816.jpg');
   position: fixed;
   top: 0px;
   width: 100%;
@@ -9,7 +8,7 @@
   align-items: center;
   text-align: center;
   left: 0;
-  background-color: rgba(22, 9, 156, 0.3);
+  background-color: #B5C6B8;
   z-index: 1;
 }
 

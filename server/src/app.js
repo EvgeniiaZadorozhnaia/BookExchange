@@ -26,10 +26,6 @@ app.use('/static', express.static(path.join(__dirname, '../images')));
 
 app.use("/api/v1", apiRouter);
 
-// app.use("*", (req, res) => {
-//   res.redirect("/");
-// });
-
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT} port`);
 });

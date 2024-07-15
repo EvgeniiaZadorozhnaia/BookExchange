@@ -7,22 +7,26 @@ import { useNavigate } from "react-router-dom";
 function OneCard({ book }: BookProps): JSX.Element {
   const navigate = useNavigate();
   return (
-    <Card
-      onClick={() => navigate(`/books/oneBook/${book.id}`)}
-      className={styles.card}
-      maxW="sm"
-      m="20px"
-    >
-      <CardBody>
+    <Card className={styles.card} maxW="sm" m="20px">
+      <CardBody
+        backgroundColor="#B5C6B8"
+        borderRadius="lg"
+        border="1px solid #2f855a"
+      >
         <Image
           h={"450px"}
+          w={"320px"}
           src={`http://localhost:3000/static/${book.pictureUrl}`}
           alt="Picture"
           borderRadius="lg"
+          onClick={() => navigate(`/books/oneBook/${book.id}`)}
         />
         <Stack mt="6" spacing="3">
           <Heading className={styles.title} size="md">
             {book.title} ⭐{book.rating}
+          </Heading>
+          <Heading className={styles.title} size="md">
+            Владелец: {book.Owner.username}
           </Heading>
         </Stack>
       </CardBody>
