@@ -100,7 +100,7 @@ function OneBookPage(): JSX.Element {
               <CardBody textAlign="center">
                 <Image
                   h="550px"
-                  src={`/${book.pictureUrl}`}
+                  src={`http://localhost:3000/static/${book.pictureUrl}`}
                   alt="Picture"
                   borderRadius="lg"
                 />

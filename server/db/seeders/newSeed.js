@@ -11,7 +11,7 @@ module.exports = {
           email: "kseniakrivda@gmail.com",
           password: await bcrypt.hash("admin123", 10),
           avatarUrl: "",
-          rating: 5.0,
+          rating: 2.3,
           numberOfRating: 1,
           placeOfMeeting: "Тайланд",
           city: "Пхукет",
@@ -31,21 +31,10 @@ module.exports = {
           email: "eu.skorobogatowa@gmail.com",
           password: await bcrypt.hash("admin123", 10),
           avatarUrl: "",
-          rating: 4.0,
+          rating: 4.2,
           numberOfRating: 1,
           placeOfMeeting: "Ботанический сад",
           city: "Астана",
-        },
-        {
-          username: "BookExchange",
-          email: "admin@bookExchange.com",
-          password: await bcrypt.hash("admin123", 10),
-          avatarUrl:
-            "https://sun9-67.userapi.com/c812325/u403943870/-3/x_bf7e9e5688.jpg",
-          rating: 2.5,
-          numberOfRating: 1,
-          placeOfMeeting: "none",
-          city: "Москва",
           isAdmin: true,
         },
       ],
@@ -128,7 +117,7 @@ module.exports = {
           pictureUrl: "O_myshax.webp",
         },
         {
-          ownerId: 3,
+          ownerId: 1,
           title: "Грозовой Перевал",
           author: "Эмили Бронте",
           pages: 384,
@@ -137,7 +126,7 @@ module.exports = {
           pictureUrl: "Pereval.webp",
         },
         {
-          ownerId: 3,
+          ownerId: 2,
           title: "Ромео и Джульетта",
           author: "Уильям Шекспир",
           pages: 192,
@@ -146,7 +135,7 @@ module.exports = {
           pictureUrl: "Romeo.webp",
         },
         {
-          ownerId: 3,
+          ownerId: 1,
           title: "Скотный двор",
           author: "Джордж Оруэлл",
           pages: 160,
@@ -155,7 +144,7 @@ module.exports = {
           pictureUrl: "Skotny_dvor.webp",
         },
         {
-          ownerId: 3,
+          ownerId: 2,
           title: "Убить пересмешника",
           author: "Харпер Ли",
           pages: 416,
@@ -193,7 +182,7 @@ module.exports = {
           dislikes: 8,
         },
         {
-          userId: 3,
+          userId: 1,
           bookId: 2,
           content: "Не знаю, по-моему так себе",
           likes: 3,
@@ -202,138 +191,9 @@ module.exports = {
       ],
       {}
     );
-
-    await queryInterface.bulkInsert(
-      "Exchanges",
-      [
-        {
-          fromUser: 1,
-          fromBook: 1,
-          toUser: 2,
-          toBook: 5,
-          status: "pending",
-        },
-        {
-          fromUser: 1,
-          fromBook: 3,
-          toUser: 3,
-          toBook: 11,
-          status: "pending",
-        },
-        {
-          fromUser: 2,
-          fromBook: 6,
-          toUser: 3,
-          toBook: 12,
-          status: "processing",
-        },
-        {
-          fromUser: 2,
-          fromBook: 6,
-          toUser: 1,
-          toBook: 12,
-          status: "processing",
-        },
-        {
-          fromUser: 3,
-          fromBook: 5,
-          toUser: 1,
-          toBook: 10,
-          status: "processing",
-        },
-      ],
-      {}
-    );
-
-    await queryInterface.bulkInsert(
-      "Favorites",
-      [
-        {
-          userId: 1,
-          bookId: 5,
-        },
-        {
-          userId: 1,
-          bookId: 6,
-        },
-        {
-          userId: 2,
-          bookId: 1,
-        },
-        {
-          userId: 2,
-          bookId: 10,
-        },
-        {
-          userId: 2,
-          bookId: 11,
-        },
-        {
-          userId: 2,
-          bookId: 12,
-        },
-        {
-          userId: 2,
-          bookId: 2,
-        },
-        {
-          userId: 2,
-          bookId: 3,
-        },
-        {
-          userId: 3,
-          bookId: 4,
-        },
-        {
-          userId: 3,
-          bookId: 2,
-        },
-      ],
-      {}
-    );
-
-    await queryInterface.bulkInsert(
-      "Messages",
-      [
-        {
-          text: "Привет. Хочу забрать твою книгу!",
-          authorId: 1,
-          toUser: 2,
-          exchangeId: 4,
-        },
-        {
-          text: "Поскорее!",
-          authorId: 1,
-          toUser: 2,
-          exchangeId: 4,
-        },
-        {
-          text: "Добрый вечер! Забираю Вашу книгу!",
-          authorId: 1,
-          toUser: 3,
-          exchangeId: 5,
-        },
-        {
-          text: "Привет! Забираю!",
-          authorId: 2,
-          toUser: 1,
-          exchangeId: 1,
-        },
-        {
-          text: "Добрый вечер! I need this book!",
-          authorId: 3,
-          toUser: 1,
-          exchangeId: 2,
-        },
-      ],
-      {}
-    );
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Messages", null, {});
-    await queryInterface.bulkDelete("Favorites", null, {});
-    await queryInterface.bulkDelete("Exchanges", null, {});
     await queryInterface.bulkDelete("Reviews", null, {});
     await queryInterface.bulkDelete("Books", null, {});
     await queryInterface.bulkDelete("Users", null, {});
