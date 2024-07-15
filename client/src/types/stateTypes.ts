@@ -1,10 +1,10 @@
 export interface IInputs {
-  username?: string;
+  username: string;
   email: string;
   password: string;
-  city: string;
-  place: string;
-  avatarUrl: string;
+  city?: string;
+  place?: string;
+  avatarUrl?: string;
 }
 
 export interface IInputsBookCreationState {
@@ -15,19 +15,19 @@ export interface IInputsBookCreationState {
 }
 
 export interface IUser {
-  isAdmin: boolean;
-  isBlocked: boolean;
-  id: number;
+  isAdmin?: boolean;
+  isBlocked?: boolean;
+  id?: number;
   username: string;
   email: string;
   password: string;
-  avatarUrl: string;
-  rating: number;
-  numberOfRating: number;
-  placeOfMeeting: string;
-  city: string;
-  createdAt: string;
-  updatedAt: string;
+  avatarUrl?: string;
+  rating?: number;
+  numberOfRating?: number;
+  placeOfMeeting?: string;
+  city?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IBook {
