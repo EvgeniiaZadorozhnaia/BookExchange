@@ -16,7 +16,7 @@ function OneCard({ book }: BookProps): JSX.Element {
       <CardBody>
         <Image
           h={"450px"}
-          src={`/${book.pictureUrl}`}
+          src={`http://localhost:3000/static/${book.pictureUrl}`}
           alt="Picture"
           borderRadius="lg"
         />

@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { addUser, signIn } from "../../redux/thunkActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ErrorModal from "../ErrorModal";
+import axiosInstance from "../../axiosInstance";
+const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 
 export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
   const dispatch = useAppDispatch();
@@ -24,6 +26,18 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     setInputs(
       (prev: IInputs): IInputs => ({ ...prev, [e.target.name]: e.target.value })
     );
+  };
+
+  const sendMail = async (us) => {
+    try {
+      await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/auth/send`, {
+        to: us.email,
+        subject: "Регистрация завершена",
+        text: `Привет ${us.username},\n\nВаша регистрация успешно завершена!`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,13 +76,15 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
           );
         }, 200);
       } else {
-        dispatch(addUser({ type, formData }));
+        dispatch(addUser({ type, formData })).then((user) =>
+          sendMail(user.payload)
+        );
       }
     }
 
     if (type === "signin") {
       console.log("Нажал signin");
-      
+
       if (user?.password === inputs.password || user?.email === inputs.email) {
         setTimeout(() => {
           showErrorModal(

@@ -5,6 +5,18 @@ const { User } = require("../../db/models");
 const generateToken = require("../utils/generateToken");
 const cookiesConfig = require("../configs/cookiesConfig");
 const multer = require("../middlewares/multer");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "eu.skorobogatowa@gmail.com",
+    pass: "jjns jwze fhbs jyjt",
+  },
+});
 
 router
   .post("/signup", multer.single("avatarUrl"), async (req, res) => {
@@ -12,7 +24,9 @@ router
     const { username, email, password, city, placeOfMeeting } = req.body;
     const avatarUrl = req.file ? `${req.file.originalname}` : null;
 
-    if (!(username && email && password && city && placeOfMeeting && avatarUrl)) {
+    if (
+      !(username && email && password && city && placeOfMeeting && avatarUrl)
+    ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -47,6 +61,26 @@ router
     res
       .cookie("refreshToken", refreshToken, cookiesConfig.refresh)
       .json({ user: plainUser, accessToken });
+  })
+
+  .post("/send", async (req, res) => {
+    const { to, subject, text } = req.body;
+
+
+    const mailOptions = {
+      from: "eu.skorobogatowa@gmail.com",
+      to,
+      subject,
+      text,
+    };
+
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      res.status(200).send(`Email sent: ${info.response}`);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      res.status(500).send(`Error sending email: ${error.toString()}`);
+    }
   })
   .post("/signin", async (req, res) => {
     const { email, password } = req.body;
