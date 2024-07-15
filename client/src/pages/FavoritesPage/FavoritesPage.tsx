@@ -31,8 +31,8 @@ function FavoritesPage() {
 
 
     return (
-        <div>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+        <Box>
+            <Box style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
                 {books.length > 4 && (
                     <IconButton
                         icon={<ChevronLeftIcon />}
@@ -54,8 +54,8 @@ function FavoritesPage() {
                         aria-label="Slide Right"
                     />
                 )}
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 }
 
