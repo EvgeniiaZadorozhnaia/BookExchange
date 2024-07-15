@@ -102,7 +102,7 @@ export default function BookOwnerPage(): JSX.Element {
       console.error("Ошибка при обновлении рейтинга:", error);
     }
   };
-
+  
   const sendOfferForExchange = async () => {
     try {
       const newExchange = {
@@ -155,7 +155,7 @@ export default function BookOwnerPage(): JSX.Element {
                   <Image
                     borderRadius="full"
                     boxSize="200px"
-                    src="https://bit.ly/dan-abramov"
+                    src={`http://localhost:3000/static/${owner?.avatarUrl}`}
                     alt="userProfilePicture"
                   />
                 </Flex>
@@ -239,7 +239,7 @@ export default function BookOwnerPage(): JSX.Element {
                   <Image
                     borderRadius="full"
                     boxSize="200px"
-                    src="https://bit.ly/dan-abramov"
+                    src={`http://localhost:3000/static/${owner?.avatarUrl}`}
                     alt="userProfilePicture"
                   />
                 </Flex>

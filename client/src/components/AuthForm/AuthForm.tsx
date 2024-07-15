@@ -33,7 +33,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
       await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/auth/send`, {
         to: us.email,
         subject: "Регистрация завершена",
-        text: `Привет ${us.username},\n\nВаша регистрация успешно завершена!`,
+        text: `Здравствуйте ,${us.username},\n\nВаша регистрация успешно завершена! \n\nМы рады, что вы к нам присоединились!`,
       });
     } catch (error) {
       console.log(error);
