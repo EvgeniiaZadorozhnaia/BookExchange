@@ -88,7 +88,6 @@ function Reviews({
         );
         setLikes(data);
         console.log(currentRating);
-        
       } catch (error) {
         console.error("Ошибка при получении лайков пользователя:", error);
       }
@@ -284,7 +283,9 @@ function Reviews({
                 overflowWrap: "break-word",
               }}
             >
-              <Avatar src="https://bit.ly/sage-adebayo" />
+              <Avatar
+                src={`http://localhost:3000/static/${review?.User.avatarUrl}`}
+              />
               <div style={{ marginLeft: "15px", flexGrow: 1 }}>
                 <div
                   style={{

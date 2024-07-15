@@ -7,7 +7,7 @@ router
     try {
       const reviews = await Review.findAll({
         where: { bookId },
-        include: { model: User, attributes: ["username", "id", "createdAt"] },
+        include: { model: User, attributes: ["username", "id", "createdAt", "avatarUrl"] },
       });
       res.json(reviews);
     } catch (error) {

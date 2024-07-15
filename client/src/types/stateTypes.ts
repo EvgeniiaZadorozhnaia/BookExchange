@@ -1,51 +1,54 @@
 export interface IInputs {
-    username?: string,
-    email: string,
-    password: string,
-  }
+  username?: string;
+  email: string;
+  password: string;
+  city: string;
+  place: string;
+  avatarUrl: string;
+}
 
-  export interface IInputsBookCreationState {
-    title?: string,
-    author?: string,
-    pages?: number,
-    pictureUrl?: string,
-  }
+export interface IInputsBookCreationState {
+  title?: string;
+  author?: string;
+  pages?: number;
+  pictureUrl?: string;
+}
 
 export interface IUser {
-    isAdmin: boolean;
-    isBlocked: boolean;
-    id: number,
-    username: string,
-    email: string,
-    password: string,
-    avatarUrl: string,
-    rating: number,
-    numberOfRating: number,
-    placeOfMeeting: string,
-    city: string,
-    createdAt: string,
-    updatedAt: string
+  isAdmin: boolean;
+  isBlocked: boolean;
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+  avatarUrl: string;
+  rating: number;
+  numberOfRating: number;
+  placeOfMeeting: string;
+  city: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IBook {
-    Owner: IUser,
-    id: number,
-    ownerId: number,
-    title: string,
-    author: string,
-    pages: number,
-    rating: number,
-    pictureUrl: string,
-    createdAt: string,
-    updatedAt: string
+  Owner: IUser;
+  id: number;
+  ownerId: number;
+  title: string;
+  author: string;
+  pages: number;
+  rating: number;
+  pictureUrl: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IType {
-    inputs: IInputs
-    type: string;
-  }
+  inputs: IInputs;
+  type: string;
+}
 
-export type IBooks = IBook[]
+export type IBooks = IBook[];
 
 export interface CalendarEvent {
   id: string;
@@ -83,20 +86,20 @@ export interface Exchange {
 }
 
 export interface IWeather {
-  dt: number; 
+  dt: number;
   main: {
-    temp: number; 
-    feels_like: number; 
-    humidity: number; 
+    temp: number;
+    feels_like: number;
+    humidity: number;
   };
   weather: {
-    id: number; 
+    id: number;
     main: string;
     description: string;
-    icon: string; 
+    icon: string;
   }[];
   wind: {
-    speed: number; 
+    speed: number;
   };
   dt_txt: string;
 }
@@ -125,7 +128,6 @@ export interface BookWithOwner {
   description: string;
   Owner: Owner;
 }
-
 
 export interface formData {
   title: string;
