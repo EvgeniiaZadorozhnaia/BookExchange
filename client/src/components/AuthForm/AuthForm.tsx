@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { addUser } from "../../redux/thunkActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ErrorModal from "../ErrorModal";
+import axiosInstance from "../../axiosInstance";
+const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 
 export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
   const dispatch = useAppDispatch();
@@ -24,6 +26,14 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     setInputs(
       (prev: IInputs): IInputs => ({ ...prev, [e.target.name]: e.target.value })
     );
+  };
+
+  const sendMail = async() => {
+    await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/auth/send-email`, {
+      to: user?.email,
+      subject: "Регистрация завершена",
+      text: `Привет ${user.username},\n\nВаша регистрация успешно завершена!`,
+    });
   };
 
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +73,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
         }, 200);
       } else {
         dispatch(addUser({ type, formData }));
+        sendMail();
       }
     }
 

@@ -5,13 +5,42 @@ const { User } = require("../../db/models");
 const generateToken = require("../utils/generateToken");
 const cookiesConfig = require("../configs/cookiesConfig");
 const multer = require("../middlewares/multer");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "admin@bookExchange.com",
+    pass: "admin123",
+  },
+});
 
 router
+
+  .post("/send-email", (req, res) => {
+    const { to, subject, text } = req.body;
+
+    const mailOptions = {
+      from: "admin@bookExchange.com",
+      to,
+      subject,
+      text,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).send(error.toString());
+      }
+      res.status(200).send("Email sent: " + info.response);
+    });
+  })
   .post("/signup", multer.single("avatarUrl"), async (req, res) => {
     const { username, email, password, city, placeOfMeeting } = req.body;
     const avatarUrl = req.file ? `${req.file.originalname}` : null;
 
-    if (!(username && email && password && city && placeOfMeeting && avatarUrl)) {
+    if (
+      !(username && email && password && city && placeOfMeeting && avatarUrl)
+    ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 

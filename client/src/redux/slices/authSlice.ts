@@ -1,7 +1,7 @@
 import { UserState } from "./../../components/initState";
 import { ActionReducerMapBuilder, Draft, createSlice } from "@reduxjs/toolkit";
 import { AuthState } from "../types/states";
-import { addUser, logoutUser, refreshToken } from "../thunkActions";
+import { addUser, logoutUser, refreshToken, sendMail } from "../thunkActions";
 import { AuthSlice, RejectedAction, UserAction } from "../types/reducers";
 
 const initialState: AuthState = { user: UserState, loading: true, error: {} };
@@ -63,6 +63,21 @@ const authSlice: AuthSlice = createSlice({
         state.loading = false;
       }
     );
+    // builder.addCase(sendMail.pending, (state: Draft<AuthState>): void => {
+    //   state.loading = true;
+    // });
+    // builder.addCase(sendMail.fulfilled, (state: Draft<AuthState>): void => {
+    //   state.user = UserState;
+    //   state.loading = false;
+    // });
+    // builder.addCase(
+    //   sendMail.rejected,
+    //   (state: Draft<AuthState>, action: RejectedAction): void => {
+    //     console.log("Ошибка добавления", action.error);
+    //     state.error = action.error;
+    //     state.loading = false;
+    //   }
+    // );
   },
 });
 

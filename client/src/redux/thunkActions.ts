@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import axiosInstance, { setAccessToken } from "../axiosInstance";
-import { IBooks, IType, IUser } from "../types/stateTypes";
+import { IBooks, IUser } from "../types/stateTypes";
 import {
   addFavorite,
   BookDelete,
