@@ -13,6 +13,7 @@ router
             as: "Owner",
           },
         ],
+        order: [["rating", "DESC"]],
       });
       res.json(booksByOneOwner);
     } catch (error) {
@@ -22,7 +23,6 @@ router
         .json({ message: "Произошла ошибка при получении списка книг" });
     }
   })
-
   .get("/oneBook/:bookId", async (req, res) => {
     const { bookId } = req.params;
     try {
@@ -31,17 +31,17 @@ router
         include: [
           {
             model: Review,
-            as: 'Review',
+            as: "Review",
             include: [
               {
                 model: User,
-                as: 'User'
-              }
-            ]
+                as: "User",
+              },
+            ],
           },
           {
             model: User,
-            as: 'Owner'
+            as: "Owner",
           },
         ],
       });
@@ -63,61 +63,69 @@ router
     }
   })
 
-  .put("/:bookId", verifyAccessToken, multer.single('frontpage'), async (req, res) => {
-    const { bookId } = req.params;
-    const { title, author, pages } = req.body;
-    const pictureUrl = req.file ? `${req.file.originalname}` : null;
-    console.log("pictureUrl", pictureUrl);
+  .put(
+    "/:bookId",
+    verifyAccessToken,
+    multer.single("frontpage"),
+    async (req, res) => {
+      const { bookId } = req.params;
+      const { title, author, pages } = req.body;
+      const pictureUrl = req.file ? `${req.file.originalname}` : null;
+      console.log("pictureUrl", pictureUrl);
 
-    try {
-      const updatedBook = await Book.update(
-        {
+      try {
+        const updatedBook = await Book.update(
+          {
+            title,
+            author,
+            pages,
+            pictureUrl,
+          },
+          {
+            where: {
+              id: bookId,
+            },
+          }
+        );
+        const book = await Book.findByPk(bookId);
+        return res.status(200).json(book);
+      } catch (error) {
+        return res.status(500).json({
+          message: "Произошла ошибка при обновлении книги",
+          error: error.message,
+        });
+      }
+    }
+  )
+
+  .post(
+    "/:ownerId",
+    verifyAccessToken,
+    multer.single("frontpage"),
+    async (req, res) => {
+      const { ownerId } = req.params;
+      const { title, author, pages } = req.body;
+      const pictureUrl = req.file ? `${req.file.originalname}` : null;
+
+      try {
+        const newBook = await Book.create({
+          ownerId,
           title,
           author,
           pages,
           pictureUrl,
-        },
-        {
-          where: {
-            id: bookId,
-          },
-        }
-      );
-      const book = await Book.findByPk(bookId);
-      return res.status(200).json(book);
-    } catch (error) {
-      return res
-        .status(500)
-        .json({
-          message: "Произошла ошибка при обновлении книги",
+        });
+        return res
+          .status(201)
+          .json({ message: "Книга успешно создано", book: newBook });
+      } catch (error) {
+        return res.status(500).json({
+          message: "Произошла ошибка при создании книги",
           error: error.message,
         });
+      }
     }
-  })
-
-  .post("/:ownerId", verifyAccessToken, multer.single('frontpage'), async (req, res) => {
-    const { ownerId } = req.params;
-    const { title, author, pages } = req.body;
-    const pictureUrl = req.file ? `${req.file.originalname}` : null;
-  
-    try {
-      const newBook = await Book.create({
-        ownerId,
-        title,
-        author,
-        pages,
-        pictureUrl,
-      });
-      return res
-        .status(201)
-        .json({ message: "Книга успешно создано", book: newBook });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Произошла ошибка при создании книги",
-        error: error.message,
-      });
-    }
-  })
+  )
 
   .get("/:ownerId", verifyAccessToken, async (req, res) => {
     const { ownerId } = req.params;
@@ -181,7 +189,7 @@ router
     try {
       const [numberOfUpdatedRows] = await Book.update(
         {
-          rating
+          rating,
         },
         { where: { id: bookId } }
       );
@@ -198,6 +206,17 @@ router
         .status(500)
         .json({ message: "Произошла ошибка при обновлении рейтинга" });
     }
-  });
+  })
+
+  .delete('/:userId/allBooks', async (req, res) => {
+    const { userId } = req.params;
+    try {
+      await Book.destroy({where: {ownerId: userId}});
+      res.status(204).send();
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "Произошла ошибка при удалении книг" });
+    }
+  })
 
 module.exports = router;

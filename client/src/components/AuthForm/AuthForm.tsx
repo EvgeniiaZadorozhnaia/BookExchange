@@ -2,18 +2,14 @@ import { useEffect, useState } from "react";
 import styles from "./AuthForm.module.css";
 import { Input, Button, useDisclosure } from "@chakra-ui/react";
 import { AuthFormProps } from "../../types/propsTypes";
-import { IInputs } from "../../types/stateTypes";
+import { IInputs, IUser } from "../../types/stateTypes";
 import { InputsState } from "../initState";
 import { useNavigate } from "react-router-dom";
 import { addUser } from "../../redux/thunkActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ErrorModal from "../ErrorModal";
 
-
-export default function AuthForm({
-  title,
-  type ,
-}: AuthFormProps): JSX.Element {
+export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [inputs, setInputs] = useState<IInputs>(InputsState);
   const { user } = useAppSelector((state) => state.authSlice);
@@ -26,7 +22,7 @@ export default function AuthForm({
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputs(
       (prev: IInputs): IInputs => ({ ...prev, [e.target.name]: e.target.value })
-      );
+    );
   };
 
   const showErrorModal = (errorText: string): void => {
@@ -39,56 +35,47 @@ export default function AuthForm({
     onClose();
   };
 
-
   const submitHandler = (
     type: string,
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>
   ): void => {
     e.preventDefault();
-    if(type === "signup"){
-      if(
-        !inputs.email ||
-        !inputs.password ||
-        inputs.password.length < 8
-      )
-      {
+    if (type === "signup") {
+      if (!inputs.email || !inputs.password || inputs.password.length < 8) {
         setTimeout(() => {
-          showErrorModal("Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)");
+          showErrorModal(
+            "Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)"
+          );
         }, 200);
       } else {
         dispatch(addUser({ type, inputs }));
-        // localStorage.setItem('user', JSON.stringify(user));
       }
     }
-  
-    if(type === "signin") {
-      if ( 
-        user?.password === inputs.password ||
-        user?.email === inputs.email   
-      )  
-      {
+
+    if (type === "signin") {
+      if (user?.password === inputs.password || user?.email === inputs.email) {
         setTimeout(() => {
-          showErrorModal("Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)");
+          showErrorModal(
+            "Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)"
+          );
         }, 200);
       } else {
         dispatch(addUser({ type, inputs }));
-        // localStorage.setItem('user', JSON.stringify(user));
       }
     }
   };
 
-
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem('user'));
-    if(localUser){
-      navigate("/")
+    const userJson = localStorage.getItem("user");
+    const localUser: IUser | null = userJson ? JSON.parse(userJson) : null;
+    if (localUser) {
+      navigate("/");
     } else if (type === "signin") {
-      navigate("/signin")
+      navigate("/signin");
     } else {
-      navigate("/signup")
-    }   
+      navigate("/signup");
+    }
   }, [user]);
-
 
   return (
     <>
@@ -157,12 +144,8 @@ export default function AuthForm({
         </div>
       </form>
       <div style={{ maxWidth: "500px" }}>
-        <ErrorModal
-          isOpen={isOpen}
-          onClose={closeErrorModal}
-          error={error}
-        />
+        <ErrorModal isOpen={isOpen} onClose={closeErrorModal} error={error} />
       </div>
     </>
   );
-} 
+}

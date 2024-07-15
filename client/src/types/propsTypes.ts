@@ -1,5 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
-import { CalendarEvent, Exchange, IBook, IBooks } from "./stateTypes";
+import { Dispatch, RefObject, SetStateAction } from "react";
+import {
+  CalendarEvent,
+  Exchange,
+  formData,
+  IBook,
+  IBooks,
+  IInputsBookCreationState,
+  IReviews,
+  IUserWithComments,
+} from "./stateTypes";
 
 export interface AuthFormProps {
   title: string;
@@ -12,7 +21,7 @@ export interface ErrorModalProps {
   error: string;
 }
 
-export interface Book {
+export interface BookProps {
   book: IBook;
 }
 
@@ -44,4 +53,54 @@ export interface ProfileModalProps {
   exchangeHistoryOutcoming: Exchange[] | undefined;
   activeStatusIncomeExchange: Exchange[] | undefined;
   activeStatusOutcomeExchange: Exchange[] | undefined;
+}
+
+export interface createBookProps {
+  ownerId: number;
+  formData: formData;
+}
+
+export interface editBookProps {
+  bookId: number;
+  formData: formData;
+}
+
+export interface deleteBookProps {
+  bookId: number;
+  userId: number;
+}
+
+export interface cardInfoProps {
+  book: IBook;
+  description: string;
+}
+
+export interface reviewsProps {
+  book: IBook;
+  reviews: IReviews;
+  setReviews: Dispatch<SetStateAction<IReviews>>;
+  setBook: React.Dispatch<React.SetStateAction<IBook>>;
+}
+
+export interface CreateBookFormProps {
+  isOpen: boolean;
+  onClose: () => void;
+  initialRef: RefObject<HTMLElement>;
+  finalRef: RefObject<HTMLElement>;
+  inputsHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  submitHandler: (event: React.FormEvent<HTMLFormElement>) => void;
+  inputs: IInputsBookCreationState;
+  setImg: Dispatch<SetStateAction<File | null>>;
+}
+
+export interface adminPageProps {
+  usersWithComments: IUserWithComments[];
+  setUsersWithComments: Dispatch<SetStateAction<IUserWithComments[]>>;
+}
+
+export type homePageProps = Omit<adminPageProps, 'setUsersWithComments'>;
+
+export interface starProps {
+  filled: boolean;
+  partial: number;
 }

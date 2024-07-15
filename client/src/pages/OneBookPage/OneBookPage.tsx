@@ -12,7 +12,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { BookState } from "../../components/initState";
-import { IBook } from "../../types/stateTypes";
+import { IBook, IReview } from "../../types/stateTypes";
 import styles from "./OneBookPage.module.css";
 import CardInfo from "./CardInfo";
 import Reviews from "./Reviews";
@@ -21,20 +21,20 @@ import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addToFavorite } from "../../redux/thunkActions";
 
-function OneBookPage() {
+function OneBookPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const [book, setBook] = useState<IBook>(BookState);
-  const { user } = useAppSelector((state) => state.authSlice);
   const { bookId } = useParams();
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [reviews, setReviews] = useState();
-  const [description, setDescription] = useState("");
+  const { user } = useAppSelector((state) => state.authSlice);
+  const [book, setBook] = useState<IBook>(BookState);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [reviews, setReviews] = useState<IReview[]>([]);
+  const [description, setDescription] = useState<string>("");
 
   const back = useNavigate();
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
-    dispatch(addToFavorite({ bookId, userId: user.id }));
+    dispatch(addToFavorite({ bookId: book.id, userId: user.id }));
   };
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function OneBookPage() {
 
   const navigate = useNavigate();
 
-  async function searchBookByTitle(title) {
+  async function searchBookByTitle(title: string) {
     const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
       title
     )}&langRestrict=ru`;
@@ -66,9 +66,13 @@ function OneBookPage() {
       if (data.items && data.items.length > 0) {
         const firstBook = data.items[0].volumeInfo;
         const bookTitle = firstBook.title;
+        console.log(bookTitle);
+
         const bookAuthors = firstBook.authors
           ? firstBook.authors.join(", ")
           : "Автор не указан";
+        console.log(bookAuthors);
+
         const bookDescription = firstBook.description || "Описание отсутствует";
         setDescription(bookDescription);
       }

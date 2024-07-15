@@ -1,8 +1,21 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import axiosInstance, { setAccessToken } from "../axiosInstance";
-import {  IBooks, IType, IUser } from "../types/stateTypes";
-import { NewUser } from "./types/thunk";
+import { IBooks, IType, IUser } from "../types/stateTypes";
+import {
+  addFavorite,
+  BookDelete,
+  BookEdit,
+  bookGetting,
+  delBook,
+  FavoriteBook,
+  getMyBooks,
+  newBook,
+  newLogout,
+  NewUser,
+  refreshTokenI,
+} from "./types/thunk";
+import { createBookProps, deleteBookProps, editBookProps } from "../types/propsTypes";
 
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 
@@ -19,36 +32,44 @@ export const addUser: NewUser = createAsyncThunk(
   }
 );
 
-export const refreshToken = createAsyncThunk(
-  'auth/refreshToken',
- async () => {
-   const response: AxiosResponse = await axiosInstance.get(`${VITE_BASE_URL}${VITE_API}/tokens/refresh`);
-   setAccessToken(response.data.accessToken);
-   return response.data.user as IUser;
- });
-  
-
-export const logoutUser = createAsyncThunk("users/logout", async () => {
-  const res: AxiosResponse = await axiosInstance.get(
-    `${VITE_BASE_URL}${VITE_API}/auth/logout`
-  );
-  if (res.status === 200) {
-    setAccessToken(""); 
+export const refreshToken: refreshTokenI = createAsyncThunk(
+  "auth/refreshToken",
+  async () => {
+    const response: AxiosResponse = await axiosInstance.get(
+      `${VITE_BASE_URL}${VITE_API}/tokens/refresh`
+    );
+    setAccessToken(response.data.accessToken);
+    return response.data.user as IUser;
   }
-});
+);
 
-export const getBooks = createAsyncThunk("books/getting", async () => {
-  const res: AxiosResponse = await axiosInstance.get(
-    `${VITE_BASE_URL}${VITE_API}/books`
-  );
-  const data = res.data as IBooks[];
+export const logoutUser: newLogout = createAsyncThunk(
+  "users/logout",
+  async () => {
+    const res: AxiosResponse = await axiosInstance.get(
+      `${VITE_BASE_URL}${VITE_API}/auth/logout`
+    );
+    if (res.status === 200) {
+      setAccessToken("");
+    }
+  }
+);
 
-  return data;
-});
+export const getBooks: bookGetting = createAsyncThunk(
+  "books/getting",
+  async () => {
+    const res: AxiosResponse = await axiosInstance.get(
+      `${VITE_BASE_URL}${VITE_API}/books/`
+    );
+    const data = res.data as IBooks[];
 
-export const getBooksByUser = createAsyncThunk(
+    return data;
+  }
+);
+
+export const getBooksByUser: getMyBooks = createAsyncThunk(
   "books/getAllByUser",
-  async (ownerId) => {
+  async (ownerId: number) => {
     const res: AxiosResponse = await axiosInstance.get(
       `${VITE_BASE_URL}${VITE_API}/books/${ownerId}`
     );
@@ -58,25 +79,28 @@ export const getBooksByUser = createAsyncThunk(
   }
 );
 
-export const deleteBook = createAsyncThunk("books/delete", async (bookId) => {
-  const res: AxiosResponse = await axiosInstance.delete(
-    `${VITE_BASE_URL}${VITE_API}/books/${bookId}`
-  );
-  if (res.status === 204) {
-    return bookId;
+export const deleteBook: delBook = createAsyncThunk(
+  "books/delete",
+  async (bookId: number) => {
+    const res: AxiosResponse = await axiosInstance.delete(
+      `${VITE_BASE_URL}${VITE_API}/books/${bookId}`
+    );
+    if (res.status === 204) {
+      return bookId;
+    }
   }
-});
+);
 
-export const createBook = createAsyncThunk(
+export const createBook: newBook = createAsyncThunk(
   "books/create",
-  async ({ ownerId, formData }) => {
+  async ({ ownerId, formData }: createBookProps) => {
     const res = await axiosInstance.post(
-      `${VITE_BASE_URL}${VITE_API}/books/${ownerId}`, 
-      formData, 
+      `${VITE_BASE_URL}${VITE_API}/books/${ownerId}`,
+      formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       }
     );
     const data = res.data.book;
@@ -84,16 +108,16 @@ export const createBook = createAsyncThunk(
   }
 );
 
-export const editBook = createAsyncThunk(
+export const editBook: BookEdit = createAsyncThunk(
   "books/edit",
-  async ({ bookId, formData }) => {
+  async ({ bookId, formData }: editBookProps) => {
     const res: AxiosResponse = await axiosInstance.put(
       `${VITE_BASE_URL}${VITE_API}/books/${bookId}`,
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       }
     );
     const data = res.data;
@@ -101,11 +125,11 @@ export const editBook = createAsyncThunk(
   }
 );
 
-export const getFavoriteBooks = createAsyncThunk(
+export const getFavoriteBooks: FavoriteBook = createAsyncThunk(
   "favorite/getting",
-  async (userId) => {
+  async (userId: number) => {
     const res: AxiosResponse = await axiosInstance.get(
-      `${VITE_BASE_URL}${VITE_API}/favorite/${userId}`,
+      `${VITE_BASE_URL}${VITE_API}/favorite/${userId}`
     );
     const data = res.data as IBooks[];
 
@@ -113,18 +137,21 @@ export const getFavoriteBooks = createAsyncThunk(
   }
 );
 
-export const deleteBookFromFavorites = createAsyncThunk("favorite/delete", async ({bookId, userId}) => {
-  const res: AxiosResponse = await axiosInstance.delete(
-    `${VITE_BASE_URL}${VITE_API}/favorite/${userId}/${bookId}`
-  );
-  if (res.status === 204) {
-    return bookId;
+export const deleteBookFromFavorites: BookDelete = createAsyncThunk(
+  "favorite/delete",
+  async ({ bookId, userId }: deleteBookProps) => {
+    const res: AxiosResponse = await axiosInstance.delete(
+      `${VITE_BASE_URL}${VITE_API}/favorite/${userId}/${bookId}`
+    );
+    if (res.status === 204) {
+      return bookId;
+    }
   }
-});
+);
 
-export const addToFavorite = createAsyncThunk(
+export const addToFavorite: addFavorite = createAsyncThunk(
   "favorite/add",
-  async ({ bookId, userId }) => {
+  async ({ bookId, userId }: deleteBookProps) => {
     const res: AxiosResponse = await axiosInstance.post(
       `${VITE_BASE_URL}${VITE_API}/favorite`,
       { bookId, userId }

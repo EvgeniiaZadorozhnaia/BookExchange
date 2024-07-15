@@ -1,7 +1,7 @@
-import { logoutUser } from './../thunkActions';
 import { AsyncThunk, SerializedError } from "@reduxjs/toolkit"
-import { IType, IUser } from "../../types/stateTypes"
+import { IBook, IBooks, IType, IUser } from "../../types/stateTypes"
 import { AppDispatch, RootState } from "../store"
+import { createBookProps, deleteBookProps, editBookProps } from "../../types/propsTypes"
 
 type AsyncThunkConfig = {
     /** return type for `thunkApi.getState` */
@@ -36,3 +36,22 @@ type AsyncThunkConfig = {
 
   export type NewUser = AsyncThunk<IUser, IType, AsyncThunkConfig>
 
+  export type newBook = AsyncThunk<IBook, createBookProps, AsyncThunkConfig>
+
+  export type refreshTokenI = AsyncThunk<IUser, void, AsyncThunkConfig>
+
+  export type newLogout = AsyncThunk<void, void, AsyncThunkConfig>
+
+  export type bookGetting = AsyncThunk<IBooks[], void, AsyncThunkConfig>
+
+  export type getMyBooks = AsyncThunk<IBooks[], number, AsyncThunkConfig>
+
+  export type delBook = AsyncThunk<number | undefined, number, AsyncThunkConfig>
+
+  export type BookEdit = AsyncThunk<IBook, editBookProps, AsyncThunkConfig>
+
+  export type FavoriteBook = AsyncThunk<IBooks[], number, AsyncThunkConfig>
+
+  export type BookDelete = AsyncThunk<number | undefined, deleteBookProps, AsyncThunkConfig>
+
+  export type addFavorite = AsyncThunk<number | undefined, deleteBookProps, AsyncThunkConfig>

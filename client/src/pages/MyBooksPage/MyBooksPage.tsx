@@ -14,20 +14,15 @@ function MyBooksPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.authSlice);
   const { books } = useAppSelector((state) => state.booksSlice);
-
-  
   const [inputs, setInputs] = useState(InputsBookCreationState);
   const [editMode, setEditMode] = useState(false);
   const [currentBookId, setCurrentBookId] = useState(null);
   const [currentStartIndex, setCurrentStartIndex] = useState(0); 
   const [img, setImg] = useState(null);
-  
-  
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const ownerId = user.id;
-
   
   useEffect(() => {
     dispatch(getBooksByUser(user.id));
@@ -60,7 +55,7 @@ function MyBooksPage(): JSX.Element {
         dispatch(editBook({ bookId: currentBookId, formData }));
       } else {
 
-       dispatch(createBook({ ownerId, formData }));
+       dispatch(createBook({ ownerId, formData } ));
       }
       setInputs({ title: '', author: '', pages: '' });
       setImg(null);

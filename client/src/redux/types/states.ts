@@ -15,6 +15,6 @@ export type UsersState = {
 export type BooksState = {
     books: IBook[],
     loading: boolean,
-    error: object
+    error: object,
     book: IBook
 }

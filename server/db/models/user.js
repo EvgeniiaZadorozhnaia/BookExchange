@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.hasMany(models.Book, { foreignKey: "ownerId" });
-      this.hasMany(models.Review, { foreignKey: "userId" });
+      this.hasMany(models.Review, { foreignKey: "userId", as: "reviews" });
       this.hasMany(models.Exchange, { foreignKey: "fromUser" });
       this.hasMany(models.Exchange, { foreignKey: "toUser" });
       this.belongsToMany(models.Book, {
@@ -43,6 +43,8 @@ module.exports = (sequelize, DataTypes) => {
       numberOfRating: DataTypes.INTEGER,
       placeOfMeeting: DataTypes.STRING,
       city: DataTypes.STRING,
+      isAdmin: DataTypes.BOOLEAN,
+      isBlocked: DataTypes.BOOLEAN
     },
     {
       sequelize,

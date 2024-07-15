@@ -12,12 +12,15 @@ export interface IInputs {
   }
 
 export interface IUser {
+    isAdmin: boolean;
+    isBlocked: boolean;
     id: number,
     username: string,
     email: string,
     password: string,
     avatarUrl: string,
     rating: number,
+    numberOfRating: number,
     placeOfMeeting: string,
     city: string,
     createdAt: string,
@@ -25,7 +28,7 @@ export interface IUser {
 }
 
 export interface IBook {
-    User: {city: string},
+    Owner: IUser,
     id: number,
     ownerId: number,
     title: string,
@@ -121,4 +124,35 @@ export interface BookWithOwner {
   condition: string;
   description: string;
   Owner: Owner;
+}
+
+
+export interface formData {
+  title: string;
+  author: string;
+  pages: number;
+  frontpage: string;
+}
+
+export interface IReview {
+  id: number;
+  User: IUser;
+  bookId: number;
+  content: string;
+  dislikes: number;
+  likes: number;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type IReviews = IReview[];
+
+export interface IUserWithComments {
+  email: string;
+  id: number;
+  isBlocked: boolean;
+  rating: number;
+  username: string;
+  reviews: IReview[];
 }
