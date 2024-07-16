@@ -5,7 +5,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useState, useEffect } from "react";
 import { createEventId } from "./event-utils";
-import { formatDate, DateSelectArg, EventClickArg, EventApi } from "@fullcalendar/core";
+import {
+  formatDate,
+  DateSelectArg,
+  EventClickArg,
+  EventApi,
+} from "@fullcalendar/core";
 import { CalendarEvent } from "../../types/stateTypes";
 import { SidebarEventProps, SidebarProps } from "../../types/propsTypes";
 
@@ -21,7 +26,7 @@ export default function MyCalendar(): JSX.Element {
 
   function handleDateSelect(selectInfo: DateSelectArg) {
     const title = prompt("Введите информацию о Вашей встрече");
-    const calendarApi = selectInfo.view.calendar
+    const calendarApi = selectInfo.view.calendar;
 
     calendarApi.unselect();
 
@@ -59,24 +64,19 @@ export default function MyCalendar(): JSX.Element {
       end: event.endStr || "",
       allDay: event.allDay || false,
     }));
-  
+
     const uniqueEvents = simplifiedEvents.filter(
       (event, index, self) => index === self.findIndex((e) => e.id === event.id)
     );
-  
+
     setCurrentEvents(uniqueEvents);
   }
 
   return (
-    <div className="demo-app">
-      <div className="demo-app-main">
+    <div className="demo-app" style={{ display: "flex", width: "90%", marginLeft: "80px", marginTop: "50px" }}>
+      <div className="demo-app-main" style={{ flex: 1, paddingRight: "20px" }}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
-          }}
           initialView="dayGridMonth"
           editable={true}
           selectable={true}
@@ -87,13 +87,18 @@ export default function MyCalendar(): JSX.Element {
           eventClick={handleEventClick}
           eventsSet={handleEvents}
         />
+      </div>
+      <div style={{ flex: 0 }}>
         <Sidebar events={currentEvents} />
       </div>
     </div>
   );
 }
 
-function renderEventContent(eventInfo: { timeText: string; event: { title: string; } }) {
+function renderEventContent(eventInfo: {
+  timeText: string;
+  event: { title: string };
+}) {
   return (
     <>
       <b>{eventInfo.timeText}</b>
@@ -110,7 +115,7 @@ function Sidebar({ events }: SidebarProps) {
   return (
     <div className="demo-app-sidebar">
       <div className="demo-app-sidebar-section">
-        <h2>Ближайшие встречи ({uniqueEvents.length})</h2>
+        <h5>Ближайшие встречи ({uniqueEvents.length})</h5>
         <ul>
           {uniqueEvents.map((event) => (
             <SidebarEvent key={event.id} event={event} />
@@ -120,7 +125,6 @@ function Sidebar({ events }: SidebarProps) {
     </div>
   );
 }
-
 
 function SidebarEvent({ event }: SidebarEventProps) {
   return (

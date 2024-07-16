@@ -28,6 +28,10 @@ export default function ProfileModal({
     [key: string]: string;
   }>({});
 
+  console.log(exchangeHistoryIncoming, 'exchangeHistoryIncoming');
+  console.log(exchangeHistoryOutcoming, 'exchangeHistoryOutcoming');
+  
+
   useEffect(() => {
     if (!isOpen) {
       setSubmissionStatus({});
@@ -77,6 +81,8 @@ export default function ProfileModal({
           toUser: data.fromUser,
           exchangeId,
         });
+        await axiosInstance.delete(`${VITE_BASE_URL}${VITE_API}/books/${data.toBook}`)
+
         setSubmissionStatus((prevState) => ({
           ...prevState,
           [exchangeId]: "finished",
@@ -324,7 +330,7 @@ export default function ProfileModal({
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
+          <Button onClick={onClose} >
             Закрыть
           </Button>
         </ModalFooter>

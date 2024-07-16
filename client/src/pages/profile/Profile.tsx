@@ -166,7 +166,7 @@ export default function Profile(): JSX.Element {
       <Grid templateColumns="1fr 1fr" gap={4}>
         {/* Левая колонка с чатом */}
         <GridItem>
-          <Box display="flex" justifyContent="space-around" mt={8} ml='10'>
+          <Box display="flex" justifyContent="space-around" mt={10} ml='10'>
             <Button
               onClick={() => setIncomeOrOutcome("income")}
               style={{
@@ -198,7 +198,7 @@ export default function Profile(): JSX.Element {
           <Box
             border="solid 1px"
             borderRadius="7px"
-            mt={8}
+            mt='67px'
             mr='12'
             boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
             p={1}
@@ -305,6 +305,7 @@ export default function Profile(): JSX.Element {
               justifyContent={"center"}
               fontWeight={"bold"}
               borderRadius={"20px"}
+              mt='20px'
             >
               Прогноз погоды
             </Text>
@@ -312,21 +313,32 @@ export default function Profile(): JSX.Element {
             <Calendar />
           </Box>
         </GridItem>
-        <Button
+      </Grid>
+      <Button
           onClick={onOpen}
-          style={{
-            backgroundColor: "#B5C6B8",
-            marginLeft: "200px",
-            marginTop: "-90px",
-            width: "400px",
-            height: "50px",
-            borderRadius: "7px",
-            justifyContent: "center",
+          backgroundColor= "#B5C6B8"
+          mt='50px'
+          width= "400px"
+          height= "50px"
+          borderRadius= "7px"
+          justifyContent= "center"
+          colorScheme="green"
+          bg="#2f855a"
+          color="white"
+          border="2px solid #2f855a"
+          boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+          _hover={{
+            bg: "rgba(56, 161, 105, 0.9)",
+            boxShadow: "0 6px 8px rgba(0, 0, 0, 0.2)",
           }}
+          _active={{
+            bg: "#276749",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
+          }}
+          _focus={{ boxShadow: "0 0 0 3px rgba(0, 255, 0, 0.3)" }}
         >
           Моя история обменов
         </Button>
-      </Grid>
       <ProfileModal
         isOpen={isOpen}
         onClose={onClose}

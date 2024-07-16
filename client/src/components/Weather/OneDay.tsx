@@ -19,7 +19,7 @@ export default function OneDay({ day }: OneDayWeather): JSX.Element {
             style={{
               color: "#4B515D",
               borderRadius: "20px",
-              width: "70px",
+              width: "4em",
               height: "80px",
               margin: "2px",
             }}

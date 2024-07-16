@@ -100,7 +100,7 @@ export default function BookOwnerPage(): JSX.Element {
         newExchange
       );
       const offerMessage = {
-        text: `Пользователь ${user.username} отправил(а) Вам запрос на обмен`,
+        text: `Пользователь ${user.username} отправил(а) Вам запрос на обмен книгой \"${book.title}\"`,
         authorId: user.id,
         toUser: owner?.id,
         exchangeId: data.id,
