@@ -40,12 +40,7 @@ export default function Profile(): JSX.Element {
     useState();
   const [activeStatusOutcomeExchange, setActiveStatusOutcomeExchange] =
     useState();
-  const messageContainerRef = useRef(null);
-
-  // console.log('messages', messages);
-  // console.log('user', user);
-  
-  
+  const messageContainerRef = useRef<HTMLDivElement>(null);
 
   const fetchExchangeHistory = async () => {
     try {
@@ -76,11 +71,11 @@ export default function Profile(): JSX.Element {
     }
   }, [isOpen]);
 
-  const changeHandler = (e) => {
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
-  const handleKeyDown = async (e) => {
+  const handleKeyDown = async (e: { key: string }) => {
     if (e.key === "Enter" && activeExchange && activeUser) {
       const newMessage = {
         text: inputs.text,
@@ -108,7 +103,7 @@ export default function Profile(): JSX.Element {
     }
   };
 
-  const fetchMessagesForExchange = async (exchangeId) => {
+  const fetchMessagesForExchange = async (exchangeId: number) => {
     try {
       const { data } = await axiosInstance.get(
         `${VITE_BASE_URL}${VITE_API}/messages/${user.id}/exchange/${exchangeId}`
@@ -160,7 +155,7 @@ export default function Profile(): JSX.Element {
     }
   }, [messages]);
 
-  const handleExchangeClick = (exchangeId, userId) => {
+  const handleExchangeClick = (exchangeId: number, userId: number) => {
     setActiveExchange(exchangeId);
     setActiveUser(userId);
     fetchMessagesForExchange(exchangeId);
@@ -171,17 +166,16 @@ export default function Profile(): JSX.Element {
       <Grid templateColumns="1fr 1fr" gap={4}>
         {/* Левая колонка с чатом */}
         <GridItem>
-          <Box display="flex" justifyContent="space-around" mt={4}>
+          <Box display="flex" justifyContent="space-around" mt={10} ml='10'>
             <Button
               onClick={() => setIncomeOrOutcome("income")}
               style={{
                 backgroundColor:
-                  incomeOrOutcome === "income"
-                    ? "rgba(22, 9, 156, 0.3)"
-                    : "initial",
+                  incomeOrOutcome === "income" ? "#B5C6B8" : "initial",
                 padding: "10px",
                 width: "200px",
                 borderRadius: "20px",
+                border: "solid 1px grey",
               }}
             >
               Отдать
@@ -190,12 +184,11 @@ export default function Profile(): JSX.Element {
               onClick={() => setIncomeOrOutcome("outcome")}
               style={{
                 backgroundColor:
-                  incomeOrOutcome === "outcome"
-                    ? "rgba(22, 9, 156, 0.3)"
-                    : "initial",
+                  incomeOrOutcome === "outcome" ? "#B5C6B8" : "initial",
                 padding: "10px",
                 width: "200px",
                 borderRadius: "20px",
+                border: "solid 1px grey",
               }}
             >
               Забрать
@@ -205,12 +198,13 @@ export default function Profile(): JSX.Element {
           <Box
             border="solid 1px"
             borderRadius="7px"
-            mt={8}
+            mt='67px'
+            mr='12'
             boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
-            p={4}
+            p={1}
           >
             <Grid h="500px" templateColumns="repeat(5, 1fr)" gap={2}>
-              <GridItem colSpan={1} width="150px" margin="10px">
+              <GridItem colSpan={1} width="150px" margin="5px">
                 {exchanges &&
                   exchanges.map((exchange) => (
                     <Tag
@@ -310,8 +304,8 @@ export default function Profile(): JSX.Element {
               display={"flex"}
               justifyContent={"center"}
               fontWeight={"bold"}
-              fontFamily={"cursive"}
               borderRadius={"20px"}
+              mt='20px'
             >
               Прогноз погоды
             </Text>
@@ -321,19 +315,30 @@ export default function Profile(): JSX.Element {
         </GridItem>
       </Grid>
       <Button
-        onClick={onOpen}
-        style={{
-          backgroundColor: "rgba(22, 9, 156, 0.3)",
-          padding: "20px",
-          margin: "20px",
-          width: "400px",
-          height: "50px",
-          borderRadius: "7px",
-          justifyContent: "center",
-        }}
-      >
-        Моя история обменов
-      </Button>
+          onClick={onOpen}
+          backgroundColor= "#B5C6B8"
+          mt='50px'
+          width= "400px"
+          height= "50px"
+          borderRadius= "7px"
+          justifyContent= "center"
+          colorScheme="green"
+          bg="#2f855a"
+          color="white"
+          border="2px solid #2f855a"
+          boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+          _hover={{
+            bg: "rgba(56, 161, 105, 0.9)",
+            boxShadow: "0 6px 8px rgba(0, 0, 0, 0.2)",
+          }}
+          _active={{
+            bg: "#276749",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
+          }}
+          _focus={{ boxShadow: "0 0 0 3px rgba(0, 255, 0, 0.3)" }}
+        >
+          Моя история обменов
+        </Button>
       <ProfileModal
         isOpen={isOpen}
         onClose={onClose}

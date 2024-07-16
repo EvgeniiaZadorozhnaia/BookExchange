@@ -1,6 +1,4 @@
 const router = require("express").Router();
-
-const { json } = require("sequelize");
 const { Exchange, User } = require("../../db/models");
 
 router
@@ -112,7 +110,7 @@ router
       if (numberOfUpdatedRows === 0) {
         return res.status(404).json({ message: "Пользователь не найден" });
       }
-
+      
       const updatedExchange = await Exchange.findByPk(exchangeId);
       res.json(updatedExchange);
     } catch (error) {

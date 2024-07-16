@@ -17,37 +17,23 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../axiosInstance";
 import { useAppSelector } from "../../redux/hooks";
 import OneCard from "../../components/OneCard/OneCard";
-import { Book } from "../../types/propsTypes";
 import MyBooks from "./MyBooks";
+import { BookWithOwner, Owner } from "../../types/stateTypes";
 const { VITE_BASE_URL, VITE_API } = import.meta.env;
-
-interface Owner {
-  avatarUrl: string;
-  city: string;
-  createdAt: string;
-  email: string;
-  id: number;
-  numberOfRating: number;
-  password: string;
-  placeOfMeeting: string;
-  rating: number;
-  updatedAt: string;
-  username: string;
-}
 
 export default function BookOwnerPage(): JSX.Element {
   const { user } = useAppSelector((state) => state.authSlice);
   const { id } = useParams<{ id: string }>();
-  const [owner, setOwner] = useState<Owner>({});
-  const [book, setBook] = useState<Book>({});
-  const [booksToTake, setBooksToTake] = useState([]);
-  const [booksToGive, setBooksToGive] = useState([]);
+  const [owner, setOwner] = useState<Owner>({} as Owner);
+  const [book, setBook] = useState<BookWithOwner>({} as BookWithOwner);
+  const [booksToTake, setBooksToTake] = useState<BookWithOwner[]>([]);
+  const [booksToGive, setBooksToGive] = useState<BookWithOwner[]>([]);
   const [bookToTake, setBookToTake] = useState<string | undefined>(id);
   const [bookToGive, setBookToGive] = useState<string>("");
   const [exchangeOffer, setExchangeOffer] = useState();
   const [rateClick, setRateClick] = useState<boolean>(false);
   const [rateOwner, setRateOwner] = useState<number>(0);
-  const [isForExchange, setIsForExchange] = useState<boolean>(true);
+  const [isForExchange] = useState<boolean>(true);
   const [currentRating, setCurrentRating] = useState<number | undefined>();
   const navigate = useNavigate();
 
@@ -79,7 +65,6 @@ export default function BookOwnerPage(): JSX.Element {
     fetchBookData();
   }, [id, user.id]);
 
-  // ! РЕЙТИНГ ⭐⭐⭐
   const rateUser = async (currentRating: number) => {
     try {
       const numberOfRating = owner?.numberOfRating + 1;
@@ -102,7 +87,7 @@ export default function BookOwnerPage(): JSX.Element {
       console.error("Ошибка при обновлении рейтинга:", error);
     }
   };
-  
+
   const sendOfferForExchange = async () => {
     try {
       const newExchange = {
@@ -115,7 +100,7 @@ export default function BookOwnerPage(): JSX.Element {
         newExchange
       );
       const offerMessage = {
-        text: `Пользователь ${user.username} отправил(а) Вам запрос на обмен`,
+        text: `Пользователь ${user.username} отправил(а) Вам запрос на обмен книгой \"${book.title}\"`,
         authorId: user.id,
         toUser: owner?.id,
         exchangeId: data.id,
@@ -137,7 +122,7 @@ export default function BookOwnerPage(): JSX.Element {
         {rateClick ? (
           <Card
             maxW="md"
-            bg="rgba(22, 9, 156, 0.3)"
+            bg="#B5C6B8"
             border="solid 10px whitesmoke"
             borderRadius="20px"
             width="600px"
@@ -221,7 +206,7 @@ export default function BookOwnerPage(): JSX.Element {
         ) : (
           <Card
             maxW="md"
-            bg="rgba(22, 9, 156, 0.3)"
+            bg="#B5C6B8"
             border="solid 10px whitesmoke"
             borderRadius="20px"
             width="600px"
@@ -262,7 +247,7 @@ export default function BookOwnerPage(): JSX.Element {
                     {new Date(owner.createdAt).toLocaleDateString()}
                   </Text>
                   <Text>Место встречи: {owner.placeOfMeeting}</Text>
-                  <Text>Рейтинг {currentRating} ⭐</Text>
+                  <Text>Рейтинг {currentRating?.toFixed(1)} ⭐</Text>
                 </>
               ) : (
                 <Text>Загрузка...</Text>
@@ -288,7 +273,7 @@ export default function BookOwnerPage(): JSX.Element {
             <Card
               maxW="md"
               bg="whitesmoke"
-              border="solid 10px rgba(22, 9, 156, 0.3)"
+              border="solid 10px #B5C6B8"
               borderRadius="20px"
               width="500px"
               height="700px"
@@ -308,7 +293,7 @@ export default function BookOwnerPage(): JSX.Element {
               </Box>
               <Button
                 onClick={() => navigate("/profile")}
-                bg="rgba(22, 9, 156, 0.3)"
+                bg="#B5C6B8"
                 borderRadius="20px"
                 mt="auto"
               >
@@ -319,7 +304,7 @@ export default function BookOwnerPage(): JSX.Element {
             <Card
               maxW="md"
               bg="whitesmoke"
-              border="solid 10px rgba(22, 9, 156, 0.3)"
+              border="solid 10px #B5C6B8"
               borderRadius="20px"
               width="500px"
               height="700px"
@@ -342,7 +327,9 @@ export default function BookOwnerPage(): JSX.Element {
                     Мои книги
                   </Text>
                   {booksToGive &&
-                    booksToGive.map((book) => <MyBooks key={book.id} book={book} />)}
+                    booksToGive.map((book) => (
+                      <MyBooks key={book.id} book={book} isForExchange={true} />
+                    ))}
                   <Button
                     onClick={() => navigate("/")}
                     bg="rgba(22, 9, 156, 0.3)"
@@ -395,7 +382,7 @@ export default function BookOwnerPage(): JSX.Element {
                   </Box>
                   <Button
                     onClick={sendOfferForExchange}
-                    bg="rgba(22, 9, 156, 0.3)"
+                    bg="#B5C6B8"
                     borderRadius="20px"
                     mt="auto"
                   >

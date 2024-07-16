@@ -8,6 +8,7 @@ import {
   IInputsBookCreationState,
   IReviews,
   IUserWithComments,
+  IWeather,
 } from "./stateTypes";
 
 export interface AuthFormProps {
@@ -23,6 +24,7 @@ export interface ErrorModalProps {
 
 export interface BookProps {
   book: IBook;
+  isForExchange: boolean;
 }
 
 export interface displayedBooks {
@@ -103,4 +105,8 @@ export type homePageProps = Omit<adminPageProps, 'setUsersWithComments'>;
 export interface starProps {
   filled: boolean;
   partial: number;
+}
+
+export interface OneDayWeather {
+  day: IWeather
 }

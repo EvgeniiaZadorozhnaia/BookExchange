@@ -59,15 +59,15 @@ export interface CalendarEvent {
 }
 
 export interface Message {
-  id: number;
+  id?: number;
   text: string;
-  authorId: number;
+  authorId: number | undefined;
   toUser: number;
   exchangeId: number;
   createdAt: string;
   Author: {
     username: string;
-    avatarUrl: string;
+    avatarUrl: string | undefined;
     createdAt: string;
   };
 }
@@ -119,14 +119,17 @@ export interface Owner {
 }
 
 export interface BookWithOwner {
-  id: number;
-  title: string;
-  author: string;
-  genre: string;
-  year: number;
-  condition: string;
-  description: string;
   Owner: Owner;
+  author: string;
+  createdAt: string;
+  id: number;
+  numberOfRating: number;
+  ownerId: number;
+  pages: number;
+  pictureUrl: string;
+  rating: number;
+  title: string;
+  updatedAt: string;
 }
 
 export interface formData {
