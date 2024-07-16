@@ -157,9 +157,9 @@ function HomePage({ usersWithComments }: homePageProps): JSX.Element {
               ml={2}
               minWidth="100px"
               variant="outline"
-              colorScheme="purple"
+              colorScheme="green"
               opacity="0.8"
-              _hover={{ bg: "purple.100" }}
+              _hover={{ bg: "green.100" }}
             >
               Закрыть
             </Button>

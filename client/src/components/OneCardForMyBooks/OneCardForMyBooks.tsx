@@ -11,6 +11,7 @@ import {
   Box,
   Badge,
 } from "@chakra-ui/react";
+import "animate.css";
 
 function OneCardForMyBooks({ book, onEditClick, onDelete }) {
   const deleteHandler = () => {
@@ -21,6 +22,7 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
 
   return (
     <Card
+    className="animate__animated animate__flipInY"
       backgroundColor="#B5C6B8"
       borderRadius="lg"
       border="1px solid #2f855a"

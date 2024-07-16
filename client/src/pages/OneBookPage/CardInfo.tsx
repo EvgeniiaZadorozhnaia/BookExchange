@@ -127,7 +127,7 @@ function CardInfo({ book, description }: cardInfoProps): JSX.Element {
             </Box>
           ) : (
             <Box display="flex" justifyContent="center" alignItems="center">
-              <CircularProgress isIndeterminate color="purple.400" />
+              <CircularProgress isIndeterminate color="green.400" />
             </Box>
           )}
         </Box>

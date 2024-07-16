@@ -5,7 +5,6 @@ import {
   Alert,
   AlertIcon,
   Avatar,
-  background,
   Badge,
   Button,
   CloseButton,
@@ -22,6 +21,7 @@ import {
 import { StarIcon } from "@chakra-ui/icons";
 import { reviewsProps } from "../../types/propsTypes";
 import { IReviews } from "../../types/stateTypes";
+import "animate.css";
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
@@ -271,6 +271,7 @@ function Reviews({
         {reviews?.length > 0 ? (
           reviews.map((review) => (
             <div
+            className="animate__animated animate__fadeInUp"
               key={review.id}
               style={{
                 display: "flex",

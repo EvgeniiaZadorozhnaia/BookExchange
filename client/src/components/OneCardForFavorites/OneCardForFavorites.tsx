@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { starProps } from "../../types/propsTypes";
 import { AiOutlineDelete } from "react-icons/ai";
+import "animate.css";
 
 function OneCardForFavorites({ book, onDelete }): JSX.Element {
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
 
   return (
     <Card
+      className="animate__animated animate__flipInY"
       backgroundColor="#B5C6B8"
       borderRadius="lg"
       border="1px solid #2f855a"

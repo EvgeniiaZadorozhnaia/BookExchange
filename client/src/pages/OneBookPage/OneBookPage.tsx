@@ -3,7 +3,6 @@ import { AxiosResponse } from "axios";
 import axiosInstance from "../../axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  Box,
   Button,
   Card,
   CardBody,
@@ -87,7 +86,9 @@ function OneBookPage(): JSX.Element {
   return (
     <>
       {book ? (
-        <div style={{ display: "flex", justifyContent: "center", color: "black" }}>
+        <div
+          style={{ display: "flex", justifyContent: "center", color: "black" }}
+        >
           <Flex direction="column" align="center" m="10px">
             <Card maxW="sm">
               <CardBody
