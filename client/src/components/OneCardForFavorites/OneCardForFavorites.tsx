@@ -5,9 +5,6 @@ import {
   Image,
   Stack,
   Heading,
-  CardFooter,
-  ButtonGroup,
-  Button,
   Box,
   Badge,
   IconButton,
@@ -36,7 +33,7 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
       justifyContent="center"
     >
       <StarIcon
-        color={filled ? "yellow.400" : "gray.300"}
+        color={filled ? "yellow.500" : "gray.300"}
         boxSize="24px"
         position="absolute"
       />
@@ -69,6 +66,7 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
       border="1px solid #2f855a"
       maxW="sm"
       m="20px"
+      _hover={{ transform: "scale(1.02)" }}
     >
       <CardBody>
         <IconButton
@@ -79,7 +77,6 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
           icon={<Icon as={AiOutlineDelete} />}
           onClick={deleteHandler}
           colorScheme="red"
-          
         />
         <Image
           h={"450px"}
@@ -88,12 +85,14 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
           alt="Picture"
           borderRadius="lg"
           onClick={() => navigate(`/books/oneBook/${book.id}`)}
+          _hover={{ cursor: "pointer" }}
         />
 
         <Stack mt="4" spacing="2">
           <Heading textAlign="center" size="md">
             {book.title}
           </Heading>
+          <hr style={{ marginTop: "0px" }}></hr>
           <Box display="flex" alignItems="baseline">
             <Badge borderRadius="full" px="5">
               Автор
@@ -122,7 +121,7 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
               {book.Owner?.username}
             </Box>
           </Box>
-          <Box display="flex" alignItems="baseline">
+          <Box display="flex" alignItems="center">
             <Badge borderRadius="full" px="5">
               Рейтинг владельца
             </Badge>

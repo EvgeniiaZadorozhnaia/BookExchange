@@ -5,6 +5,7 @@ import {
   Alert,
   AlertIcon,
   Avatar,
+  background,
   Badge,
   Button,
   CloseButton,
@@ -251,7 +252,7 @@ function Reviews({
   }
 
   return (
-    <div
+    <div className="reviews"
       style={{
         border: "1px solid black",
         padding: "10px",
@@ -260,12 +261,13 @@ function Reviews({
         margin: "20px 20px 0px 20px",
         display: "flex",
         flexDirection: "column",
-        maxHeight: "523px",
         overflow: "hidden",
+        backgroundColor: "#B5C6B8",
+        color: "black",
       }}
     >
-      <div style={{ overflowY: "auto" }}>
-        <h4 style={{ marginBottom: "15px" }}>Отзывы</h4>
+      <div style={{ overflowY: "auto", maxHeight:'260px'}}>
+        <h5 style={{textAlign:'center'}}>Отзывы на книгу "{book?.title}"</h5>
         {reviews?.length > 0 ? (
           reviews.map((review) => (
             <div
@@ -273,17 +275,20 @@ function Reviews({
               style={{
                 display: "flex",
                 alignItems: "flex-start",
-                marginBottom: "20px",
+                marginBottom: "10px",
                 padding: "10px",
                 borderRadius: "8px",
                 boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                 backgroundColor: "#f7f7f7",
-                maxWidth: "100%",
+                maxWidth: "99%",
                 wordBreak: "break-word",
                 overflowWrap: "break-word",
+                border: "1px solid green",
               }}
             >
               <Avatar
+                border={"1px solid black"}
+                padding={"1px"}
                 src={`http://localhost:3000/static/${review?.User.avatarUrl}`}
               />
               <div style={{ marginLeft: "15px", flexGrow: 1 }}>
@@ -297,7 +302,7 @@ function Reviews({
                   <div style={{ flex: "1 1 auto" }}>
                     <Text fontWeight="bold">
                       {review.User?.username}
-                      <Badge ml="1" colorScheme="purple">
+                      <Badge ml="1" colorScheme="green">
                         {formatDate(review.createdAt)}
                       </Badge>
                     </Text>
@@ -384,12 +389,12 @@ function Reviews({
             borderRadius: "8px",
             boxShadow: "0 2px 4px #b9b5e1",
             backgroundColor: "#f7f7f7",
-            marginTop: "10px",
+            
           }}
           onSubmit={handleSubmitReview}
         >
-          <div style={{ width: "100%", marginBottom: "10px" }}>
-            <h4 style={{ marginBottom: "5px" }}>Оставить отзыв</h4>
+          <div style={{ width: "100%"}}>
+            <h5 style={{ marginBottom: "5px" }}>Оставить отзыв</h5>
             {book?.Owner?.id !== user?.id ? (
               <Textarea
                 rows={3}
@@ -398,7 +403,7 @@ function Reviews({
                   padding: "8px",
                   marginBottom: "10px",
                   borderRadius: "4px",
-                  borderColor: "#b9b5e1",
+
                   borderWidth: "1px",
                   outline: "none",
                   boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
@@ -432,12 +437,13 @@ function Reviews({
             )}
             <Button
               type="submit"
-              minWidth="100px"
+              mr={2}
+              width={120}
+              mb={2}
               variant="outline"
-              colorScheme="purple"
+              colorScheme="green"
               opacity="0.8"
-              _hover={{ bg: "purple.100" }}
-              disabled={reviewContent.trim() === ""}
+              _hover={{ bg: "green.100" }}
             >
               Отправить
             </Button>

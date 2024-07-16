@@ -15,7 +15,7 @@ router
           attributes: ["id", "content", "likes", "dislikes"],
         },
       ],
-      attributes: ["id", "username", "email", "rating", "isBlocked"],
+      attributes: ["id", "username", "email", "rating", "isBlocked", "createdAt"],
     });
     res.json(users);
   } catch (error) {

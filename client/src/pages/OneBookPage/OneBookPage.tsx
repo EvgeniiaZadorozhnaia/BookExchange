@@ -64,7 +64,7 @@ function OneBookPage(): JSX.Element {
       const data = await response.json();
 
       if (data.items && data.items.length > 0) {
-        const firstBook = data.items[0].volumeInfo;
+        const firstBook = data.items[3].volumeInfo;
         const bookTitle = firstBook.title;
         console.log(bookTitle);
 
@@ -87,7 +87,7 @@ function OneBookPage(): JSX.Element {
   return (
     <>
       {book ? (
-        <div style={{ display: "flex", justifyContent:'center'}}>
+        <div style={{ display: "flex", justifyContent: "center", color: "black" }}>
           <Flex direction="column" align="center" m="10px">
             <Card maxW="sm">
               <CardBody
@@ -113,17 +113,18 @@ function OneBookPage(): JSX.Element {
                     {book?.Owner?.id !== user.id ? (
                       <Flex alignItems="center" flexDirection="column">
                         <Button
-                          width={200}
-                          onClick={() => navigate(`/Book/${book.id}/owner`)}
                           mr={2}
+                          width={120}
                           mb={2}
                           variant="outline"
-                          colorScheme="purple"
+                          colorScheme="green"
+                          onClick={() => navigate(`/Book/${book.id}/owner`)}
                           opacity="0.8"
-                          _hover={{ bg: "purple.100" }}
+                          _hover={{ bg: "green.100" }}
                         >
-                          Предложить обмен
+                          Обмен
                         </Button>
+
                         <Button
                           onClick={toggleFavorite}
                           colorScheme={isFavorite ? "red" : "gray"}
@@ -163,12 +164,12 @@ function OneBookPage(): JSX.Element {
 
             <Button
               onClick={() => navigate(-1)}
-              variant="outline"
-              colorScheme="purple"
-              opacity="0.8"
-              _hover={{ bg: "purple.100" }}
-              w="100px"
-              mt="4"
+              ml={2}
+              mt={2}
+              minWidth="120px"
+              height="40px"
+              variant="solid"
+              colorScheme="green"
             >
               Назад
             </Button>
