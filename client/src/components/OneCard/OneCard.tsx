@@ -4,7 +4,7 @@ import { BookProps } from "../../types/propsTypes";
 import styles from "./OneCard.module.css";
 import { useNavigate } from "react-router-dom";
 
-function OneCard({ book }: BookProps): JSX.Element {
+function OneCard({ book, isForExchange }: BookProps): JSX.Element {
   const navigate = useNavigate();
   return (
     <Card className={styles.card} maxW="sm" m="20px">
@@ -14,7 +14,7 @@ function OneCard({ book }: BookProps): JSX.Element {
         border="1px solid #2f855a"
       >
         <Image
-          h={"450px"}
+          h={isForExchange ? "340px" : "450px"}
           w={"320px"}
           src={`http://localhost:3000/static/${book.pictureUrl}`}
           alt="Picture"

@@ -6,9 +6,10 @@
 
 .demo-app-main {
   width: 80%;
-  max-width: 800px;
-  padding: 10px;
+  max-width: 1000px;
+  padding: 30px;
   box-sizing: border-box;
+  
 }
 
 .demo-app-sidebar {
@@ -20,7 +21,7 @@
 
 .demo-app-sidebar-section {
   border-top: 1px solid #ddd;
-  padding-top: 10px;
+  padding-top: 2px;
   width: 100%;
 }
 
