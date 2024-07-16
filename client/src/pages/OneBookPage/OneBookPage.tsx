@@ -32,8 +32,6 @@ function OneBookPage(): JSX.Element {
   const [reviews, setReviews] = useState<IReview[]>([]);
   const [description, setDescription] = useState<string>("");
 
-  const back = useNavigate();
-
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
     dispatch(addToFavorite({ bookId: book.id, userId: user.id }));
@@ -89,17 +87,15 @@ function OneBookPage(): JSX.Element {
   return (
     <>
       {book ? (
-        <div className={styles.container}>
-          <div className={styles.card} style={{ display: "flex" }}>
-            <Card
-              maxW="xl"
-              m="20px"
-              borderWidth="1px"
-              borderRadius="lg"
-              boxShadow="md"
-              overflow="hidden"
-            >
-              <CardBody textAlign="center">
+        <div style={{ display: "flex", justifyContent:'center'}}>
+          <Flex direction="column" align="center" m="10px">
+            <Card maxW="sm">
+              <CardBody
+                textAlign="center"
+                backgroundColor="#B5C6B8"
+                borderRadius="lg"
+                border="1px solid #2f855a"
+              >
                 <Image
                   h="550px"
                   src={`http://localhost:3000/static/${book.pictureUrl}`}
@@ -115,89 +111,78 @@ function OneBookPage(): JSX.Element {
                     )}
                     <p></p>
                     {book?.Owner?.id !== user.id ? (
-                      <>
-                        {" "}
-                        <Flex alignItems={"center"} flexDirection={"column"}>
-                          <Button
-                            width={200}
-                            onClick={() => navigate(`/Book/${book.id}/owner`)}
-                            mr={2}
-                            mb={2}
-                            variant="outline"
-                            colorScheme="purple"
-                            opacity="0.8"
-                            _hover={{ bg: "purple.100" }}
-                          >
-                            Предложить обмен
-                          </Button>
-                          <Button
-                            onClick={toggleFavorite}
-                            colorScheme={isFavorite ? "red" : "gray"}
-                            variant="ghost"
-                            aria-label={
-                              isFavorite
-                                ? "Remove from favorites"
-                                : "Add to favorites"
-                            }
-                            _hover={{
-                              color: isFavorite ? "red.500" : "gray.500",
-                            }}
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            {isFavorite ? (
-                              <>
-                                <MdFavorite size={24} />
-                                <span style={{ marginLeft: 8 }}>
-                                  В избранном
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <MdFavoriteBorder size={24} />
-                                <span style={{ marginLeft: 8 }}>
-                                  Добавить в избранное
-                                </span>
-                              </>
-                            )}
-                          </Button>
-                        </Flex>
-                      </>
+                      <Flex alignItems="center" flexDirection="column">
+                        <Button
+                          width={200}
+                          onClick={() => navigate(`/Book/${book.id}/owner`)}
+                          mr={2}
+                          mb={2}
+                          variant="outline"
+                          colorScheme="purple"
+                          opacity="0.8"
+                          _hover={{ bg: "purple.100" }}
+                        >
+                          Предложить обмен
+                        </Button>
+                        <Button
+                          onClick={toggleFavorite}
+                          colorScheme={isFavorite ? "red" : "gray"}
+                          variant="ghost"
+                          aria-label={
+                            isFavorite
+                              ? "Remove from favorites"
+                              : "Add to favorites"
+                          }
+                          _hover={{
+                            color: isFavorite ? "red.500" : "gray.500",
+                          }}
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          {isFavorite ? (
+                            <>
+                              <MdFavorite size={24} />
+                              <span style={{ marginLeft: 8 }}>В избранном</span>
+                            </>
+                          ) : (
+                            <>
+                              <MdFavoriteBorder size={24} />
+                              <span style={{ marginLeft: 8 }}>
+                                Добавить в избранное
+                              </span>
+                            </>
+                          )}
+                        </Button>
+                      </Flex>
                     ) : null}
                   </Heading>
                 </Stack>
               </CardBody>
             </Card>
-          </div>
-          <div className={styles.container2}>
-            <div className={styles.cardInfo}>
-              <CardInfo book={book} description={description} />
-            </div>
 
-            <div className={styles.reviews}>
-              <Reviews
-                book={book}
-                reviews={reviews}
-                setReviews={setReviews}
-                setBook={setBook}
-              />
-            </div>
-            <div style={{ textAlign: "center" }}>
-              <p></p>
-              <Button
-                onClick={() => back(-1)}
-                mr={2}
-                mb={2}
-                variant="outline"
-                colorScheme="purple"
-                opacity="0.8"
-                _hover={{ bg: "purple.100" }}
-                w="100px"
-              >
-                Назад
-              </Button>
-            </div>
+            <Button
+              onClick={() => navigate(-1)}
+              variant="outline"
+              colorScheme="purple"
+              opacity="0.8"
+              _hover={{ bg: "purple.100" }}
+              w="100px"
+              mt="4"
+            >
+              Назад
+            </Button>
+          </Flex>
+
+          <div className={styles.container}>
+            <CardInfo book={book} description={description} />
+
+            <Reviews
+              book={book}
+              reviews={reviews}
+              setReviews={setReviews}
+              setBook={setBook}
+            />
           </div>
         </div>
       ) : (

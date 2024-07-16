@@ -93,20 +93,6 @@ function SearchInput({
             height="40px"
             variant="solid"
             colorScheme="green"
-            bg="#2f855a"
-            color="white"
-            borderRadius="8px"
-            border="2px solid #2f855a"
-            boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
-            _hover={{
-              bg: "rgba(56, 161, 105, 0.9)",
-              boxShadow: "0 6px 8px rgba(0, 0, 0, 0.2)",
-            }}
-            _active={{
-              bg: "#276749",
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
-            }}
-            _focus={{ boxShadow: "0 0 0 3px rgba(0, 255, 0, 0.3)" }}
           >
             Искать
           </Button>
