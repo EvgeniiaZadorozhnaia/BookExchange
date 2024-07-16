@@ -79,13 +79,13 @@ function MyBooksPage(): JSX.Element {
   }
 
   function slideRight() {
-    setCurrentStartIndex((prev) => Math.min(prev + 1, books.length - 4));
+    setCurrentStartIndex((prev) => Math.min(prev + 1, books.length - 3));
   }
 
   function handleDeleteBook(bookId: number): void {
     dispatch(deleteBook(bookId)).then(() => {
       setCurrentStartIndex((prevIndex) => {
-        const newMaxIndex = Math.max(books.length - 5, 0);
+        const newMaxIndex = Math.max(books.length - 4, 0);
         if (prevIndex > newMaxIndex) {
           return newMaxIndex;
         }
@@ -102,12 +102,15 @@ function MyBooksPage(): JSX.Element {
        alignItems="center"
        mb="16px"
       >
-        {books.length > 4 && (
+        {books.length > 3 && (
           <IconButton
             icon={<ChevronLeftIcon />}
             onClick={slideLeft}
             disabled={currentStartIndex === 0}
             aria-label="Slide Left"
+            colorScheme="green"
+            bg="green.300"
+            _hover={{ bg: "green.600" }}
           />
         )}
         <Box
@@ -118,7 +121,7 @@ function MyBooksPage(): JSX.Element {
           justifyContent="center"
           alignItems="center"
         >
-          {books.slice(currentStartIndex, currentStartIndex + 4).map((book) => (
+          {books.slice(currentStartIndex, currentStartIndex + 3).map((book) => (
             <OneCardForMyBooks
               key={book.id}
               book={book}
@@ -127,12 +130,15 @@ function MyBooksPage(): JSX.Element {
             />
           ))}
         </Box>
-        {books.length > 4 && (
+        {books.length > 3 && (
           <IconButton
             icon={<ChevronRightIcon />}
             onClick={slideRight}
-            disabled={currentStartIndex >= books.length - 4}
+            disabled={currentStartIndex >= books.length - 3}
             aria-label="Slide Right"
+            colorScheme="green"
+            bg="green.300"
+            _hover={{ bg: "green.600" }}
           />
         )}
       </Box>
@@ -142,9 +148,9 @@ function MyBooksPage(): JSX.Element {
           mr={2}
           mb={2}
           variant="outline"
-          colorScheme="purple"
+          colorScheme="green"
           opacity="0.8"
-          _hover={{ bg: "purple.100" }}
+          _hover={{ bg: "green.100" }}
           onClick={onOpen}
         >
           Добавить книгу

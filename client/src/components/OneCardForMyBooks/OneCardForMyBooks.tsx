@@ -20,7 +20,13 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
   };
 
   return (
-    <Card maxW="sm" m="20px">
+    <Card
+      backgroundColor="#B5C6B8"
+      borderRadius="lg"
+      border="1px solid #2f855a"
+      maxW="sm"
+      m="20px"
+    >
       <CardBody>
         <Image
           h="450px"
@@ -31,11 +37,10 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
         <Stack mt="6" spacing="3">
           <Heading size="md">{book.title}</Heading>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5" colorScheme="purple">
+            <Badge borderRadius="full" px="5">
               Автор
             </Badge>
             <Box
-              color="gray.500"
               fontWeight="semibold"
               letterSpacing="wide"
               fontSize="xs"
@@ -46,11 +51,10 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
             </Box>
           </Box>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5" colorScheme="purple">
+            <Badge borderRadius="full" px="5">
               Cтраницы
             </Badge>
             <Box
-              color="gray.500"
               fontWeight="semibold"
               letterSpacing="wide"
               fontSize="xs"
@@ -69,14 +73,20 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
             mr={2}
             mb={2}
             variant="outline"
-            colorScheme="purple"
+            colorScheme="green"
             opacity="0.8"
-            _hover={{ bg: "purple.100" }}
+            _hover={{ bg: "green.100" }}
             onClick={() => onEditClick(book)}
           >
             Редактировать
           </Button>
-          <Button variant="outline" colorScheme="red" onClick={deleteHandler}>
+          <Button
+            variant="outline"
+            colorScheme="red"
+            opacity="0.8"
+            _hover={{ bg: "red.100" }}
+            onClick={deleteHandler}
+          >
             Удалить
           </Button>
         </ButtonGroup>
