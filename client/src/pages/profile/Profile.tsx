@@ -19,6 +19,7 @@ import Weather from "../../components/Weather/Weather";
 const { VITE_BASE_URL, VITE_API } = import.meta.env;
 import Calendar from "./Calendar";
 import { Exchange, Message } from "../../types/stateTypes";
+import "animate.css";
 
 export default function Profile(): JSX.Element {
   const { user } = useAppSelector((state) => state.authSlice);
@@ -166,7 +167,7 @@ export default function Profile(): JSX.Element {
       <Grid templateColumns="1fr 1fr" gap={4}>
         {/* Левая колонка с чатом */}
         <GridItem>
-          <Box display="flex" justifyContent="space-around" mt={10} ml='10'>
+          <Box display="flex" justifyContent="space-around" mt={10} ml="10">
             <Button
               onClick={() => setIncomeOrOutcome("income")}
               style={{
@@ -198,8 +199,8 @@ export default function Profile(): JSX.Element {
           <Box
             border="solid 1px"
             borderRadius="7px"
-            mt='67px'
-            mr='12'
+            mt="67px"
+            mr="12"
             boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
             p={1}
           >
@@ -246,6 +247,7 @@ export default function Profile(): JSX.Element {
                 {messages.length > 0 ? (
                   messages.map((message) => (
                     <Box
+                      className="animate__animated animate__fadeInRight"
                       key={message.id}
                       alignSelf={
                         message.authorId === user.id ? "flex-end" : "flex-start"
@@ -305,7 +307,7 @@ export default function Profile(): JSX.Element {
               justifyContent={"center"}
               fontWeight={"bold"}
               borderRadius={"20px"}
-              mt='20px'
+              mt="20px"
             >
               Прогноз погоды
             </Text>
@@ -315,30 +317,30 @@ export default function Profile(): JSX.Element {
         </GridItem>
       </Grid>
       <Button
-          onClick={onOpen}
-          backgroundColor= "#B5C6B8"
-          mt='50px'
-          width= "400px"
-          height= "50px"
-          borderRadius= "7px"
-          justifyContent= "center"
-          colorScheme="green"
-          bg="#2f855a"
-          color="white"
-          border="2px solid #2f855a"
-          boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
-          _hover={{
-            bg: "rgba(56, 161, 105, 0.9)",
-            boxShadow: "0 6px 8px rgba(0, 0, 0, 0.2)",
-          }}
-          _active={{
-            bg: "#276749",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
-          }}
-          _focus={{ boxShadow: "0 0 0 3px rgba(0, 255, 0, 0.3)" }}
-        >
-          Моя история обменов
-        </Button>
+        onClick={onOpen}
+        backgroundColor="#B5C6B8"
+        mt="50px"
+        width="400px"
+        height="50px"
+        borderRadius="7px"
+        justifyContent="center"
+        colorScheme="green"
+        bg="#2f855a"
+        color="white"
+        border="2px solid #2f855a"
+        boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+        _hover={{
+          bg: "rgba(56, 161, 105, 0.9)",
+          boxShadow: "0 6px 8px rgba(0, 0, 0, 0.2)",
+        }}
+        _active={{
+          bg: "#276749",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
+        }}
+        _focus={{ boxShadow: "0 0 0 3px rgba(0, 255, 0, 0.3)" }}
+      >
+        Моя история обменов
+      </Button>
       <ProfileModal
         isOpen={isOpen}
         onClose={onClose}
