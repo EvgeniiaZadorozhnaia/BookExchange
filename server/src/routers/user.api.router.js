@@ -6,7 +6,7 @@ router
   try {
     const users = await User.findAll({
       where: {
-        isAdmin: null,
+        isAdmin: false,
       },
       include: [
         {

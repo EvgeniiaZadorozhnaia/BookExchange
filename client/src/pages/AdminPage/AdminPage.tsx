@@ -61,8 +61,8 @@ function AdminPage({
 
   return (
     <div>
-      <Flex direction="column" align="center" p={4}>
-        <VStack spacing={4} width="full" maxWidth="800px">
+      <Flex align="center" p={4}>
+        <VStack spacing={4} width="full">
           {usersWithComments.map((user) => (
             <Box
               key={user.id}

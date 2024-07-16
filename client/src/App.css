@@ -12,6 +12,9 @@ body {
 }
 
 #root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   min-height: 100vh;
   background-image: url("https://kartinki.pics/uploads/posts/2021-07/thumbs/1626157901_45-kartinkin-com-p-razvorot-fon-krasivo-54.jpg");
   background-size: cover;

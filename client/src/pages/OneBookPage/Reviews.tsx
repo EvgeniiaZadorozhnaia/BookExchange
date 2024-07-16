@@ -257,10 +257,10 @@ function Reviews({
         padding: "10px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-        marginTop: "20px",
+        margin: "20px 20px 0px 20px",
         display: "flex",
         flexDirection: "column",
-        maxHeight: "522px",
+        maxHeight: "523px",
         overflow: "hidden",
       }}
     >
@@ -354,7 +354,7 @@ function Reviews({
       </div>
 
       {showLikeAlert ? (
-        <Alert status="warning">
+        <Alert status="info">
           <AlertIcon />
           Вы не можете оценивать собственные комментарии!
         </Alert>
@@ -442,11 +442,17 @@ function Reviews({
               Отправить
             </Button>
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             {book?.Owner?.id !== user?.id && (
               <>
                 {rateBook !== 0 ? (
-                  <>
+                  <div>
                     <Text as="span" fontSize="xl">
                       Ваша оценка {rateBook}
                     </Text>
@@ -459,9 +465,9 @@ function Reviews({
                     >
                       <StarIcon color="yellow.400" />
                     </Text>
-                  </>
+                  </div>
                 ) : (
-                  <>
+                  <div>
                     <Text
                       bg="whitesmoke"
                       borderRadius="30px"
@@ -490,7 +496,7 @@ function Reviews({
                         <StarIcon color={"yellow.400"} />
                       </Text>
                     ))}
-                  </>
+                  </div>
                 )}
               </>
             )}
