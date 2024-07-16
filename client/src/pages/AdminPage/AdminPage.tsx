@@ -1,8 +1,16 @@
 import { useEffect } from "react";
 import axiosInstance from "../../axiosInstance";
-import { Box, Button, Divider, Flex, VStack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  VStack,
+  Text,
+  Icon,
+} from "@chakra-ui/react";
 import { adminPageProps } from "../../types/propsTypes";
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 
 function AdminPage({
   usersWithComments,
@@ -59,84 +67,117 @@ function AdminPage({
     }
   }
 
+  const formatDate = (dateString: string): string => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString("ru-RU", options);
+  };
+
   return (
     <div>
-      <Flex direction="column" align="center" p={4}>
-        <VStack spacing={4} width="full" maxWidth="800px">
-          {usersWithComments.map((user) => (
+      <VStack
+        style={{ display: "flex", flexWrap: "wrap" }}
+        spacing={4}
+        width="full"
+      >
+        {usersWithComments.map((user) => (
+          <Box
+            key={user.id}
+            borderWidth="1px solid green"
+            borderRadius="md"
+            p={4}
+            width="full"
+            maxWidth="700px"
+            boxShadow="md"
+            mb={4}
+            bg={"#b5c6b8b8"}
+          >
+            <Flex direction="column" mb={4}>
+              <Text fontWeight="bold">Имя пользователя: {user.username}</Text>
+              <Text>Электронная почта: {user.email}</Text>
+              {user.rating ? (
+                <Text>Рейтинг: {user.rating} ⭐</Text>
+              ) : (
+                <Text>У этого пользователя пока нет оценок</Text>
+              )}
+              <Text>Количество комментариев: {user.reviews.length}</Text>
+              <Text>Количество лайков: {user.reviews.reduce((acc, el) => (acc + el.likes), 0)}</Text>
+              <Text>Количество дизлайков: {user.reviews.reduce((acc, el) => (acc + el.dislikes), 0)}</Text>
+              <Text>Дата регистрации: {formatDate(user.createdAt)}</Text>
+            </Flex>
+
             <Box
-              key={user.id}
+              maxHeight="200px"
+              overflowY="auto"
+              mb={4}
+              p={2}
+              bg="gray.50"
               borderWidth="1px"
               borderRadius="md"
-              p={4}
-              width="full"
-              boxShadow="md"
-              bg="white"
             >
-              <Text fontSize="xl" fontWeight="bold">
-                {user.username}
-              </Text>
-              <Text color="gray.600">{user.email}</Text>
-              {user.rating ? (
-                <Text color="gray.600">{user.rating} ⭐</Text>
-              ) : (
-                <Text color="gray.600">
-                  У этого пользователя пока нет оценок
-                </Text>
-              )}
-
-              <Divider my={4} />
-              {user.reviews.map((review) => (
-                <Box
-                  key={review.id}
-                  mb={4}
-                  p={3}
-                  borderWidth="1px"
-                  borderRadius="md"
-                  bg="gray.50"
-                >
-                  <Text fontSize="md">{review.content}</Text>
-                  <Flex justify="space-between" mt={2}>
-                    {review.likes > 0 ? (
-                      <Text color="green.500">Лайки: {review.likes}</Text>
-                    ) : null}
-                    {review.dislikes > 0 ? (
-                      <Text color="red.500">Дизлайки: {review.dislikes}</Text>
-                    ) : null}
-                  </Flex>
-                  <Flex mt={2} justify="flex-end">
-                    <Button
-                      colorScheme="teal"
-                      variant="outline"
-                      size="sm"
-                      mr={2}
-                      onClick={() => handleDeleteReview(review.id)}
-                    >
-                      Удалить отзыв
-                    </Button>
-                  </Flex>
-                </Box>
-              ))}
-              <Flex justify="flex-end">
-                {user.isBlocked ? (
-                  <Button colorScheme="red" variant="outline" size="sm">
-                    Пользователь заблокирован
-                  </Button>
-                ) : (
-                  <Button
-                    colorScheme="red"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleBlockUser(user.id)}
+              {user.reviews.length > 0 ? (
+                user.reviews.map((review) => (
+                  <Box
+                    key={review.id}
+                    mb={4}
+                    p={3}
+                    borderWidth="1px"
+                    borderRadius="md"
+                    bg="white"
                   >
-                    Блокировать пользователя
-                  </Button>
-                )}
-              </Flex>
+                    <Text fontSize="md">{review.content}</Text>
+                    <Flex justify="space-between" mt={2}>
+                      {review.likes > 0 ? (
+                        <Flex align="center" color="green.500">
+                          <Icon as={FaThumbsUp} mr={1} /> {review.likes}
+                        </Flex>
+                      ) : null}
+                      {review.dislikes > 0 ? (
+                        <Flex align="center" color="red.500">
+                          <Icon as={FaThumbsDown} mr={1} /> {review.dislikes}
+                        </Flex>
+                      ) : null}
+                    </Flex>
+                    <Flex mt={2} justify="flex-end">
+                      <Button
+                        colorScheme="teal"
+                        variant="outline"
+                        size="sm"
+                        mr={2}
+                        onClick={() => handleDeleteReview(review.id)}
+                      >
+                        Удалить отзыв
+                      </Button>
+                    </Flex>
+                  </Box>
+                ))
+              ) : (
+                <Text color="gray.600">Нет отзывов</Text>
+              )}
             </Box>
-          ))}
-        </VStack>
-      </Flex>
+
+            <Flex justify="flex-end">
+              {user.isBlocked ? (
+                <Button colorScheme="red" variant="outline" size="sm">
+                  Пользователь заблокирован
+                </Button>
+              ) : (
+                <Button
+                  colorScheme="red"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleBlockUser(user.id)}
+                >
+                  Блокировать пользователя
+                </Button>
+              )}
+            </Flex>
+          </Box>
+        ))}
+      </VStack>
     </div>
   );
 }

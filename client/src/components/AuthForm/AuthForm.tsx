@@ -1,6 +1,12 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./AuthForm.module.css";
-import { Input, Button, useDisclosure, FormLabel } from "@chakra-ui/react";
+import {
+  Input,
+  Button,
+  useDisclosure,
+  FormLabel,
+  useToast,
+} from "@chakra-ui/react";
 import { AuthFormProps } from "../../types/propsTypes";
 import { IInputs, IUser } from "../../types/stateTypes";
 import { InputsState } from "../initState";
@@ -18,7 +24,25 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
   const [error, setError] = useState<string>("");
   const [avatar, setAvatar] = useState<File | null>(null);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isErrorOpen,
+    onOpen: onErrorOpen,
+    onClose: onErrorClose,
+  } = useDisclosure();
+  const toast = useToast();
+
+  const showToast = () => {
+    toast({
+      title: "Успешно",
+      description:
+        "Сообщение о регистрации отправлено на вашу электронную почту.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "bottom-right",
+      variant: "solid",
+    });
+  };
 
   const navigate = useNavigate();
 
@@ -33,10 +57,12 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
       await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/auth/send`, {
         to: us.email,
         subject: "Регистрация завершена",
-        text: `Здравствуйте ,${us.username},\n\nВаша регистрация успешно завершена! \n\nМы рады, что вы к нам присоединились!`,
+        text: `Здравствуйте, ${us.username}!\n\nВаша регистрация успешно завершена! \n\nМы рады, что Вы присоединились к нам!`,
       });
+      showToast();
     } catch (error) {
       console.log(error);
+      showErrorModal("Произошла ошибка при отправке сообщения.");
     }
   };
 
@@ -48,12 +74,12 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
 
   const showErrorModal = (errorText: string): void => {
     setError(errorText);
-    onOpen();
+    onErrorOpen();
   };
 
   const closeErrorModal = (): void => {
     setError("");
-    onClose();
+    onErrorClose();
   };
 
   const submitHandler = (
@@ -111,12 +137,17 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
 
   return (
     <>
-      <form onSubmit={(e) => submitHandler(type, e)} className={styles.wrapper}>
+      <form
+        onSubmit={(e) => submitHandler(type, e)}
+        className={styles.wrapper}
+        style={{ backgroundColor: "#b5c6b8b8"}}
+      >
         <h3 className={styles.head}>{title}</h3>
         <div className={styles.inputs}>
           {type === "signin" && (
             <>
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 type="email"
@@ -125,6 +156,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Эл.почта"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 type="password"
@@ -137,6 +169,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
           {type === "signup" && (
             <>
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 name="username"
@@ -144,6 +177,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Имя пользователя"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 type="email"
@@ -152,6 +186,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Эл.почта"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 type="password"
@@ -160,6 +195,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Пароль"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 name="city"
@@ -167,6 +203,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Где вы проживаете"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 name="placeOfMeeting"
@@ -175,6 +212,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
               />
               <FormLabel>Загрузите ваш аватар</FormLabel>
               <Input
+                bg={"#f3ecd0"}
                 type="file"
                 id="avatarUrl"
                 name="avatarUrl"
@@ -185,20 +223,22 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
         </div>
         <div className={styles.btns}>
           {type === "signin" && (
-            <Button type="submit" colorScheme="blue">
+            <Button type="submit" colorScheme="green">
               Вход
             </Button>
           )}
           {type === "signup" && (
-            <Button type="submit" colorScheme="blue">
+            <Button type="submit" colorScheme="green">
               Регистрация
             </Button>
           )}
         </div>
       </form>
-      <div style={{ maxWidth: "500px" }}>
-        <ErrorModal isOpen={isOpen} onClose={closeErrorModal} error={error} />
-      </div>
+      <ErrorModal
+        isOpen={isErrorOpen}
+        onClose={closeErrorModal}
+        error={error}
+      />
     </>
   );
 }

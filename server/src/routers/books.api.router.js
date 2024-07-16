@@ -130,7 +130,10 @@ router
   .get("/:ownerId", verifyAccessToken, async (req, res) => {
     const { ownerId } = req.params;
     try {
-      const books = await Book.findAll({ where: { ownerId } });
+      const books = await Book.findAll({
+        where: { ownerId },
+        order: [["createdAt", "DESC"]],
+      });
       const data = books.map((el) => el.get({ plain: true }));
 
       res.json(data);
@@ -208,15 +211,15 @@ router
     }
   })
 
-  .delete('/:userId/allBooks', async (req, res) => {
+  .delete("/:userId/allBooks", async (req, res) => {
     const { userId } = req.params;
     try {
-      await Book.destroy({where: {ownerId: userId}});
+      await Book.destroy({ where: { ownerId: userId } });
       res.status(204).send();
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ message: "Произошла ошибка при удалении книг" });
     }
-  })
+  });
 
 module.exports = router;

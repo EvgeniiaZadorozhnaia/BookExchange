@@ -21,6 +21,7 @@ import {
 import { StarIcon } from "@chakra-ui/icons";
 import { reviewsProps } from "../../types/propsTypes";
 import { IReviews } from "../../types/stateTypes";
+import "animate.css";
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
@@ -251,39 +252,44 @@ function Reviews({
   }
 
   return (
-    <div
+    <div className="reviews"
       style={{
         border: "1px solid black",
         padding: "10px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-        marginTop: "20px",
+        margin: "20px 20px 0px 20px",
         display: "flex",
         flexDirection: "column",
-        maxHeight: "522px",
         overflow: "hidden",
+        backgroundColor: "#B5C6B8",
+        color: "black",
       }}
     >
-      <div style={{ overflowY: "auto" }}>
-        <h4 style={{ marginBottom: "15px" }}>Отзывы</h4>
+      <div style={{ overflowY: "auto", maxHeight:'260px'}}>
+        <h5 style={{textAlign:'center'}}>Отзывы на книгу "{book?.title}"</h5>
         {reviews?.length > 0 ? (
           reviews.map((review) => (
             <div
+            className="animate__animated animate__fadeInUp"
               key={review.id}
               style={{
                 display: "flex",
                 alignItems: "flex-start",
-                marginBottom: "20px",
+                marginBottom: "10px",
                 padding: "10px",
                 borderRadius: "8px",
                 boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                 backgroundColor: "#f7f7f7",
-                maxWidth: "100%",
+                maxWidth: "99%",
                 wordBreak: "break-word",
                 overflowWrap: "break-word",
+                border: "1px solid green",
               }}
             >
               <Avatar
+                border={"1px solid black"}
+                padding={"1px"}
                 src={`http://localhost:3000/static/${review?.User.avatarUrl}`}
               />
               <div style={{ marginLeft: "15px", flexGrow: 1 }}>
@@ -297,7 +303,7 @@ function Reviews({
                   <div style={{ flex: "1 1 auto" }}>
                     <Text fontWeight="bold">
                       {review.User?.username}
-                      <Badge ml="1" colorScheme="purple">
+                      <Badge ml="1" colorScheme="green">
                         {formatDate(review.createdAt)}
                       </Badge>
                     </Text>
@@ -354,7 +360,7 @@ function Reviews({
       </div>
 
       {showLikeAlert ? (
-        <Alert status="warning">
+        <Alert status="info">
           <AlertIcon />
           Вы не можете оценивать собственные комментарии!
         </Alert>
@@ -384,12 +390,12 @@ function Reviews({
             borderRadius: "8px",
             boxShadow: "0 2px 4px #b9b5e1",
             backgroundColor: "#f7f7f7",
-            marginTop: "10px",
+            
           }}
           onSubmit={handleSubmitReview}
         >
-          <div style={{ width: "100%", marginBottom: "10px" }}>
-            <h4 style={{ marginBottom: "5px" }}>Оставить отзыв</h4>
+          <div style={{ width: "100%"}}>
+            <h5 style={{ marginBottom: "5px" }}>Оставить отзыв</h5>
             {book?.Owner?.id !== user?.id ? (
               <Textarea
                 rows={3}
@@ -398,7 +404,7 @@ function Reviews({
                   padding: "8px",
                   marginBottom: "10px",
                   borderRadius: "4px",
-                  borderColor: "#b9b5e1",
+
                   borderWidth: "1px",
                   outline: "none",
                   boxShadow: "0 0 0 2px rgba(185, 181, 225, 0.5)",
@@ -432,21 +438,28 @@ function Reviews({
             )}
             <Button
               type="submit"
-              minWidth="100px"
+              mr={2}
+              width={120}
+              mb={2}
               variant="outline"
-              colorScheme="purple"
+              colorScheme="green"
               opacity="0.8"
-              _hover={{ bg: "purple.100" }}
-              disabled={reviewContent.trim() === ""}
+              _hover={{ bg: "green.100" }}
             >
               Отправить
             </Button>
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             {book?.Owner?.id !== user?.id && (
               <>
                 {rateBook !== 0 ? (
-                  <>
+                  <div>
                     <Text as="span" fontSize="xl">
                       Ваша оценка {rateBook}
                     </Text>
@@ -459,9 +472,9 @@ function Reviews({
                     >
                       <StarIcon color="yellow.400" />
                     </Text>
-                  </>
+                  </div>
                 ) : (
-                  <>
+                  <div>
                     <Text
                       bg="whitesmoke"
                       borderRadius="30px"
@@ -490,7 +503,7 @@ function Reviews({
                         <StarIcon color={"yellow.400"} />
                       </Text>
                     ))}
-                  </>
+                  </div>
                 )}
               </>
             )}

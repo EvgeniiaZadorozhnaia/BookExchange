@@ -6,7 +6,7 @@ router
   try {
     const users = await User.findAll({
       where: {
-        isAdmin: null,
+        isAdmin: false,
       },
       include: [
         {
@@ -15,7 +15,7 @@ router
           attributes: ["id", "content", "likes", "dislikes"],
         },
       ],
-      attributes: ["id", "username", "email", "rating", "isBlocked"],
+      attributes: ["id", "username", "email", "rating", "isBlocked", "createdAt"],
     });
     res.json(users);
   } catch (error) {
