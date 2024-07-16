@@ -92,10 +92,11 @@ export default function BookOwnerPage(): JSX.Element {
     try {
       const newExchange = {
         fromUser: user.id,
-        fromBook: bookToGive,
+        fromBook: Number(bookToGive),
         toUser: owner?.id,
-        toBook: bookToTake,
+        toBook: Number(bookToTake),
       };
+      console.log(newExchange);
       const { data } = await axiosInstance.post(
         `${VITE_BASE_URL}${VITE_API}/exchanges`,
         newExchange
@@ -106,6 +107,7 @@ export default function BookOwnerPage(): JSX.Element {
         toUser: owner?.id,
         exchangeId: data.id,
       };
+
       await axiosInstance.post(
         `${VITE_BASE_URL}${VITE_API}/messages`,
         offerMessage

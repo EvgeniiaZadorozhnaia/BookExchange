@@ -28,9 +28,6 @@ export default function ProfileModal({
     [key: string]: string;
   }>({});
 
-  console.log(exchangeHistoryIncoming, "exchangeHistoryIncoming");
-  console.log(exchangeHistoryOutcoming, "exchangeHistoryOutcoming");
-
   useEffect(() => {
     if (!isOpen) {
       setSubmissionStatus({});
@@ -45,7 +42,7 @@ export default function ProfileModal({
       if (submitType === "accept") {
         const { data } = await axiosInstance.put(
           `${VITE_BASE_URL}${VITE_API}/exchanges/${exchangeId}`,
-          { status: "processing" }
+          { status: "В процессе" }
         );
         await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/messages`, {
           text: `Пользователь ${user.username} принял Ваш запрос`,
@@ -60,7 +57,7 @@ export default function ProfileModal({
       } else if (submitType === "decline") {
         const { data } = await axiosInstance.put(
           `${VITE_BASE_URL}${VITE_API}/exchanges/${exchangeId}`,
-          { status: "declined" }
+          { status: "Обмен отклонён" }
         );
         await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/messages`, {
           text: `Пользователь ${user.username} отклонил(а) Ваш запрос`,
@@ -75,7 +72,7 @@ export default function ProfileModal({
       } else if (submitType === "finished") {
         const { data } = await axiosInstance.put(
           `${VITE_BASE_URL}${VITE_API}/exchanges/${exchangeId}`,
-          { status: "finished" }
+          { status: "Завершён" }
         );
         await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/messages`, {
           text: `Обмен с пользователем ${user.username} завершён`,
@@ -126,7 +123,7 @@ export default function ProfileModal({
             {exchangeHistoryIncoming &&
               exchangeHistoryIncoming.map(
                 (exchange) =>
-                  exchange.status === "pending" && (
+                  exchange.status === "Ожидает подтверждения" && (
                     <Box
                       display={"flex"}
                       justifyContent={"center"}
@@ -184,7 +181,7 @@ export default function ProfileModal({
             {exchangeHistoryOutcoming &&
               exchangeHistoryOutcoming.map(
                 (exchange) =>
-                  exchange.status === "pending" && (
+                  exchange.status === "Ожидает подтверждения" && (
                     <Box
                       display={"flex"}
                       justifyContent={"center"}
@@ -242,7 +239,7 @@ export default function ProfileModal({
             {exchangeHistoryIncoming &&
               exchangeHistoryIncoming.map(
                 (exchange) =>
-                  exchange.status === "processing" && (
+                  exchange.status === "В процессе" && (
                     <Box
                       display={"flex"}
                       justifyContent={"center"}
@@ -285,7 +282,7 @@ export default function ProfileModal({
             {exchangeHistoryOutcoming &&
               exchangeHistoryOutcoming.map(
                 (exchange) =>
-                  exchange.status === "processing" && (
+                  exchange.status === "В процессе" && (
                     <Box
                       display={"flex"}
                       justifyContent={"center"}
