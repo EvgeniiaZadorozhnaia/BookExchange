@@ -2,6 +2,7 @@ import styles from "./Navbar.module.css";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logoutUser } from "../../redux/thunkActions";
+import { Avatar } from "@chakra-ui/react";
 
 export default function Navbar(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -33,6 +34,7 @@ export default function Navbar(): JSX.Element {
       <div className={styles.right}>
         {user?.username ? (
           <>
+           <Avatar name='userAvatar' src={`http://localhost:3000/static/${user.avatarUrl}`} />
             {user?.isAdmin ? null : <Link to="/profile">{user.username}</Link>}
             <Link to="/signup" onClick={logoutHandler}>
               Выйти
