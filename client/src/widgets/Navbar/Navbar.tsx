@@ -34,7 +34,7 @@ export default function Navbar(): JSX.Element {
       <div className={styles.right}>
         {user?.username ? (
           <>
-           <Avatar border={'1px solid black'} name='userAvatar' src={`http://localhost:3000/static/${user.avatarUrl}`} />
+           <Avatar border={'1px solid black'} name='userAvatar' src={`http://localhost:3000/static/${user?.avatarUrl}`} />
             {user?.isAdmin ? null : <Link to="/profile">{user.username}</Link>}
             <Link to="/signup" onClick={logoutHandler}>
               Выйти

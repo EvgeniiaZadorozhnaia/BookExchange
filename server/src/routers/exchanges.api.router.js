@@ -3,10 +3,11 @@ const { Exchange, User } = require("../../db/models");
 
 router
   .post("/", async (req, res) => {
-    const { fromUser, toUser, toBook } = req.body;
+    const { fromUser, fromBook, toUser, toBook } = req.body;
     try {
       const newExchange = await Exchange.create({
         fromUser,
+        fromBook,
         toUser,
         toBook,
         status: "pending",

@@ -28,9 +28,8 @@ export default function ProfileModal({
     [key: string]: string;
   }>({});
 
-  console.log(exchangeHistoryIncoming, 'exchangeHistoryIncoming');
-  console.log(exchangeHistoryOutcoming, 'exchangeHistoryOutcoming');
-  
+  console.log(exchangeHistoryIncoming, "exchangeHistoryIncoming");
+  console.log(exchangeHistoryOutcoming, "exchangeHistoryOutcoming");
 
   useEffect(() => {
     if (!isOpen) {
@@ -38,7 +37,10 @@ export default function ProfileModal({
     }
   }, [isOpen]);
 
-  const submitTheExchangeHandler = async (exchangeId: number, submitType: string) => {
+  const submitTheExchangeHandler = async (
+    exchangeId: number,
+    submitType: string
+  ) => {
     try {
       if (submitType === "accept") {
         const { data } = await axiosInstance.put(
@@ -81,7 +83,14 @@ export default function ProfileModal({
           toUser: data.fromUser,
           exchangeId,
         });
-        await axiosInstance.delete(`${VITE_BASE_URL}${VITE_API}/books/${data.toBook}`)
+        await axiosInstance.delete(
+          `${VITE_BASE_URL}${VITE_API}/books/${data.toBook}`
+        );
+        if (data.fromBook) {
+          await axiosInstance.delete(
+            `${VITE_BASE_URL}${VITE_API}/books/${data.fromBook}`
+          );
+        }
 
         setSubmissionStatus((prevState) => ({
           ...prevState,
@@ -266,7 +275,7 @@ export default function ProfileModal({
                             borderRadius="20px"
                             m={2}
                           >
-                            Заврешить
+                            Завершить
                           </Button>
                         </>
                       )}
@@ -330,9 +339,7 @@ export default function ProfileModal({
         </ModalBody>
 
         <ModalFooter>
-          <Button onClick={onClose} >
-            Закрыть
-          </Button>
+          <Button onClick={onClose}>Закрыть</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
