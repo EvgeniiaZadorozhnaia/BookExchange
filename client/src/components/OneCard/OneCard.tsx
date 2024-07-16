@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function OneCard({ book }: BookProps): JSX.Element {
   const navigate = useNavigate();
   return (
-    <Card className={styles.card} maxW="sm" m="20px">
+    <Card maxW="sm" m="20px">
       <CardBody
         backgroundColor="#B5C6B8"
         borderRadius="lg"

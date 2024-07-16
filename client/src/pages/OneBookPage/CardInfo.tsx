@@ -42,30 +42,31 @@ function CardInfo({ book, description }: cardInfoProps): JSX.Element {
         gridTemplateColumns="1fr 3fr"
         gap={4}
         m="20px"
+        border={'none'}
       >
         <Box p="6">
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5" colorScheme="purple">
+            <Badge borderRadius="full" px="3" colorScheme="green" >
               Автор
             </Badge>
             <Box
-              color="gray.500"
               fontWeight="semibold"
               letterSpacing="wide"
               fontSize="xs"
               textTransform="uppercase"
               ml="2"
+              color={'black'}
             >
               {book.author}
             </Box>
           </Box>
           <p></p>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5" colorScheme="purple">
+            <Badge borderRadius="full" px="3" colorScheme="green">
               Cтраницы
             </Badge>
             <Box
-              color="gray.500"
+              color="black"
               fontWeight="semibold"
               letterSpacing="wide"
               fontSize="xs"
@@ -107,33 +108,30 @@ function CardInfo({ book, description }: cardInfoProps): JSX.Element {
               })}
           </Box>
         </Box>
-        <Box borderWidth="1px" borderRadius="lg" boxShadow="2xl" bg="purple.50">
+        
           {description ? (
             <Box
               height="100%"
               lineHeight="tight"
               noOfLines={7}
               overflowY="auto"
-              pr="20px"
+              p="20px"
               textAlign="justify"
               bgImage="url('https://media.istockphoto.com/id/1344709514/ru/%D1%84%D0%BE%D1%82%D0%BE/%D1%81%D1%82%D0%B0%D1%80%D1%8B%D0%B9-%D1%81%D0%BC%D1%8F%D1%82%D1%8B%D0%B9-%D0%B1%D1%83%D0%BC%D0%B0%D0%B6%D0%BD%D1%8B%D0%B9-%D1%82%D0%B5%D0%BA%D1%81%D1%82%D1%83%D1%80%D0%BD%D1%8B%D0%B9-%D1%84%D0%BE%D0%BD.jpg?s=2048x2048&w=is&k=20&c=JdbS-JcDcvnzPf_SuKHu9pfCMY2v6JEHMX0ycBs3GSQ=')"
               bgSize="cover"
-              bgRepeat="repeat"
-              color="black"
-              p="20px"
               borderRadius="8px"
-              border="1px solid #ccc"
-              boxShadow="inset 0 0 10px rgba(0, 0, 0, 0.1)"
+              border="none"
+
             >
               <b>{description}</b>
             </Box>
           ) : (
             <Box display="flex" justifyContent="center" alignItems="center">
-              <CircularProgress isIndeterminate color="purple.400" />
+              <CircularProgress isIndeterminate color="green.400" />
             </Box>
           )}
         </Box>
-      </Box>
+
     </>
   );
 }

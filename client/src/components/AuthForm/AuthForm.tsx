@@ -137,12 +137,17 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
 
   return (
     <>
-      <form onSubmit={(e) => submitHandler(type, e)} className={styles.wrapper}>
+      <form
+        onSubmit={(e) => submitHandler(type, e)}
+        className={styles.wrapper}
+        style={{ backgroundColor: "#b5c6b8b8"}}
+      >
         <h3 className={styles.head}>{title}</h3>
         <div className={styles.inputs}>
           {type === "signin" && (
             <>
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 type="email"
@@ -151,6 +156,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Эл.почта"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 type="password"
@@ -163,6 +169,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
           {type === "signup" && (
             <>
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 name="username"
@@ -170,6 +177,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Имя пользователя"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 type="email"
@@ -178,6 +186,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Эл.почта"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 type="password"
@@ -186,6 +195,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Пароль"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 name="city"
@@ -193,6 +203,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Где вы проживаете"
               />
               <Input
+                bg={"#f3ecd0"}
                 onChange={changeHandler}
                 borderColor="#3f3e3e"
                 name="placeOfMeeting"
@@ -201,6 +212,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
               />
               <FormLabel>Загрузите ваш аватар</FormLabel>
               <Input
+                bg={"#f3ecd0"}
                 type="file"
                 id="avatarUrl"
                 name="avatarUrl"

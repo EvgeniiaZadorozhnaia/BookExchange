@@ -32,8 +32,8 @@ const BlockedPage = () => {
     <Modal isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalOverlay />
       <ModalContent
-        bg="teal.50"
-        color="purple.800"
+        bg="green.50"
+        color="green.800"
         borderRadius="md"
         boxShadow="lg"
         p={6}
@@ -42,7 +42,7 @@ const BlockedPage = () => {
           textAlign="center"
           fontSize={{ base: "lg", md: "2xl" }}
           fontWeight="bold"
-          color="purple.900"
+          color="green.900"
         >
           Доступ заблокирован
         </ModalHeader>
@@ -52,16 +52,16 @@ const BlockedPage = () => {
             <Text fontSize={{ base: "sm", md: "md" }} textAlign="center">
               Ваш аккаунт заблокирован. <br /> Пожалуйста, свяжитесь с
               администрацией для получения дополнительной информации. <br />
-              Электронная почта: <b>admin@bookExchange.com</b>
+              Электронная почта: <b>eu.skorobogatowa@gmail.com</b>
             </Text>
             <Button
-              colorScheme="teal"
+              colorScheme="green"
               variant="solid"
               onClick={handleClose}
               size="lg"
               color="white"
-              bg="purple.500"
-              _hover={{ bg: "purple.600" }}
+              bg="green.500"
+              _hover={{ bg: "green.600" }}
             >
               Закрыть
             </Button>

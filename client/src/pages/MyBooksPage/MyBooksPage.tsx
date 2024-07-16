@@ -143,14 +143,13 @@ function MyBooksPage(): JSX.Element {
         )}
       </Box>
       <Box textAlign="center">
-        <Text>Добавь свою книгу на обмен</Text>
+        <Text fontWeight={'bold'}>Добавь свою книгу на обмен</Text>
         <Button
           mr={2}
           mb={2}
-          variant="outline"
+          variant="solid"
           colorScheme="green"
-          opacity="0.8"
-          _hover={{ bg: "green.100" }}
+
           onClick={onOpen}
         >
           Добавить книгу

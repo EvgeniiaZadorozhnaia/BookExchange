@@ -11,6 +11,7 @@ import {
   Box,
   Badge,
 } from "@chakra-ui/react";
+import "animate.css";
 
 function OneCardForMyBooks({ book, onEditClick, onDelete }) {
   const deleteHandler = () => {
@@ -21,21 +22,22 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
 
   return (
     <Card
+    className="animate__animated animate__flipInY"
       backgroundColor="#B5C6B8"
       borderRadius="lg"
       border="1px solid #2f855a"
       maxW="sm"
       m="20px"
     >
-      <CardBody>
+      <CardBody display={'flex'} flexDirection={'column'} mb='0px'>
         <Image
-          h="450px"
+          h="430px"
           src={`http://localhost:3000/static/${book.pictureUrl}`}
           alt="Picture"
           borderRadius="lg"
         />
-        <Stack mt="6" spacing="3">
-          <Heading size="md">{book.title}</Heading>
+        <Stack mt="2" spacing="3">
+          <Heading textAlign={'center'} size="md">{book.title}</Heading>
           <Box display="flex" alignItems="baseline">
             <Badge borderRadius="full" px="5">
               Автор
@@ -51,7 +53,7 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
             </Box>
           </Box>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5">
+            <Badge borderRadius="full" px="3">
               Cтраницы
             </Badge>
             <Box
@@ -66,8 +68,8 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
           </Box>
         </Stack>
       </CardBody>
-      <Divider />
-      <CardFooter display="flex" justifyContent="center">
+      <Divider m='0'/>
+      <CardFooter display="flex" justifyContent="center" >
         <ButtonGroup>
           <Button
             mr={2}
