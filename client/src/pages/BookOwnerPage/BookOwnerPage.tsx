@@ -92,6 +92,7 @@ export default function BookOwnerPage(): JSX.Element {
     try {
       const newExchange = {
         fromUser: user.id,
+        fromBook: bookToGive,
         toUser: owner?.id,
         toBook: bookToTake,
       };
