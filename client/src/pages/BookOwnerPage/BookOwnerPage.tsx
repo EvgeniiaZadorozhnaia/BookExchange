@@ -96,13 +96,12 @@ export default function BookOwnerPage(): JSX.Element {
         toUser: owner?.id,
         toBook: Number(bookToTake),
       };
-      console.log(newExchange);
       const { data } = await axiosInstance.post(
         `${VITE_BASE_URL}${VITE_API}/exchanges`,
         newExchange
       );
       const offerMessage = {
-        text: `Пользователь ${user.username} отправил(а) Вам запрос на обмен книгой \"${book.title}\"`,
+        text: `Пользователь ${user.username} отправил(а) Вам запрос на обмен №${data.id}. Книга: \"${book.title}\"`,
         authorId: user.id,
         toUser: owner?.id,
         exchangeId: data.id,
@@ -199,7 +198,7 @@ export default function BookOwnerPage(): JSX.Element {
             <CardFooter display="flex" justifyContent="center">
               <Button
                 onClick={() => setRateClick((prev) => !prev)}
-                borderRadius="20px"
+                borderRadius="7px"
                 width="500px"
               >
                 Вернуться
@@ -260,7 +259,7 @@ export default function BookOwnerPage(): JSX.Element {
               {owner.id === user.id ? null : (
                 <Button
                   onClick={() => setRateClick((prev) => !prev)}
-                  borderRadius="20px"
+                  borderRadius="7px"
                   width="500px"
                 >
                   Поставить оценку
@@ -297,7 +296,7 @@ export default function BookOwnerPage(): JSX.Element {
               <Button
                 onClick={() => navigate("/profile")}
                 bg="#B5C6B8"
-                borderRadius="20px"
+                borderRadius="7px"
                 mt="auto"
               >
                 Написать владельцу
@@ -386,7 +385,7 @@ export default function BookOwnerPage(): JSX.Element {
                   <Button
                     onClick={sendOfferForExchange}
                     bg="#B5C6B8"
-                    borderRadius="20px"
+                    borderRadius="7px"
                     mt="auto"
                   >
                     Отправить предложение

@@ -73,7 +73,27 @@ export default function MyCalendar(): JSX.Element {
   }
 
   return (
-    <div className="demo-app" style={{ display: "flex", width: "90%", marginLeft: "80px", marginTop: "50px" }}>
+    <div
+      className="demo-app"
+      style={{
+        display: "flex",
+        width: "92%",
+        marginLeft: "80px",
+        marginTop: "39px",
+
+      }}
+    >
+      <div
+        style={{
+          width: "170px",
+          marginLeft: "-60px",
+          marginRight: "20px",
+          borderRadius: "7px",
+          textAlign: "center",
+        }}
+      >
+        <Sidebar events={currentEvents} />
+      </div>{" "}
       <div className="demo-app-main" style={{ flex: 1, paddingRight: "20px" }}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -87,9 +107,6 @@ export default function MyCalendar(): JSX.Element {
           eventClick={handleEventClick}
           eventsSet={handleEvents}
         />
-      </div>
-      <div style={{ flex: 0 }}>
-        <Sidebar events={currentEvents} />
       </div>
     </div>
   );
@@ -129,14 +146,14 @@ function Sidebar({ events }: SidebarProps) {
 function SidebarEvent({ event }: SidebarEventProps) {
   return (
     <li>
-      <b>
+      <b style={{margin: "10px"}}>
         {formatDate(event.start, {
           year: "numeric",
           month: "short",
           day: "numeric",
         })}
       </b>
-      <i>{" " + event.title}</i>
+      <i style={{display: "flex", justifyContent: "space-around", margin: "3px"}}>{" " + event.title}</i>
     </li>
   );
 }
