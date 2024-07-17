@@ -23,9 +23,16 @@ function OneCard({ book, isForExchange }: BookProps): JSX.Element {
           onClick={() => navigate(`/books/oneBook/${book.id}`)}
         />
         <Stack mt="6" spacing="3">
-          <Heading className={styles.title} size="md">
-            {book?.title} ⭐{book?.rating}
-          </Heading>
+          {book?.rating ? (
+            <Heading className={styles.title} size="md">
+              {book?.title} ⭐{book?.rating}
+            </Heading>
+          ) : (
+            <Heading className={styles.title} size="md">
+              {book?.title} ⭐0
+             
+            </Heading>
+          )}
           <Heading className={styles.title} size="md">
             Владелец: {book?.Owner?.username}
           </Heading>
