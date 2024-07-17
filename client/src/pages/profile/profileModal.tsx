@@ -143,7 +143,7 @@ export default function ProfileModal({
                           <Box as="tr" display="table-row" key={exchange.id}>
                             <Box as="td" display="table-cell">
                               <Image
-                                src={exchange.BookFromAuthor.pictureUrl}
+                                src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
                                 alt="Обложка книги"
                                 borderRadius="lg"
                                 width="100px"
@@ -231,7 +231,7 @@ export default function ProfileModal({
                         <Box as="tr" display="table-row" key={exchange.id}>
                           <Box as="td" display="table-cell">
                             <Image
-                              src={exchange.BookFromAuthor.pictureUrl}
+                              src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
                               alt="Обложка книги"
                               borderRadius="lg"
                               width="100px"
@@ -316,7 +316,7 @@ export default function ProfileModal({
                         <Box as="tr" display="table-row" key={exchange.id}>
                           <Box as="td" display="table-cell">
                             <Image
-                              src={exchange.BookFromAuthor.pictureUrl}
+                              src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
                               alt="Обложка книги"
                               borderRadius="lg"
                               width="100px"
@@ -365,7 +365,7 @@ export default function ProfileModal({
                         <Box as="tr" display="table-row" key={exchange.id}>
                           <Box as="td" display="table-cell">
                             <Image
-                              src={exchange.BookFromAuthor.pictureUrl}
+                              src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
                               alt="Обложка книги"
                               borderRadius="lg"
                               width="100px"

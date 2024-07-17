@@ -89,7 +89,7 @@ module.exports = {
           title: "Преступление и наказание",
           author: "Фёдор Достоевский",
           pages: 672,
-          rating: 5.0,
+          rating: 3.0,
           numberOfRating: 1,
           pictureUrl: "crime.webp",
         },
