@@ -10,7 +10,7 @@ export interface IInputs {
 export interface IInputsBookCreationState {
   title?: string | undefined;
   author?: string;
-  pages?: number;
+  pages?: string;
   pictureUrl?: string;
 }
 
@@ -43,9 +43,16 @@ export interface IBook {
   updatedAt: string;
 }
 
-export interface IType {
+export interface ITypeBook {
   inputs: IInputs;
   type: string;
+  formData: formDataForBook;
+}
+
+export interface ITypeUser {
+  inputs: IInputs;
+  type: string;
+  formData: formDataForUser;
 }
 
 export type IBooks = IBook[];
@@ -133,11 +140,20 @@ export interface BookWithOwner {
   updatedAt: string;
 }
 
-export interface formData {
+export interface formDataForBook {
   title: string;
   author: string;
-  pages: number;
+  pages: string;
   frontpage: string;
+}
+
+export interface formDataForUser {
+  username: string;
+  email: string;
+  password: string;
+  city: string;
+  placeOfMeeting: string;
+  avatar: string
 }
 
 export interface IReview {

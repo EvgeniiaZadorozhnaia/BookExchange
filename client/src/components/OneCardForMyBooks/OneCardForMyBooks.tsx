@@ -41,7 +41,7 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
             {book.title}
           </Heading>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5">
+            <Badge borderRadius="5px" px="7">
               Автор
             </Badge>
             <Box
@@ -55,7 +55,7 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
             </Box>
           </Box>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="3">
+            <Badge borderRadius="5px" px="3">
               Cтраницы
             </Badge>
             <Box

@@ -1,4 +1,12 @@
-import { Button, Flex, FormControl, Input, Select } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  Input,
+  Select,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../axiosInstance";
 import { AxiosResponse } from "axios";
@@ -44,7 +52,10 @@ function SearchInput({
   }, []);
 
   return (
-    <>
+    <Flex direction="column" align="center" mt={'30px'} mb={'70px'}>
+      <Text textShadow="1px 0 2px black" fontSize="50px" fontWeight="bold" color="green.500">
+        BookExchange
+      </Text>
       <form onSubmit={handleSubmit}>
         <Flex align="center">
           <Input
@@ -98,7 +109,7 @@ function SearchInput({
           </Button>
         </Flex>
       </form>
-    </>
+    </Flex>
   );
 }
 

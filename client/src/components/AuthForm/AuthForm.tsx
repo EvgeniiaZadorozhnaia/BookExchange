@@ -1,12 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./AuthForm.module.css";
-import {
-  Input,
-  Button,
-  useDisclosure,
-  FormLabel,
-  useToast,
-} from "@chakra-ui/react";
+import { Input, Button, useDisclosure, FormLabel, useToast, Box } from "@chakra-ui/react";
 import { AuthFormProps } from "../../types/propsTypes";
 import { IInputs, IUser } from "../../types/stateTypes";
 import { InputsState } from "../initState";
@@ -20,22 +14,24 @@ const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [inputs, setInputs] = useState<IInputs>(InputsState);
-  const { user } = useAppSelector((state) => state.authSlice);
-  const [error, setError] = useState<string>("");
+  const { user, error } = useAppSelector((state) => state.authSlice);
   const [avatar, setAvatar] = useState<File | null>(null);
+  const [dragOver, setDragOver] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const {
     isOpen: isErrorOpen,
     onOpen: onErrorOpen,
     onClose: onErrorClose,
   } = useDisclosure();
+  
   const toast = useToast();
 
   const showToast = () => {
     toast({
       title: "Успешно",
-      description:
-        "Сообщение о регистрации отправлено на вашу электронную почту.",
+      description: "Сообщение о регистрации отправлено на вашу электронную почту.",
       status: "success",
       duration: 5000,
       isClosable: true,
@@ -52,7 +48,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     );
   };
 
-  const sendMail = async (us) => {
+  const sendMail = async (us: IUser) => {
     try {
       await axiosInstance.post(`${VITE_BASE_URL}${VITE_API}/auth/send`, {
         to: us.email,
@@ -62,30 +58,18 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
       showToast();
     } catch (error) {
       console.log(error);
-      showErrorModal("Произошла ошибка при отправке сообщения.");
     }
   };
 
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setAvatar(e.target.files[0]);
+      const file = e.target.files[0];
+      setAvatar(file);
+      setFileName(file.name);
     }
   };
 
-  const showErrorModal = (errorText: string): void => {
-    setError(errorText);
-    onErrorOpen();
-  };
-
-  const closeErrorModal = (): void => {
-    setError("");
-    onErrorClose();
-  };
-
-  const submitHandler = (
-    type: string,
-    e: React.FormEvent<HTMLFormElement>
-  ): void => {
+  const submitHandler = (type: string, e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("username", inputs.username);
@@ -97,29 +81,28 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     if (type === "signup") {
       if (!inputs.email || !inputs.password || inputs.password.length < 8) {
         setTimeout(() => {
-          showErrorModal(
-            "Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)"
-          );
+          setErrorMessage("Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)");
+          onErrorOpen();
         }, 200);
       } else {
-        dispatch(addUser({ type, formData })).then((user) =>
-          sendMail(user.payload)
-        );
+        dispatch(addUser({ type, formData })).then((user) => {
+          if (user.error) {
+            setErrorMessage(user.error.message);
+            onErrorOpen();
+          } else {
+            sendMail(user.payload);
+          }
+        });
       }
     }
 
     if (type === "signin") {
-      console.log("Нажал signin");
-
-      if (user?.password === inputs.password || user?.email === inputs.email) {
-        setTimeout(() => {
-          showErrorModal(
-            "Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)"
-          );
-        }, 200);
-      } else {
-        dispatch(signIn({ type, inputs }));
-      }
+      dispatch(signIn({ type, inputs })).then((user) => {
+        if (user.error) {
+          setErrorMessage(user.error.message);
+          onErrorOpen();
+        }
+      });
     }
   };
 
@@ -133,14 +116,33 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     } else {
       navigate("/signup");
     }
-  }, [user]);
+  }, [user, navigate, type]);
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const droppedFile = e.dataTransfer.files[0];
+      setAvatar(droppedFile);
+      setFileName(droppedFile.name);
+    }
+  };
 
   return (
     <>
       <form
         onSubmit={(e) => submitHandler(type, e)}
         className={styles.wrapper}
-        style={{ backgroundColor: "#b5c6b8b8"}}
+        style={{ backgroundColor: "#b5c6b8b8" }}
       >
         <h3 className={styles.head}>{title}</h3>
         <div className={styles.inputs}>
@@ -211,12 +213,42 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 placeholder="Где вам удобно проводить обмен?"
               />
               <FormLabel>Загрузите ваш аватар</FormLabel>
+              <Box
+                border="2px"
+                borderColor="green.500"
+                borderRadius="md"
+                textAlign="center"
+                py={2}
+                cursor="pointer"
+                _hover={{ bg: "green.100" }}
+                bg={dragOver ? "green.200" : "green.50"}
+                color="green.700"
+                onClick={() => document.getElementById('avatarUrl')?.click()}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                position="relative"
+                width="100%"
+                height="100px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                flexDirection="column"
+              >
+                {dragOver ? "Отпустите для загрузки" : "Перетащите сюда ваш файл или нажмите для выбора"}
+                {fileName && (
+                  <Box mt={2} color="green.900">
+                    {fileName}
+                  </Box>
+                )}
+              </Box>
               <Input
                 bg={"#f3ecd0"}
                 type="file"
                 id="avatarUrl"
                 name="avatarUrl"
                 onChange={handleChangeFile}
+                style={{ display: "none" }} 
               />
             </>
           )}
@@ -236,9 +268,9 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
       </form>
       <ErrorModal
         isOpen={isErrorOpen}
-        onClose={closeErrorModal}
-        error={error}
-      />
+        onClose={onErrorClose}
+        error={error.message}
+      /> 
     </>
   );
 }

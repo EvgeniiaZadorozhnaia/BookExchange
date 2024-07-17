@@ -44,8 +44,13 @@ const authSlice: AuthSlice = createSlice({
     builder.addCase(
       signIn.rejected,
       (state: Draft<AuthState>, action: RejectedAction): void => {
-        console.log("Неправильно введены данные", action.error);
-        state.error = action.error;
+        if(action.error.message === "Request failed with status code 400"){
+          state.error = {message: 'Не заполнены необходимые поля'};    
+        }
+        if(action.error.message === "Request failed with status code 401"){
+          state.error = {message: "Не верный email или пароль"};   
+        }
+        
         state.loading = false;
       }
     );
