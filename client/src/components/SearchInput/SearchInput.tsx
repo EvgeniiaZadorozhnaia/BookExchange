@@ -11,6 +11,7 @@ import axiosInstance from "../../axiosInstance";
 import { AxiosResponse } from "axios";
 import { SearchInputType } from "../../types/propsTypes";
 import styles from "./SearchInput.module.css";
+import "animate.css";
 
 const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 
@@ -52,7 +53,7 @@ function SearchInput({
 
   return (
     <Flex direction="column" align="center" mt={"30px"} mb={"70px"}>
-      <Flex alignItems={"center"}>
+      <Flex className="animate__animated animate__fadeInUp" alignItems={"center"}>
         <img
           src="414cdba238d90ed74731955009d33f42_360.gif"
           alt="Animated GIF"
