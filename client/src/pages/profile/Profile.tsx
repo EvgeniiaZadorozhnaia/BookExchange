@@ -169,7 +169,12 @@ export default function Profile(): JSX.Element {
       <Grid templateColumns="1fr 1fr" gap={4}>
         {/* Левая колонка с чатом */}
         <GridItem>
-          <Box display="flex" justifyContent="space-around" marginTop="50px" ml="10">
+          <Box
+            display="flex"
+            justifyContent="space-around"
+            marginTop="50px"
+            ml="10"
+          >
             <Button
               onClick={() => setIncomeOrOutcome("income")}
               style={{
@@ -215,7 +220,10 @@ export default function Profile(): JSX.Element {
                     <Tag
                       key={exchange.id}
                       width="200px"
-                      borderRadius="full"
+                      borderRadius="7px"
+                      border="1px solid green"
+                      padding={"5px"}
+                      fontWeight={"bold"}
                       margin="5px"
                       cursor="pointer"
                       bg={
@@ -262,7 +270,12 @@ export default function Profile(): JSX.Element {
                       mb={2}
                       boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
                     >
-                      <Tag size="lg" borderRadius="full" marginBottom="5px">
+                      <Tag
+                        size="lg"
+                        borderRadius="7px"
+                        marginBottom="5px"
+                        border="1px solid green"
+                      >
                         <Avatar
                           src={
                             message.authorId === user.id
@@ -272,7 +285,7 @@ export default function Profile(): JSX.Element {
                           size="xs"
                           mr={2}
                         />
-                        <TagLabel>
+                        <TagLabel mt="4px">
                           {message.authorId === user.id
                             ? user.username
                             : message.Author.username}
