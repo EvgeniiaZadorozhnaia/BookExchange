@@ -96,7 +96,7 @@ function OneCardForFavorites({ book, onDelete }: bookOnDeleteProps): JSX.Element
           </Heading>
           <hr style={{ marginTop: "0px" }}></hr>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5">
+            <Badge borderRadius="5px" px="5">
               Автор
             </Badge>
             <Box
@@ -110,7 +110,7 @@ function OneCardForFavorites({ book, onDelete }: bookOnDeleteProps): JSX.Element
             </Box>
           </Box>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5">
+            <Badge borderRadius="5px" px="5">
               Владелец
             </Badge>
             <Box
@@ -124,7 +124,7 @@ function OneCardForFavorites({ book, onDelete }: bookOnDeleteProps): JSX.Element
             </Box>
           </Box>
           <Box display="flex" alignItems="center">
-            <Badge borderRadius="full" px="5">
+            <Badge borderRadius="5px" px="5">
               Рейтинг владельца
             </Badge>
             <Box
