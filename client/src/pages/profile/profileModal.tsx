@@ -9,6 +9,7 @@ import {
   ModalFooter,
   Button,
   Box,
+  Image,
 } from "@chakra-ui/react";
 import { useAppSelector } from "../../redux/hooks";
 import axiosInstance from "../../axiosInstance";
@@ -116,222 +117,298 @@ export default function ProfileModal({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Box bg={"#a4e8af"} borderRadius="7px" padding="50px" margin="10px">
+          {/* Входящие обмены */}
+          <Box bg="#a4e8af" borderRadius="7px" p="50px" my="10px" w="400px">
             <Text fontWeight="bold" mb="1rem" textAlign="center">
               Входящие обмены
             </Text>
-            {exchangeHistoryIncoming &&
-              exchangeHistoryIncoming.map(
-                (exchange) =>
-                  exchange.status === "Ожидает подтверждения" && (
-                    <Box
-                      display={"flex"}
-                      justifyContent={"center"}
-                      key={exchange.id}
-                    >
-                      {submissionStatus[exchange.id] ? (
-                        <Text
-                          bg="whitesmoke"
-                          padding="10px"
-                          borderRadius="20px"
-                        >
-                          {submissionStatus[exchange.id] === "accept"
-                            ? "Принято"
-                            : "Отклонено"}
-                        </Text>
-                      ) : (
-                        <>
-                          <Text
-                            bg="whitesmoke"
-                            padding="10px"
-                            borderRadius="20px"
-                          >
-                            Обмен {exchange.id} с {exchange.Author.username}
-                          </Text>
-                          <Button
-                            onClick={() => {
-                              submitTheExchangeHandler(exchange.id, "accept");
-                            }}
-                            size="xs"
-                            borderRadius="20px"
-                            m={2}
-                          >
-                            Принять
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              submitTheExchangeHandler(exchange.id, "decline");
-                            }}
-                            size="xs"
-                            borderRadius="20px"
-                            m={2}
-                          >
-                            Отклонить
-                          </Button>
-                        </>
-                      )}
+            <Box>
+              <Box as="table" width="100%" display="table">
+                <Box as="thead" display="table-header-group">
+                  <Box as="tr" display="table-row">
+                    <Box as="th" display="table-cell">
+                      Книга
                     </Box>
-                  )
-              )}
+                    <Box as="th" display="table-cell"></Box>
+                    <Box as="th" display="table-cell">
+                      Действия
+                    </Box>
+                  </Box>
+                </Box>
+                <Box as="tbody" display="table-row-group">
+                  {exchangeHistoryIncoming &&
+                    exchangeHistoryIncoming.map(
+                      (exchange) =>
+                        exchange.status === "Ожидает подтверждения" && (
+                          <Box as="tr" display="table-row" key={exchange.id}>
+                            <Box as="td" display="table-cell">
+                              <Image
+                                src={exchange.BookFromAuthor.pictureUrl}
+                                alt="Обложка книги"
+                                borderRadius="lg"
+                                width="100px"
+                              />
+                            </Box>
+                            <Box as="td" display="table-cell">
+                              {exchange.BookFromAuthor.title}
+                            </Box>
+                            <Box as="td" display="table-cell">
+                              <Box
+                                display="flex"
+                                justifyContent="space-around+"
+                              >
+                                {submissionStatus[exchange.id] ? (
+                                  <Text
+                                    bg="whitesmoke"
+                                    padding="10px"
+                                    borderRadius="20px"
+                                  >
+                                    {submissionStatus[exchange.id] === "accept"
+                                      ? "Принято"
+                                      : "Отклонено"}
+                                  </Text>
+                                ) : (
+                                  <>
+                                    <Button
+                                      size="xs"
+                                      fontSize="10px"
+                                      onClick={() =>
+                                        submitTheExchangeHandler(
+                                          exchange.id,
+                                          "accept"
+                                        )
+                                      }
+                                    >
+                                      Подтвердить
+                                    </Button>
+                                    <Button
+                                      size="xs"
+                                      fontSize="10px"
+                                      onClick={() =>
+                                        submitTheExchangeHandler(
+                                          exchange.id,
+                                          "decline"
+                                        )
+                                      }
+                                    >
+                                      Отклонить
+                                    </Button>
+                                  </>
+                                )}
+                              </Box>
+                            </Box>
+                          </Box>
+                        )
+                    )}
+                </Box>
+              </Box>
+            </Box>
           </Box>
-          <Box bg={"#b3cde0"} borderRadius="7px" padding="50px" margin="10px">
+
+          <Box bg="#b3cde0" borderRadius="7px" p="50px" my="10px" w="400px">
             <Text fontWeight="bold" mb="1rem" textAlign="center">
               Отправленные обмены
             </Text>
-            {exchangeHistoryOutcoming &&
-              exchangeHistoryOutcoming.map(
-                (exchange) =>
-                  exchange.status === "Ожидает подтверждения" && (
-                    <Box
-                      display={"flex"}
-                      justifyContent={"center"}
-                      key={exchange.id}
-                    >
-                      {submissionStatus[exchange.id] ? (
-                        <Text
-                          bg="whitesmoke"
-                          padding="10px"
-                          borderRadius="20px"
-                        >
-                          {submissionStatus[exchange.id] === "decline"
-                            ? "Отменено"
-                            : `Статус: ${submissionStatus[exchange.id]}`}
-                        </Text>
-                      ) : (
-                        <>
-                          <Text
-                            bg="whitesmoke"
-                            padding="10px"
-                            borderRadius="20px"
-                          >
-                            Обмен {exchange.id} {exchange.Reciever.username}
-                          </Text>
-                          <Button
-                            onClick={() => {
-                              submitTheExchangeHandler(exchange.id, "decline");
-                            }}
-                            size="xs"
-                            borderRadius="20px"
-                            m={2}
-                          >
-                            Отменить
-                          </Button>
-                          <Button
-                            onClick={() =>
-                              submitTheExchangeHandler(exchange.id, "status")
-                            }
-                            size="xs"
-                            borderRadius="20px"
-                            m={2}
-                          >
-                            Статус
-                          </Button>
-                        </>
-                      )}
+
+            <Box>
+              <Box as="table" width="100%" display="table">
+                <Box as="thead" display="table-header-group">
+                  <Box as="tr" display="table-row">
+                    <Box as="th" display="table-cell">
+                      Книга
                     </Box>
-                  )
-              )}
+                    <Box as="th" display="table-cell"></Box>
+                    <Box as="th" display="table-cell">
+                      Действия
+                    </Box>
+                  </Box>
+                </Box>
+                <Box as="tbody" display="table-row-group"></Box>
+                {exchangeHistoryOutcoming &&
+                  exchangeHistoryOutcoming.map(
+                    (exchange) =>
+                      exchange.status === "Ожидает подтверждения" && (
+                        <Box as="tr" display="table-row" key={exchange.id}>
+                          <Box as="td" display="table-cell">
+                            <Image
+                              src={exchange.BookFromAuthor.pictureUrl}
+                              alt="Обложка книги"
+                              borderRadius="lg"
+                              width="100px"
+                            />
+                          </Box>
+                          <Box as="td" display="table-cell">
+                            {exchange.BookFromAuthor.title}
+                          </Box>
+                          <Box as="td" display="table-cell">
+                            <Box display="flex" justifyContent="space-between">
+                              {submissionStatus[exchange.id] ? (
+                                <Text
+                                  bg="whitesmoke"
+                                  padding="10px"
+                                  borderRadius="20px"
+                                >
+                                  {submissionStatus[exchange.id] === "decline"
+                                    ? "Отменено"
+                                    : `Статус: ${
+                                        submissionStatus[exchange.id]
+                                      }`}
+                                </Text>
+                              ) : (
+                                <>
+                                  <Button
+                                    size="xs"
+                                    fontSize="10px"
+                                    onClick={() =>
+                                      submitTheExchangeHandler(
+                                        exchange.id,
+                                        "status"
+                                      )
+                                    }
+                                  >
+                                    Статус
+                                  </Button>
+                                  <Button
+                                    size="xs"
+                                    fontSize="10px"
+                                    onClick={() =>
+                                      submitTheExchangeHandler(
+                                        exchange.id,
+                                        "decline"
+                                      )
+                                    }
+                                  >
+                                    Отменить
+                                  </Button>
+                                </>
+                              )}
+                            </Box>
+                          </Box>
+                        </Box>
+                      )
+                  )}
+              </Box>
+            </Box>
           </Box>
-          <Box bg={"#a4e8af"} borderRadius="7px" padding="50px" margin="10px">
+
+          <Box bg="#a4e8af" borderRadius="7px" p="50px" my="10px" w="400px">
             <Text fontWeight="bold" mb="1rem" textAlign="center">
               Активные
             </Text>
-            {exchangeHistoryIncoming &&
-              exchangeHistoryIncoming.map(
-                (exchange) =>
-                  exchange.status === "В процессе" && (
-                    <Box
-                      display={"flex"}
-                      justifyContent={"center"}
-                      key={exchange.id}
-                    >
-                      {submissionStatus[exchange.id] ? (
-                        <Text
-                          bg="whitesmoke"
-                          padding="10px"
-                          borderRadius="20px"
-                        >
-                          {submissionStatus[exchange.id] === "accept"
-                            ? "Принято"
-                            : "Обмен завершён"}
-                        </Text>
-                      ) : (
-                        <>
-                          <Text
-                            bg="whitesmoke"
-                            padding="10px"
-                            borderRadius="20px"
-                          >
-                            Обмен {exchange.id} с {exchange.Author.username}
-                          </Text>
-                          <Button
-                            onClick={() => {
-                              submitTheExchangeHandler(exchange.id, "finished");
-                            }}
-                            size="xs"
-                            borderRadius="20px"
-                            m={2}
-                          >
-                            Завершить
-                          </Button>
-                        </>
-                      )}
+
+            <Box>
+              <Box as="table" width="100%" display="table">
+                <Box as="thead" display="table-header-group">
+                  <Box as="tr" display="table-row">
+                    <Box as="th" display="table-cell">
+                      Книга
                     </Box>
-                  )
-              )}
-            {exchangeHistoryOutcoming &&
-              exchangeHistoryOutcoming.map(
-                (exchange) =>
-                  exchange.status === "В процессе" && (
-                    <Box
-                      display={"flex"}
-                      justifyContent={"center"}
-                      key={exchange.id}
-                    >
-                      {submissionStatus[exchange.id] ? (
-                        <Text
-                          bg="whitesmoke"
-                          padding="10px"
-                          borderRadius="20px"
-                        >
-                          {submissionStatus[exchange.id] === "decline"
-                            ? "Отменено"
-                            : `Статус: ${submissionStatus[exchange.id]}`}
-                        </Text>
-                      ) : (
-                        <>
-                          <Text
-                            bg="whitesmoke"
-                            padding="10px"
-                            borderRadius="20px"
-                          >
-                            Обмен {exchange.id} {exchange.Reciever.username}
-                          </Text>
-                          <Button
-                            onClick={() => {
-                              submitTheExchangeHandler(exchange.id, "decline");
-                            }}
-                            size="xs"
-                            borderRadius="20px"
-                            m={2}
-                          >
-                            Отменить
-                          </Button>
-                          <Button
-                            onClick={() =>
-                              submitTheExchangeHandler(exchange.id, "status")
-                            }
-                            size="xs"
-                            borderRadius="20px"
-                            m={2}
-                          >
-                            Статус
-                          </Button>
-                        </>
-                      )}
+                    <Box as="th" display="table-cell"></Box>
+                    <Box as="th" display="table-cell">
+                      Действия
                     </Box>
-                  )
-              )}
+                  </Box>
+                </Box>
+                {exchangeHistoryIncoming &&
+                  exchangeHistoryIncoming.map(
+                    (exchange) =>
+                      exchange.status === "В процессе" && (
+                        <Box as="tr" display="table-row" key={exchange.id}>
+                          <Box as="td" display="table-cell">
+                            <Image
+                              src={exchange.BookFromAuthor.pictureUrl}
+                              alt="Обложка книги"
+                              borderRadius="lg"
+                              width="100px"
+                            />
+                          </Box>
+                          <Box as="td" display="table-cell">
+                            {exchange.BookFromAuthor.title}
+                          </Box>
+                          <Box as="td" display="table-cell">
+                            <Box display="flex" justifyContent="space-between">
+                              {submissionStatus[exchange.id] ? (
+                                <Text
+                                  bg="whitesmoke"
+                                  padding="10px"
+                                  borderRadius="20px"
+                                >
+                                  {submissionStatus[exchange.id] === "accept"
+                                    ? "Принято"
+                                    : "Обмен завершён"}
+                                </Text>
+                              ) : (
+                                <>
+                                  <Button
+                                    size="xs"
+                                    fontSize="10px"
+                                    onClick={() =>
+                                      submitTheExchangeHandler(
+                                        exchange.id,
+                                        "finished"
+                                      )
+                                    }
+                                  >
+                                    Завершить
+                                  </Button>
+                                </>
+                              )}
+                            </Box>
+                          </Box>
+                        </Box>
+                      )
+                  )}
+                {exchangeHistoryOutcoming &&
+                  exchangeHistoryOutcoming.map(
+                    (exchange) =>
+                      exchange.status === "В процессе" && (
+                        <Box as="tr" display="table-row" key={exchange.id}>
+                          <Box as="td" display="table-cell">
+                            <Image
+                              src={exchange.BookFromAuthor.pictureUrl}
+                              alt="Обложка книги"
+                              borderRadius="lg"
+                              width="100px"
+                            />
+                          </Box>
+                          <Box as="td" display="table-cell">
+                            {exchange.BookFromAuthor.title}
+                          </Box>
+                          <Box as="td" display="table-cell">
+                            <Box display="flex" justifyContent="space-between">
+                              {submissionStatus[exchange.id] ? (
+                                <Text
+                                  bg="whitesmoke"
+                                  padding="10px"
+                                  borderRadius="20px"
+                                >
+                                  {submissionStatus[exchange.id] === "finished"
+                                    ? "Завершен"
+                                    : null}
+                                </Text>
+                              ) : (
+                                <>
+                                  <Button
+                                    size="xs"
+                                    fontSize="10px"
+                                    onClick={() =>
+                                      submitTheExchangeHandler(
+                                        exchange.id,
+                                        "finished"
+                                      )
+                                    }
+                                  >
+                                    Завершить
+                                  </Button>
+                                </>
+                              )}
+                            </Box>
+                          </Box>
+                        </Box>
+                      )
+                  )}
+              </Box>
+            </Box>
           </Box>
         </ModalBody>
 

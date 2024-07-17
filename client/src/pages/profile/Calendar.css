@@ -1,3 +1,9 @@
 .demo-app {
     color: rgb(45, 80, 56);
 }
+.demo-app-main .fc {
+    border: 1px solid black;
+    border-radius: 7px;
+    padding: 10px;
+  }
+  

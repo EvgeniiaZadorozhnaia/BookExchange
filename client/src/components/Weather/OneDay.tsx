@@ -19,8 +19,8 @@ export default function OneDay({ day }: OneDayWeather): JSX.Element {
             style={{
               color: "#4B515D",
               borderRadius: "20px",
-              width: "4em",
-              height: "80px",
+              width: "100px",
+              height: "90px",
               margin: "2px",
             }}
           >
@@ -29,9 +29,16 @@ export default function OneDay({ day }: OneDayWeather): JSX.Element {
                 <MDBTypography
                   tag="h6"
                   className="flex-grow-1"
-                  style={{ textAlign: "center", fontSize: "0.9rem" }}
+                  style={{
+                    textAlign: "center",
+                    fontSize: "1rem",
+                    fontWeight: "bold",
+                    paddingTop: "6px",
+                    border: "solid green 1px",
+                    borderRadius: "7px",
+                  }}
                 >
-                  {day.dt_txt.slice(5, -8)}
+                  {day.dt_txt.slice(8, -8)}
                 </MDBTypography>
                 <MDBTypography
                   tag="h6"
@@ -39,13 +46,13 @@ export default function OneDay({ day }: OneDayWeather): JSX.Element {
                   style={{
                     textAlign: "center",
                     fontWeight: "bold",
-                    fontSize: "1.2rem",
+                    fontSize: "1.3rem",
                   }}
                 >
                   {Math.floor(day.main.feels_like - 273.15)}°C
                 </MDBTypography>
 
-                <div style={{ fontSize: "1.8rem" }}>
+                <div style={{ fontSize: "2.1rem", marginTop: "-10px" }}>
                   {icon !== "Clouds" && icon !== "Rain" && "🌞"}
                   {icon === "Clouds" && "🌤️"}
                   {icon === "Rain" && "🌦️"}

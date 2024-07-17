@@ -51,13 +51,15 @@ export default function Profile(): JSX.Element {
       setActiveStatusOutcomeExchange(
         data.exchangesOutcoming.filter(
           (el: Exchange) =>
-            el.status === "В ожидании подтверждения" || el.status === "В процессе"
+            el.status === "В ожидании подтверждения" ||
+            el.status === "В процессе"
         )
       );
       setActiveStatusIncomeExchange(
         data.exchangesIncoming.filter(
           (el: Exchange) =>
-            el.status === "В ожидании подтверждения" || el.status === "В процессе"
+            el.status === "В ожидании подтверждения" ||
+            el.status === "В процессе"
         )
       );
       setExchangeHistoryIncoming(data.exchangesIncoming);
@@ -167,15 +169,16 @@ export default function Profile(): JSX.Element {
       <Grid templateColumns="1fr 1fr" gap={4}>
         {/* Левая колонка с чатом */}
         <GridItem>
-          <Box display="flex" justifyContent="space-around" mt={10} ml="10">
+          <Box display="flex" justifyContent="space-around" marginTop="50px" ml="10">
             <Button
               onClick={() => setIncomeOrOutcome("income")}
               style={{
                 backgroundColor:
-                  incomeOrOutcome === "income" ? "#B5C6B8" : "initial",
+                  incomeOrOutcome === "income" ? "#2f855a" : "initial",
                 padding: "10px",
+                color: incomeOrOutcome === "income" ? "white" : "initial",
                 width: "200px",
-                borderRadius: "20px",
+                borderRadius: "7px",
                 border: "solid 1px grey",
               }}
             >
@@ -185,10 +188,11 @@ export default function Profile(): JSX.Element {
               onClick={() => setIncomeOrOutcome("outcome")}
               style={{
                 backgroundColor:
-                  incomeOrOutcome === "outcome" ? "#B5C6B8" : "initial",
+                  incomeOrOutcome === "outcome" ? "#2f855a" : "initial",
                 padding: "10px",
+                color: incomeOrOutcome === "outcome" ? "white" : "initial",
                 width: "200px",
-                borderRadius: "20px",
+                borderRadius: "7px",
                 border: "solid 1px grey",
               }}
             >
@@ -199,23 +203,23 @@ export default function Profile(): JSX.Element {
           <Box
             border="solid 1px"
             borderRadius="7px"
-            mt="67px"
+            mt="57px"
             mr="12"
             boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
             p={1}
           >
             <Grid h="500px" templateColumns="repeat(5, 1fr)" gap={2}>
-              <GridItem colSpan={1} width="150px" margin="5px">
+              <GridItem colSpan={1} width="200px" margin="5px">
                 {exchanges &&
                   exchanges.map((exchange) => (
                     <Tag
                       key={exchange.id}
-                      width="150px"
+                      width="200px"
                       borderRadius="full"
                       margin="5px"
                       cursor="pointer"
                       bg={
-                        exchange.id === activeExchange ? "teal.300" : "gray.200"
+                        exchange.id === activeExchange ? "#a4e8af" : "gray.100"
                       }
                       onClick={() => {
                         const userId =
@@ -229,7 +233,7 @@ export default function Profile(): JSX.Element {
                         {incomeOrOutcome === "income"
                           ? exchange.Author.username
                           : exchange.Reciever.username}{" "}
-                        Обмен №{exchange.id}
+                        Обмен {exchange.id}
                       </TagLabel>
                     </Tag>
                   ))}
@@ -306,10 +310,10 @@ export default function Profile(): JSX.Element {
               display={"flex"}
               justifyContent={"center"}
               fontWeight={"bold"}
-              borderRadius={"20px"}
-              mt="20px"
+              mt="5px"
+              fontSize={"larger"}
             >
-              Прогноз погоды
+              Прогноз погоды на ближайшие пять дней
             </Text>
             <Weather />
             <Calendar />

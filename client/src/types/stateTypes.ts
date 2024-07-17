@@ -73,6 +73,7 @@ export interface Message {
 }
 
 export interface Exchange {
+  BookFromAuthor: any;
   status: string;
   id: number;
   Author: {

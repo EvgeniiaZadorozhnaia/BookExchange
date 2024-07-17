@@ -45,7 +45,7 @@ export default function Weather(): JSX.Element {
   return (
     <>
       <div
-        style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}
+        style={{ display: "flex", justifyContent: "space-around" }}
       >
         {weather.map((day: IWeather, i: number) => (
           <OneDay key={i + 1} day={day} />

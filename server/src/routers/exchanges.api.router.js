@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Exchange, User } = require("../../db/models");
+const { Exchange, User, Book } = require("../../db/models");
 
 router
   .post("/", async (req, res) => {
@@ -78,6 +78,14 @@ router
             model: User,
             as: "Reciever",
           },
+          {
+            model: Book,
+            as: "BookFromReciever",
+          },
+          {
+            model: Book,
+            as: "BookFromAuthor",
+          },
         ],
       });
       const exchangesOutcoming = await Exchange.findAll({
@@ -90,6 +98,14 @@ router
           {
             model: User,
             as: "Reciever",
+          },
+          {
+            model: Book,
+            as: "BookFromReciever",
+          },
+          {
+            model: Book,
+            as: "BookFromAuthor",
           },
         ],
       });
@@ -111,7 +127,7 @@ router
       if (numberOfUpdatedRows === 0) {
         return res.status(404).json({ message: "Пользователь не найден" });
       }
-      
+
       const updatedExchange = await Exchange.findByPk(exchangeId);
       res.json(updatedExchange);
     } catch (error) {
@@ -123,7 +139,7 @@ router
     const { id } = req.params;
     try {
       const exchange = await Exchange.findByPk(id);
-      res.json(exchange)
+      res.json(exchange);
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ message: "Произошла ошибка" });
