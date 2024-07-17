@@ -48,11 +48,14 @@ export const signIn: NewUser = createAsyncThunk(
       `${VITE_BASE_URL}${VITE_API}/auth/${type}`,
       inputs,
     );
+    console.log("data", res.data);
     const data = res.data.user as IUser;
     setAccessToken(res.data.accessToken);
     return data;
   }
 );
+
+
 
 
 export const refreshToken: refreshTokenI = createAsyncThunk(

@@ -14,17 +14,18 @@ const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [inputs, setInputs] = useState<IInputs>(InputsState);
-  const { user } = useAppSelector((state) => state.authSlice);
-  const [error, setError] = useState<string>("");
+  const { user, error } = useAppSelector((state) => state.authSlice);
   const [avatar, setAvatar] = useState<File | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const {
     isOpen: isErrorOpen,
     onOpen: onErrorOpen,
     onClose: onErrorClose,
   } = useDisclosure();
+  
   const toast = useToast();
 
   const showToast = () => {
@@ -57,7 +58,6 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
       showToast();
     } catch (error) {
       console.log(error);
-      showErrorModal("Произошла ошибка при отправке сообщения.");
     }
   };
 
@@ -67,16 +67,6 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
       setAvatar(file);
       setFileName(file.name);
     }
-  };
-
-  const showErrorModal = (errorText: string): void => {
-    setError(errorText);
-    onErrorOpen();
-  };
-
-  const closeErrorModal = (): void => {
-    setError("");
-    onErrorClose();
   };
 
   const submitHandler = (type: string, e: React.FormEvent<HTMLFormElement>): void => {
@@ -91,26 +81,28 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     if (type === "signup") {
       if (!inputs.email || !inputs.password || inputs.password.length < 8) {
         setTimeout(() => {
-          showErrorModal(
-            "Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)"
-          );
+          setErrorMessage("Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)");
+          onErrorOpen();
         }, 200);
       } else {
-        dispatch(addUser({ type, formData })).then((user) => sendMail(user.payload));
+        dispatch(addUser({ type, formData })).then((user) => {
+          if (user.error) {
+            setErrorMessage(user.error.message);
+            onErrorOpen();
+          } else {
+            sendMail(user.payload);
+          }
+        });
       }
     }
 
     if (type === "signin") {
-      console.log("Нажал signin");
-      if (user?.password === inputs.password || user?.email === inputs.email) {
-        setTimeout(() => {
-          showErrorModal(
-            "Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)"
-          );
-        }, 200);
-      } else {
-        dispatch(signIn({ type, inputs }));
-      }
+      dispatch(signIn({ type, inputs })).then((user) => {
+        if (user.error) {
+          setErrorMessage(user.error.message);
+          onErrorOpen();
+        }
+      });
     }
   };
 
@@ -124,7 +116,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
     } else {
       navigate("/signup");
     }
-  }, [user]);
+  }, [user, navigate, type]);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -276,9 +268,9 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
       </form>
       <ErrorModal
         isOpen={isErrorOpen}
-        onClose={closeErrorModal}
-        error={error}
-      />
+        onClose={onErrorClose}
+        error={error.message}
+      /> 
     </>
   );
 }

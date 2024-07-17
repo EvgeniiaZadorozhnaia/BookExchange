@@ -33,4 +33,3 @@ const ErrorModal = ({ isOpen, onClose, error }: ErrorModalProps) => {
 };
 
 export default ErrorModal;
-
