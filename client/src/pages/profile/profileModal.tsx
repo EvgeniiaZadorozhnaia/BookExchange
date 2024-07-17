@@ -10,11 +10,13 @@ import {
   Button,
   Box,
   Image,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useAppSelector } from "../../redux/hooks";
 import axiosInstance from "../../axiosInstance";
 import { useEffect, useState } from "react";
 import { ProfileModalProps } from "../../types/propsTypes";
+import { CheckIcon, CloseIcon, InfoIcon } from "@chakra-ui/icons";
 
 const { VITE_BASE_URL, VITE_API } = import.meta.env;
 
@@ -137,79 +139,95 @@ export default function ProfileModal({
                 </Box>
                 <Box as="tbody" display="table-row-group">
                   {exchangeHistoryIncoming &&
-                    exchangeHistoryIncoming.map(
-                      (exchange) =>
-                        exchange.status === "Ожидает подтверждения" && (
-                          <Box as="tr" display="table-row" key={exchange.id}>
-                            <Box as="td" display="table-cell">
-                              <Image
-                                src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
-                                alt="Обложка книги"
-                                borderRadius="lg"
-                                width="100px"
-                              />
-                            </Box>
-                            <Box as="td" display="table-cell">
-                              {exchange.BookFromAuthor.title}
-                            </Box>
-                            <Box as="td" display="table-cell">
-                              <Box
-                                display="flex"
-                                justifyContent="space-around+"
-                              >
-                                {submissionStatus[exchange.id] ? (
-                                  <Text
-                                    bg="whitesmoke"
-                                    padding="10px"
-                                    borderRadius="20px"
+                    exchangeHistoryIncoming.map((exchange) =>
+                      exchange.status === "Ожидает подтверждения" ? (
+                        <Box as="tr" display="table-row" key={exchange.id}>
+                          <Box as="td" display="table-cell">
+                            <Image
+                              src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
+                              alt="Обложка книги"
+                              width="80px"
+                              height="120px"
+                            />
+                          </Box>
+                          <Box
+                            textAlign="center"
+                            as="td"
+                            m={"50px"}
+                            display="table-cell"
+                            fontWeight={"bold"}
+                          >
+                            {exchange.BookFromAuthor.title}
+                          </Box>
+                          <Box as="td" display="table-cell">
+                            <Box display="flex" justifyContent="space-around">
+                              {submissionStatus[exchange.id] ? (
+                                <Text
+                                  bg="whitesmoke"
+                                  padding="10px"
+                                  borderRadius="7px"
+                                >
+                                  {submissionStatus[exchange.id] === "accept"
+                                    ? "Принято"
+                                    : "Отклонено"}
+                                </Text>
+                              ) : (
+                                <>
+                                  <Tooltip
+                                    label="Принять обмен"
+                                    aria-label="Принять обмен"
                                   >
-                                    {submissionStatus[exchange.id] === "accept"
-                                      ? "Принято"
-                                      : "Отклонено"}
-                                  </Text>
-                                ) : (
-                                  <>
                                     <Button
                                       size="xs"
-                                      fontSize="10px"
+                                      fontSize="20px"
+                                      variant="ghost"
                                       onClick={() =>
                                         submitTheExchangeHandler(
                                           exchange.id,
                                           "accept"
                                         )
                                       }
+                                      aria-label="Подтвердить"
                                     >
-                                      Подтвердить
+                                      <CheckIcon color="green.500" />
                                     </Button>
+                                  </Tooltip>
+                                  <Tooltip
+                                    label="Отклонить обмен"
+                                    aria-label="Отклонить обмен"
+                                  >
                                     <Button
                                       size="xs"
-                                      fontSize="10px"
+                                      fontSize="20px"
+                                      variant="ghost"
                                       onClick={() =>
                                         submitTheExchangeHandler(
                                           exchange.id,
                                           "decline"
                                         )
                                       }
+                                      aria-label="Отклонить"
                                     >
-                                      Отклонить
+                                      <CloseIcon color="red.500" />
                                     </Button>
-                                  </>
-                                )}
-                              </Box>
+                                  </Tooltip>
+                                </>
+                              )}
                             </Box>
                           </Box>
-                        )
+                        </Box>
+                      ) : null
                     )}
                 </Box>
               </Box>
             </Box>
           </Box>
 
-          <Box bg="#b3cde0" borderRadius="7px" p="50px" my="10px" w="400px">
+          {/* Отправленные обмены */}
+          <Box bg="#b3cde0" borderRadius="7px" p="50px">
             <Text fontWeight="bold" mb="1rem" textAlign="center">
               Отправленные обмены
             </Text>
-
             <Box>
               <Box as="table" width="100%" display="table">
                 <Box as="thead" display="table-header-group">
@@ -223,21 +241,26 @@ export default function ProfileModal({
                     </Box>
                   </Box>
                 </Box>
-                <Box as="tbody" display="table-row-group"></Box>
-                {exchangeHistoryOutcoming &&
-                  exchangeHistoryOutcoming.map(
-                    (exchange) =>
-                      exchange.status === "Ожидает подтверждения" && (
+                <Box as="tbody" display="table-row-group">
+                  {exchangeHistoryOutcoming &&
+                    exchangeHistoryOutcoming.map((exchange) =>
+                      exchange.status === "Ожидает подтверждения" ? (
                         <Box as="tr" display="table-row" key={exchange.id}>
                           <Box as="td" display="table-cell">
                             <Image
                               src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
                               alt="Обложка книги"
-                              borderRadius="lg"
-                              width="100px"
+                              width="80px"
+                              height="120px"
                             />
                           </Box>
-                          <Box as="td" display="table-cell">
+                          <Box
+                            textAlign="center"
+                            as="td"
+                            m={"50px"}
+                            display="table-cell"
+                            fontWeight={"bold"}
+                          >
                             {exchange.BookFromAuthor.title}
                           </Box>
                           <Box as="td" display="table-cell">
@@ -246,7 +269,7 @@ export default function ProfileModal({
                                 <Text
                                   bg="whitesmoke"
                                   padding="10px"
-                                  borderRadius="20px"
+                                  borderRadius="7px"
                                 >
                                   {submissionStatus[exchange.id] === "decline"
                                     ? "Отменено"
@@ -256,46 +279,61 @@ export default function ProfileModal({
                                 </Text>
                               ) : (
                                 <>
-                                  <Button
-                                    size="xs"
-                                    fontSize="10px"
-                                    onClick={() =>
-                                      submitTheExchangeHandler(
-                                        exchange.id,
-                                        "status"
-                                      )
-                                    }
+                                  <Tooltip
+                                    label={`Статус обмена: Ожидает подтверждения`}
+                                    aria-label="Информация о статусе обмена"
                                   >
-                                    Статус
-                                  </Button>
-                                  <Button
-                                    size="xs"
-                                    fontSize="10px"
-                                    onClick={() =>
-                                      submitTheExchangeHandler(
-                                        exchange.id,
-                                        "decline"
-                                      )
-                                    }
+                                    <Button
+                                      size="xs"
+                                      fontSize="20px"
+                                      variant="ghost"
+                                      onClick={() =>
+                                        submitTheExchangeHandler(
+                                          exchange.id,
+                                          "status"
+                                        )
+                                      }
+                                      aria-label="Статус"
+                                    >
+                                      <InfoIcon color="blue.500" />
+                                    </Button>
+                                  </Tooltip>
+                                  <Tooltip
+                                    label="Отменить обмен"
+                                    aria-label="Отменить обмен"
                                   >
-                                    Отменить
-                                  </Button>
+                                    <Button
+                                      size="xs"
+                                      fontSize="20px"
+                                      variant="ghost"
+                                      onClick={() =>
+                                        submitTheExchangeHandler(
+                                          exchange.id,
+                                          "decline"
+                                        )
+                                      }
+                                      aria-label="Отменить"
+                                    >
+                                      <CloseIcon color="red.500" />
+                                    </Button>
+                                  </Tooltip>
                                 </>
                               )}
                             </Box>
                           </Box>
                         </Box>
-                      )
-                  )}
+                      ) : null
+                    )}
+                </Box>
               </Box>
             </Box>
           </Box>
 
+          {/* Активные обмены */}
           <Box bg="#a4e8af" borderRadius="7px" p="50px" my="10px" w="400px">
             <Text fontWeight="bold" mb="1rem" textAlign="center">
               Активные
             </Text>
-
             <Box>
               <Box as="table" width="100%" display="table">
                 <Box as="thead" display="table-header-group">
@@ -309,20 +347,26 @@ export default function ProfileModal({
                     </Box>
                   </Box>
                 </Box>
-                {exchangeHistoryIncoming &&
-                  exchangeHistoryIncoming.map(
-                    (exchange) =>
-                      exchange.status === "В процессе" && (
+                <Box as="tbody" display="table-row-group">
+                  {exchangeHistoryIncoming &&
+                    exchangeHistoryIncoming.map((exchange) =>
+                      exchange.status === "В процессе" ? (
                         <Box as="tr" display="table-row" key={exchange.id}>
                           <Box as="td" display="table-cell">
                             <Image
                               src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
                               alt="Обложка книги"
-                              borderRadius="lg"
-                              width="100px"
+                              width="80px"
+                              height="120px"
                             />
                           </Box>
-                          <Box as="td" display="table-cell">
+                          <Box
+                            textAlign="center"
+                            as="td"
+                            m={"50px"}
+                            display="table-cell"
+                            fontWeight={"bold"}
+                          >
                             {exchange.BookFromAuthor.title}
                           </Box>
                           <Box as="td" display="table-cell">
@@ -331,56 +375,7 @@ export default function ProfileModal({
                                 <Text
                                   bg="whitesmoke"
                                   padding="10px"
-                                  borderRadius="20px"
-                                >
-                                  {submissionStatus[exchange.id] === "accept"
-                                    ? "Принято"
-                                    : "Обмен завершён"}
-                                </Text>
-                              ) : (
-                                <>
-                                  <Button
-                                    size="xs"
-                                    fontSize="10px"
-                                    onClick={() =>
-                                      submitTheExchangeHandler(
-                                        exchange.id,
-                                        "finished"
-                                      )
-                                    }
-                                  >
-                                    Завершить
-                                  </Button>
-                                </>
-                              )}
-                            </Box>
-                          </Box>
-                        </Box>
-                      )
-                  )}
-                {exchangeHistoryOutcoming &&
-                  exchangeHistoryOutcoming.map(
-                    (exchange) =>
-                      exchange.status === "В процессе" && (
-                        <Box as="tr" display="table-row" key={exchange.id}>
-                          <Box as="td" display="table-cell">
-                            <Image
-                              src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
-                              alt="Обложка книги"
-                              borderRadius="lg"
-                              width="100px"
-                            />
-                          </Box>
-                          <Box as="td" display="table-cell">
-                            {exchange.BookFromAuthor.title}
-                          </Box>
-                          <Box as="td" display="table-cell">
-                            <Box display="flex" justifyContent="space-between">
-                              {submissionStatus[exchange.id] ? (
-                                <Text
-                                  bg="whitesmoke"
-                                  padding="10px"
-                                  borderRadius="20px"
+                                  borderRadius="7px"
                                 >
                                   {submissionStatus[exchange.id] === "finished"
                                     ? "Завершен"
@@ -388,32 +383,101 @@ export default function ProfileModal({
                                 </Text>
                               ) : (
                                 <>
-                                  <Button
-                                    size="xs"
-                                    fontSize="10px"
-                                    onClick={() =>
-                                      submitTheExchangeHandler(
-                                        exchange.id,
-                                        "finished"
-                                      )
-                                    }
+                                  <Tooltip
+                                    label={`Статус обмена: В процессе`}
+                                    aria-label="Информация о статусе обмена"
                                   >
-                                    Завершить
-                                  </Button>
+                                    <Button
+                                      size="xs"
+                                      fontSize="20px"
+                                      variant="ghost"
+                                      onClick={() =>
+                                        submitTheExchangeHandler(
+                                          exchange.id,
+                                          "finished"
+                                        )
+                                      }
+                                      aria-label="Завершить"
+                                    >
+                                      <CheckIcon color="green.500" />
+                                    </Button>
+                                  </Tooltip>
                                 </>
                               )}
                             </Box>
                           </Box>
                         </Box>
-                      )
-                  )}
+                      ) : null
+                    )}
+                  {exchangeHistoryOutcoming &&
+                    exchangeHistoryOutcoming.map((exchange) =>
+                      exchange.status === "В процессе" ? (
+                        <Box as="tr" display="table-row" key={exchange.id}>
+                          <Box as="td" display="table-cell">
+                            <Image
+                              src={`http://localhost:3000/static/${exchange.BookFromAuthor.pictureUrl}`}
+                              alt="Обложка книги"
+                              width="80px"
+                              height="120px"
+                            />
+                          </Box>
+                          <Box
+                            textAlign="center"
+                            as="td"
+                            m={"50px"}
+                            display="table-cell"
+                            fontWeight={"bold"}
+                          >
+                            {exchange.BookFromAuthor.title}
+                          </Box>
+                          <Box as="td" display="table-cell">
+                            <Box display="flex" justifyContent="space-between">
+                              {submissionStatus[exchange.id] ? (
+                                <Text
+                                  bg="whitesmoke"
+                                  padding="10px"
+                                  borderRadius="7px"
+                                >
+                                  {submissionStatus[exchange.id] === "finished"
+                                    ? "Завершен"
+                                    : null}
+                                </Text>
+                              ) : (
+                                <>
+                                  <Tooltip
+                                    label={`Статус обмена: В процессе`}
+                                    aria-label="Информация о статусе обмена"
+                                  >
+                                    <Button
+                                      size="xs"
+                                      fontSize="20px"
+                                      variant="ghost"
+                                      onClick={() =>
+                                        submitTheExchangeHandler(
+                                          exchange.id,
+                                          "finished"
+                                        )
+                                      }
+                                      aria-label="Завершить"
+                                    >
+                                      <CheckIcon color="green.500" />
+                                    </Button>
+                                  </Tooltip>
+                                </>
+                              )}
+                            </Box>
+                          </Box>
+                        </Box>
+                      ) : null
+                    )}
+                </Box>
               </Box>
             </Box>
           </Box>
         </ModalBody>
 
         <ModalFooter>
-          <Button onClick={onClose}>Закрыть</Button>
+          <Button colorScheme="green" onClick={onClose}>Закрыть</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

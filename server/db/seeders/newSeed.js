@@ -7,7 +7,7 @@ module.exports = {
       "Users",
       [
         {
-          username: "Ксения",
+          username: "Ксения Кривда",
           email: "kseniakrivda@gmail.com",
           password: await bcrypt.hash("admin123", 10),
           avatarUrl: "165773725.jpg",
@@ -29,7 +29,7 @@ module.exports = {
           isAdmin: false,
         },
         {
-          username: "Evgenia",
+          username: "Евгения Задорожная",
           email: "eu.skorobogatowa@gmail.com",
           password: await bcrypt.hash("admin123", 10),
           avatarUrl: "167392948.jpg",
@@ -48,6 +48,28 @@ module.exports = {
           numberOfRating: 1,
           placeOfMeeting: "Статуя Свободы",
           city: "Нью-Йорк",
+          isAdmin: false,
+        },
+        {
+          username: "Григорий Табачков",
+          email: "Grigoriy@yandex.ru",
+          password: await bcrypt.hash("admin123", 10),
+          avatarUrl: "T04CH7XJNBS-U069VV9U93P-dc5fb0364285-512.jpg",
+          rating: 5.0,
+          numberOfRating: 1,
+          placeOfMeeting: "Пишите, договоримся",
+          city: "Ессентуки",
+          isAdmin: false,
+        },
+        {
+          username: "Антон Атнагулов",
+          email: "Atnagulov@yandex.ru",
+          password: await bcrypt.hash("admin123", 10),
+          avatarUrl: "Anton.png",
+          rating: 5.0,
+          numberOfRating: 1,
+          placeOfMeeting: "Метро Ладожская",
+          city: "Санкт-Петербург",
           isAdmin: false,
         },
       ],
@@ -165,6 +187,42 @@ module.exports = {
           numberOfRating: 1,
           pictureUrl: "Ubit_peresmeshnika.webp",
         },
+        {
+          ownerId: 5,
+          title: "Джейн Эир",
+          author: "Шарлотта Бронте",
+          pages: 285,
+          rating: 4.8,
+          numberOfRating: 1,
+          pictureUrl: "738171_550.jpg",
+        },
+        {
+          ownerId: 5,
+          title: "Таинственный Остров",
+          author: "Жюль Верн",
+          pages: 315,
+          rating: 4.2,
+          numberOfRating: 1,
+          pictureUrl: "699414_1000.jpg",
+        },
+        {
+          ownerId: 6,
+          title: "Ночь в Лиссабоне",
+          author: "Эрих Маия Ремарк",
+          pages: 285,
+          rating: 4.0,
+          numberOfRating: 1,
+          pictureUrl: "1407050_1000.jpg",
+        },
+        {
+          ownerId: 6,
+          title: "Алхимик",
+          author: "Пауло Коэльо",
+          pages: 160,
+          rating: 4.1,
+          numberOfRating: 1,
+          pictureUrl: "488010_1000.jpg",
+        },
       ],
       {}
     );
@@ -182,7 +240,8 @@ module.exports = {
         {
           userId: 4,
           bookId: 4,
-          content: "В этой книге бабку убивают, это ужасно, я сам чуть не умер, пока читал!",
+          content:
+            "В этой книге бабку убивают, это ужасно, я сам чуть не умер, пока читал!",
           likes: 1,
           dislikes: 3,
         },
@@ -196,10 +255,72 @@ module.exports = {
         {
           userId: 2,
           bookId: 4,
-          content:
-            "Ой-ой-ой-ой-ой-ой, книга написана не по документации!",
+          content: "Ой-ой-ой-ой-ой-ой, книга написана не по документации!",
           likes: 0,
           dislikes: 8,
+        },
+        {
+          userId: 5,
+          bookId: 10,
+          content: "Хотел бы и я такой сказочной любви...",
+          likes: 0,
+          dislikes: 0,
+        },
+        {
+          userId: 5,
+          bookId: 11,
+          content: "Самые настоящие свиньи...",
+          likes: 0,
+          dislikes: 0,
+        },
+        {
+          userId: 6,
+          bookId: 1,
+          content: "Книга пророческая",
+          likes: 0,
+          dislikes: 0,
+        },
+        {
+          userId: 6,
+          bookId: 3,
+          content: "Ну такое, пойдет",
+          likes: 0,
+          dislikes: 0,
+        },
+        {
+          userId: 5,
+          bookId: 6,
+          content: "Я прочитал все романы Джейн Остен. Но «Гордость и предубеждение» мой самый любимый среди них. Читается на одном дыханий. Советую читать",
+          likes: 3,
+          dislikes: 0,
+        },
+        {
+          userId: 6,
+          bookId: 6,
+          content: "Согласен полностью с Григорием, книга очень романтичная и читается на одном дыхании ❤️",
+          likes: 13,
+          dislikes: 1,
+        },
+      ],
+      {}
+    );
+
+    await queryInterface.bulkInsert(
+      "Exchanges",
+      [
+        {
+          fromUser: 1,
+          fromBook: 3,
+          toUser: 2,
+          toBook: 5,
+          status: "Ожидает подтверждения",
+        },
+        {
+          fromUser: 2,
+          fromBook: 8,
+          toUser: 1,
+          toBook: 2,
+          status: "В процессе",
         },
       ],
       {}
@@ -207,6 +328,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete("Exchanges", null, {});
     await queryInterface.bulkDelete("Reviews", null, {});
     await queryInterface.bulkDelete("Books", null, {});
     await queryInterface.bulkDelete("Users", null, {});

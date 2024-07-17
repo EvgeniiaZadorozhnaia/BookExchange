@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   FormControl,
@@ -52,10 +51,28 @@ function SearchInput({
   }, []);
 
   return (
-    <Flex direction="column" align="center" mt={'30px'} mb={'70px'}>
-      <Text textShadow="1px 0 2px black" fontSize="50px" fontWeight="bold" color="green.500">
-        BookExchange
-      </Text>
+    <Flex direction="column" align="center" mt={"30px"} mb={"70px"}>
+      <Flex alignItems={"center"}>
+        <img
+          src="414cdba238d90ed74731955009d33f42_360.gif"
+          alt="Animated GIF"
+          style={{
+            width: "50px",
+            height: "50px",
+            marginBottom: "25px",
+            marginRight:'20px'
+          }}
+        />
+        <Text
+          textShadow="1px 0 2px black"
+          fontSize="50px"
+          fontWeight="bold"
+          color="green.500"
+        >
+          BookExchange
+        </Text>
+      </Flex>
+
       <form onSubmit={handleSubmit}>
         <Flex align="center">
           <Input

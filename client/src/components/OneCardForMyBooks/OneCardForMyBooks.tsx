@@ -3,7 +3,7 @@ import {
   CardBody,
   Image,
   Stack,
-  Heading,
+  Text,
   Divider,
   CardFooter,
   ButtonGroup,
@@ -37,9 +37,9 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
           borderRadius="lg"
         />
         <Stack mt="2" spacing="3">
-          <Heading textAlign={"center"} size="md">
+          <Text textAlign="center" fontWeight="bold" fontSize={"18px"}>
             {book.title}
-          </Heading>
+          </Text>
           <Box display="flex" alignItems="baseline">
             <Badge borderRadius="5px" px="7">
               Автор

@@ -1,4 +1,4 @@
-import { Card, CardBody, Image, Stack, Heading } from "@chakra-ui/react";
+import { Card, CardBody, Image, Stack, Heading, Text } from "@chakra-ui/react";
 import { BookProps } from "../../types/propsTypes";
 
 import styles from "./OneCard.module.css";
@@ -24,18 +24,34 @@ function OneCard({ book, isForExchange }: BookProps): JSX.Element {
         />
         <Stack mt="6" spacing="3">
           {book?.rating ? (
-            <Heading className={styles.title} size="md">
-              {book?.title} ⭐{book?.rating}
-            </Heading>
+            <Text
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight:'bold',
+                fontSize:'18px'
+              }}
+            >
+              <span>{book?.title}</span>
+              <span
+                style={{
+                  textShadow: "black 1px 0 10px",
+                  marginLeft: "5px",
+                }}
+              >
+                ⭐
+              </span>
+              <span style={{marginLeft: "5px"}}>{book?.rating}</span>
+            </Text>
           ) : (
             <Heading className={styles.title} size="md">
               {book?.title} ⭐0
-             
             </Heading>
           )}
-          <Heading className={styles.title} size="md">
+          <Text className={styles.title} fontSize="15px">
             Владелец: {book?.Owner?.username}
-          </Heading>
+          </Text>
         </Stack>
       </CardBody>
     </Card>

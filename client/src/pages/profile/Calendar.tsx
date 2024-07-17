@@ -12,7 +12,19 @@ import {
   EventApi,
 } from "@fullcalendar/core";
 import { CalendarEvent } from "../../types/stateTypes";
-import { SidebarEventProps, SidebarProps } from "../../types/propsTypes";
+import { SidebarProps } from "../../types/propsTypes";
+import {
+  Box,
+  Heading,
+  Stack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 
 export default function MyCalendar(): JSX.Element {
   const [currentEvents, setCurrentEvents] = useState<CalendarEvent[]>(() => {
@@ -80,14 +92,13 @@ export default function MyCalendar(): JSX.Element {
         width: "92%",
         marginLeft: "80px",
         marginTop: "39px",
-
       }}
     >
       <div
         style={{
           width: "170px",
           marginLeft: "-60px",
-          marginRight: "20px",
+
           borderRadius: "7px",
           textAlign: "center",
         }}
@@ -130,30 +141,55 @@ function Sidebar({ events }: SidebarProps) {
   );
 
   return (
-    <div className="demo-app-sidebar">
-      <div className="demo-app-sidebar-section">
-        <h5>Ближайшие встречи ({uniqueEvents.length})</h5>
-        <ul>
-          {uniqueEvents.map((event) => (
-            <SidebarEvent key={event.id} event={event} />
-          ))}
-        </ul>
-      </div>
-    </div>
+    <Box
+      borderRadius="md"
+      padding="2"
+      boxShadow="md"
+      maxHeight="540px"
+      display="flex"
+      flexDirection="column"
+      bg="#b5c6b8"
+    >
+      <Heading as="h5" size="sm" mb="4">
+        Ближайшие встречи ({uniqueEvents.length})
+      </Heading>
+      <TableContainer flex="1" overflowY="auto">
+        <Table variant="simple">
+          <Tbody>
+            {uniqueEvents.map((event) => (
+              <Tr key={event.id}>
+                <Td>
+                  <Stack spacing={1}>
+                    <Box fontWeight="bold">
+                      {formatDate(event.start, {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </Box>
+                    <Box>{event.title}</Box>
+                  </Stack>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }
 
-function SidebarEvent({ event }: SidebarEventProps) {
-  return (
-    <li>
-      <b style={{margin: "10px"}}>
-        {formatDate(event.start, {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })}
-      </b>
-      <i style={{display: "flex", justifyContent: "space-around", margin: "3px"}}>{" " + event.title}</i>
-    </li>
-  );
-}
+// function SidebarEvent({ event }: SidebarEventProps) {
+//   return (
+//     <li>
+//       <b style={{margin: "10px"}}>
+//         {formatDate(event.start, {
+//           year: "numeric",
+//           month: "short",
+//           day: "numeric",
+//         })}
+//       </b>
+//       <i style={{display: "flex", justifyContent: "space-around", margin: "3px"}}>{" " + event.title}</i>
+//     </li>
+//   );
+// }
