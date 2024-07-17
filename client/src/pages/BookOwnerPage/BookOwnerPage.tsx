@@ -150,6 +150,7 @@ export default function BookOwnerPage(): JSX.Element {
             </CardHeader>
             <CardBody
               display="flex"
+              flexDirection="column"
               justifyContent="center"
               alignItems="center"
             >
@@ -162,6 +163,7 @@ export default function BookOwnerPage(): JSX.Element {
                     as="span"
                     fontSize="xl"
                     _hover={{ transform: "scale(1.4)", color: "gold" }}
+                    textShadow={"1px 0 10px black"}
                   >
                     ⭐
                   </Text>
@@ -170,27 +172,34 @@ export default function BookOwnerPage(): JSX.Element {
                 <>
                   <Text
                     bg="whitesmoke"
-                    borderRadius="30px"
+                    borderRadius="7px"
                     padding="5px"
                     as="span"
                     fontSize="xl"
                   >
                     Оцените пользователя
                   </Text>
-                  {[1, 2, 3, 4, 5].map((rating) => (
-                    <Text
-                      key={rating}
-                      onClick={() => {
-                        setRateOwner(rating);
-                        rateUser(rating);
-                      }}
-                      as="span"
-                      fontSize="xl"
-                      _hover={{ transform: "scale(1.8)", color: "gold" }}
-                    >
-                      ⭐
-                    </Text>
-                  ))}
+                  <Flex
+                    mt={3} // margin-top для отступа между текстом и звездами
+                    gap={2} // расстояние между звездами
+                  >
+                    {[1, 2, 3, 4, 5].map((rating) => (
+                      <Text
+                        key={rating}
+                        onClick={() => {
+                          setRateOwner(rating);
+                          rateUser(rating);
+                        }}
+                        as="span"
+                        fontSize="xl"
+                        _hover={{ transform: "scale(1.8)", color: "gold" }}
+                        cursor="pointer"
+                        textShadow={"1px 0 10px black"}
+                      >
+                        ⭐
+                      </Text>
+                    ))}
+                  </Flex>
                 </>
               )}
             </CardBody>
@@ -199,7 +208,7 @@ export default function BookOwnerPage(): JSX.Element {
               <Button
                 onClick={() => setRateClick((prev) => !prev)}
                 borderRadius="7px"
-                width="500px"
+                width="310px"
               >
                 Вернуться
               </Button>
@@ -237,7 +246,7 @@ export default function BookOwnerPage(): JSX.Element {
               textAlign="center"
               padding="42px"
               m={10}
-              borderRadius="100px"
+              borderRadius="7px"
             >
               {owner ? (
                 <>
@@ -249,7 +258,17 @@ export default function BookOwnerPage(): JSX.Element {
                     {new Date(owner.createdAt).toLocaleDateString()}
                   </Text>
                   <Text>Место встречи: {owner.placeOfMeeting}</Text>
-                  <Text>Рейтинг {currentRating?.toFixed(1)} ⭐</Text>
+                  <Text>
+                    Рейтинг {currentRating?.toFixed(1)}{" "}
+                    <span
+                      style={{
+                        textShadow: "black 1px 0 10px",
+                        marginLeft: "5px",
+                      }}
+                    >
+                      ⭐
+                    </span>
+                  </Text>
                 </>
               ) : (
                 <Text>Загрузка...</Text>
@@ -260,7 +279,7 @@ export default function BookOwnerPage(): JSX.Element {
                 <Button
                   onClick={() => setRateClick((prev) => !prev)}
                   borderRadius="7px"
-                  width="500px"
+                  width="310px"
                 >
                   Поставить оценку
                 </Button>

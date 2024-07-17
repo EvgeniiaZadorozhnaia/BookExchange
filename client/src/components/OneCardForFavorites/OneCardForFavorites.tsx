@@ -4,7 +4,7 @@ import {
   CardBody,
   Image,
   Stack,
-  Heading,
+  Text,
   Box,
   Badge,
   IconButton,
@@ -91,9 +91,9 @@ function OneCardForFavorites({ book, onDelete }: bookOnDeleteProps): JSX.Element
         />
 
         <Stack mt="4" spacing="2">
-          <Heading textAlign="center" size="md">
+          <Text textAlign="center" fontWeight='bold' fontSize={'18px'}>
             {book.title}
-          </Heading>
+          </Text>
           <hr style={{ marginTop: "0px" }}></hr>
           <Box display="flex" alignItems="baseline">
             <Badge borderRadius="5px" px="5">

@@ -133,8 +133,27 @@ function AdminPage({
   };
 
   return (
-    <div>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4} width="full">
+    <>
+      <Flex direction="row" align="center"></Flex>
+      <Text
+        textShadow="1px 0 2px black"
+        fontSize="50px"
+        fontWeight="bold"
+        color="green.500"
+        mb={4}
+      >
+        Статистика пользователей сайта
+      </Text>
+      <SimpleGrid
+        columns={{ base: 1, sm: 2, md: 3 }}
+        spacing={4}
+        width="full"
+        mx="auto"
+        mb={8}
+        maxW="1200px"
+        justifyContent="center"
+        alignItems="start"
+      >
         {usersWithComments.map((user) => (
           <Box
             key={user.id}
@@ -142,10 +161,10 @@ function AdminPage({
             borderRadius="md"
             p={4}
             boxShadow="md"
-            bg={"#b5c6b8b8"}
+            bg="#b5c6b8b8"
           >
             <Flex direction="column" mb={4}>
-              <Text fontWeight="bold" textAlign={"center"}>
+              <Text fontWeight="bold" textAlign="center">
                 Имя пользователя: {user.username}
               </Text>
               <Button
@@ -153,6 +172,7 @@ function AdminPage({
                 variant="outline"
                 size="sm"
                 onClick={() => handleUserClick(user)}
+                mt={2}
               >
                 Подробнее
               </Button>
@@ -208,18 +228,18 @@ function AdminPage({
               {selectedUser?.reviews ? (
                 <>
                   <Text>
-                    Общее количество комментариев:
+                    Общее количество комментариев:{" "}
                     {selectedUser?.reviews?.length}
                   </Text>
                   <Text>
-                    Общее количество лайков:
+                    Общее количество лайков:{" "}
                     {selectedUser.reviews.reduce(
                       (acc, el) => acc + el.likes,
                       0
                     )}
                   </Text>
                   <Text>
-                    Общее количество дизлайков:
+                    Общее количество дизлайков:{" "}
                     {selectedUser.reviews.reduce(
                       (acc, el) => acc + el.dislikes,
                       0
@@ -291,7 +311,7 @@ function AdminPage({
           </ModalContent>
         </Modal>
       )}
-    </div>
+    </>
   );
 }
 

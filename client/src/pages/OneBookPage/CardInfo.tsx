@@ -46,7 +46,7 @@ function CardInfo({ book, description }: cardInfoProps): JSX.Element {
       >
         <Box p="0px 6px 0px 10px" width={'400px'}>
           <Box mb="25px" display="flex" alignItems="baseline">
-            <Badge borderRadius="5px" px="3" border={"1px solid green"}>
+            <Badge borderRadius="5px" p="0.5" px="3" border={"1px solid green"}>
               Название
             </Badge>
             <Box
@@ -61,7 +61,7 @@ function CardInfo({ book, description }: cardInfoProps): JSX.Element {
             </Box>
           </Box>
           <Box mb="25px" display="flex" alignItems="baseline">
-            <Badge borderRadius="5px" px="7" border={"1px solid green"}>
+            <Badge borderRadius="5px" p="0.5" px="7" border={"1px solid green"}>
               Автор
             </Badge>
             <Box
@@ -76,7 +76,7 @@ function CardInfo({ book, description }: cardInfoProps): JSX.Element {
             </Box>
           </Box>
           <Box mb="25px" display="flex" alignItems="baseline">
-            <Badge borderRadius="5px" px="3" border={"1px solid green"}>
+            <Badge borderRadius="5px" p="0.5" px="3" border={"1px solid green"}>
               Cтраницы
             </Badge>
             <Box
@@ -91,7 +91,7 @@ function CardInfo({ book, description }: cardInfoProps): JSX.Element {
             </Box>
           </Box>
           <Box display="flex" alignItems="center">
-            <Badge borderRadius="5px" px="5" border={"1px solid green"}>
+            <Badge borderRadius="5px" p="0.5" px="5" border={"1px solid green"}>
               Рейтинг
             </Badge>
             <Box display="flex" ml="5px" alignItems="center">
@@ -119,7 +119,7 @@ function CardInfo({ book, description }: cardInfoProps): JSX.Element {
 
         {description ? (
           <Box
-            height="160px"
+            height="170px"
             lineHeight="tight"
             noOfLines={7}
             overflowY="auto"
