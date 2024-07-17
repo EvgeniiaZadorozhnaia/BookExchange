@@ -68,8 +68,8 @@ export interface editBookProps {
 }
 
 export interface deleteBookProps {
-  bookId: number;
-  userId: number;
+  bookId: number | undefined;
+  userId: number | undefined;
 }
 
 export interface cardInfoProps {
@@ -87,12 +87,15 @@ export interface reviewsProps {
 export interface CreateBookFormProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpen: () => void;
   initialRef: RefObject<HTMLElement>;
   finalRef: RefObject<HTMLElement>;
   inputsHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   submitHandler: (event: React.FormEvent<HTMLFormElement>) => void;
   inputs: IInputsBookCreationState;
-  setImg: Dispatch<SetStateAction<File | null>>;
+  setInputs: React.Dispatch<React.SetStateAction<IInputsBookCreationState>>
+  setImg: React.Dispatch<React.SetStateAction<string | null>>;
+  img: string | null
 }
 
 export interface adminPageProps {
@@ -109,4 +112,9 @@ export interface starProps {
 
 export interface OneDayWeather {
   day: IWeather
+}
+
+export interface bookOnDeleteProps {
+  book: IBook;
+  onDelete: (bookId: number) => void;
 }

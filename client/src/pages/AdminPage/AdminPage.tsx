@@ -23,13 +23,17 @@ function AdminPage({
           `${VITE_BASE_URL}${VITE_API}/users`
         );
         setUsersWithComments(() => data);
-        console.log(data);
+        console.log('data', data);
       } catch (error) {
         console.log(error);
       }
     }
     getUsers();
   }, []);
+
+  
+  console.log('usersWithComments', usersWithComments);
+  
 
   async function handleDeleteReview(reviewId: number) {
     try {

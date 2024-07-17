@@ -35,7 +35,6 @@ function Reviews({
   const [reviewContent, setReviewContent] = useState<string>("");
   const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
   const [showLikeAlert, setshowLikeAlert] = useState<boolean>(false);
-  const [currentRating, setCurrentRating] = useState<number | undefined>();
   const [rateBook, setRateBook] = useState<number>(0);
   const [likes, setLikes] = useState<number[]>([]);
   const [dislikes, setDislikes] = useState<number[]>([]);
@@ -88,7 +87,6 @@ function Reviews({
           `${VITE_BASE_URL}${VITE_API}/likes/${user.id}`
         );
         setLikes(data);
-        console.log(currentRating);
       } catch (error) {
         console.error("Ошибка при получении лайков пользователя:", error);
       }
@@ -222,9 +220,6 @@ function Reviews({
         const currentRate = book?.rating + currentRating;
         let rating = currentRate / 2;
         rating = parseFloat(rating.toFixed(1));
-
-        setCurrentRating(rating);
-
         const { data } = await axiosInstance.put(
           `${VITE_BASE_URL}${VITE_API}/books/rate/${book?.id}`,
           { rating }

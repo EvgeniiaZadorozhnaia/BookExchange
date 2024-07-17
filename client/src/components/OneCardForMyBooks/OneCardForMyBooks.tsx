@@ -22,14 +22,14 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
 
   return (
     <Card
-    className="animate__animated animate__flipInY"
+      className="animate__animated animate__flipInY"
       backgroundColor="#B5C6B8"
       borderRadius="lg"
       border="1px solid #2f855a"
       maxW="sm"
       m="20px"
     >
-      <CardBody display={'flex'} flexDirection={'column'} mb='0px'>
+      <CardBody display={"flex"} flexDirection={"column"} mb="0px">
         <Image
           h="430px"
           src={`http://localhost:3000/static/${book.pictureUrl}`}
@@ -37,7 +37,9 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
           borderRadius="lg"
         />
         <Stack mt="2" spacing="3">
-          <Heading textAlign={'center'} size="md">{book.title}</Heading>
+          <Heading textAlign={"center"} size="md">
+            {book.title}
+          </Heading>
           <Box display="flex" alignItems="baseline">
             <Badge borderRadius="full" px="5">
               Автор
@@ -68,8 +70,8 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
           </Box>
         </Stack>
       </CardBody>
-      <Divider m='0'/>
-      <CardFooter display="flex" justifyContent="center" >
+      <Divider m="0" />
+      <CardFooter display="flex" justifyContent="center">
         <ButtonGroup>
           <Button
             mr={2}

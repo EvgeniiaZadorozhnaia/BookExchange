@@ -21,7 +21,7 @@ function MyBooksPage(): JSX.Element {
   const [editMode, setEditMode] = useState(false);
   const [currentBookId, setCurrentBookId] = useState(null);
   const [currentStartIndex, setCurrentStartIndex] = useState(0);
-  const [img, setImg] = useState(null);
+  const [img, setImg] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);

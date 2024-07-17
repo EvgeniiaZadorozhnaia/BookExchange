@@ -15,7 +15,9 @@ function FavoritesPage() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getFavoriteBooks(user.id));
+    if (user.id) {
+      dispatch(getFavoriteBooks(user.id));
+    }
   }, [user]);
 
   function handleDeleteBook(bookId: number): void {
