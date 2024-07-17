@@ -228,7 +228,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
                 position="relative"
-                width="980px"
+                width="100%"
                 height="100px"
                 display="flex"
                 alignItems="center"
