@@ -63,7 +63,7 @@ function CreateBookForm({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Создай книгу</ModalHeader>
+        <ModalHeader textAlign={'center'}>Создание новой книги</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
@@ -143,7 +143,7 @@ function CreateBookForm({
               onClose();
             }}
           >
-            Создать книгу
+            Создать
           </Button>
         </ModalFooter>
       </ModalContent>
