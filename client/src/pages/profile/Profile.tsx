@@ -51,13 +51,13 @@ export default function Profile(): JSX.Element {
       setActiveStatusOutcomeExchange(
         data.exchangesOutcoming.filter(
           (el: Exchange) =>
-            el.status === "pending" || el.status === "processing"
+            el.status === "В ожидании подтверждения" || el.status === "В процессе"
         )
       );
       setActiveStatusIncomeExchange(
         data.exchangesIncoming.filter(
           (el: Exchange) =>
-            el.status === "pending" || el.status === "processing"
+            el.status === "В ожидании подтверждения" || el.status === "В процессе"
         )
       );
       setExchangeHistoryIncoming(data.exchangesIncoming);
