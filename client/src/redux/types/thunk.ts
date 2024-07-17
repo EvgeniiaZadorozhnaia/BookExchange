@@ -1,5 +1,5 @@
 import { AsyncThunk, SerializedError } from "@reduxjs/toolkit"
-import { IBook, IBooks, IType, IUser } from "../../types/stateTypes"
+import { IBook, IBooks, ITypeUser, IUser } from "../../types/stateTypes"
 import { AppDispatch, RootState } from "../store"
 import { createBookProps, deleteBookProps, editBookProps } from "../../types/propsTypes"
 
@@ -34,7 +34,9 @@ type AsyncThunkConfig = {
     }
   }
 
-  export type NewUser = AsyncThunk<IUser, IType, AsyncThunkConfig>
+  export type creatingNewUser = AsyncThunk<IUser, void, AsyncThunkConfig>
+
+  export type NewUser = AsyncThunk<IUser, ITypeUser, AsyncThunkConfig>
 
   export type newBook = AsyncThunk<IBook, createBookProps, AsyncThunkConfig>
 
@@ -52,6 +54,6 @@ type AsyncThunkConfig = {
 
   export type FavoriteBook = AsyncThunk<IBooks[], number, AsyncThunkConfig>
 
-  export type BookDelete = AsyncThunk<number, deleteBookProps, AsyncThunkConfig>
+  export type BookDelete = AsyncThunk<number | undefined, deleteBookProps, AsyncThunkConfig>
 
   export type addFavorite = AsyncThunk<number, deleteBookProps, AsyncThunkConfig>

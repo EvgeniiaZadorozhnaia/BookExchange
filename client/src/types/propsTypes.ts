@@ -2,7 +2,9 @@ import { Dispatch, RefObject, SetStateAction } from "react";
 import {
   CalendarEvent,
   Exchange,
-  formData,
+
+  formDataForBook,
+
   IBook,
   IBooks,
   IInputsBookCreationState,
@@ -59,12 +61,12 @@ export interface ProfileModalProps {
 
 export interface createBookProps {
   ownerId: number;
-  formData: formData;
+  formData: formDataForBook;
 }
 
 export interface editBookProps {
   bookId: number;
-  formData: formData;
+  formData: formDataForBook;
 }
 
 export interface deleteBookProps {
