@@ -25,7 +25,9 @@ function AdminPage({
   usersWithComments,
   setUsersWithComments,
 }: adminPageProps): JSX.Element {
-  const [selectedUser, setSelectedUser] = useState<IUserWithComments>();
+  const [selectedUser, setSelectedUser] = useState<
+    IUserWithComments | undefined
+  >(undefined);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
@@ -35,7 +37,7 @@ function AdminPage({
         const { data } = await axiosInstance.get(
           `${VITE_BASE_URL}${VITE_API}/users`
         );
-        setUsersWithComments(() => data);
+        setUsersWithComments(data);
         console.log("data", data);
       } catch (error) {
         console.log(error);
@@ -45,18 +47,26 @@ function AdminPage({
   }, [setUsersWithComments]);
 
   async function handleDeleteReview(reviewId: number) {
+    if (!selectedUser) return;
+
     try {
       await axiosInstance.delete(
         `${VITE_BASE_URL}${VITE_API}/reviews/${reviewId}`
       );
+
+      // Update the state of the selected user and the users list
+      const updatedUser = {
+        ...selectedUser,
+        reviews: selectedUser.reviews.filter(
+          (review) => review.id !== reviewId
+        ),
+      };
+
+      setSelectedUser(updatedUser);
       setUsersWithComments((prev) =>
-        prev.map((user) => ({
-          ...user,
-          reviews: user.reviews.filter(
-            (r: { id: number }) => r.id !== reviewId
-          ),
-        }))
+        prev.map((user) => (user.id === updatedUser.id ? updatedUser : user))
       );
+
       toast({
         title: "Отзыв удален.",
         description: "Отзыв успешно удален.",
@@ -195,17 +205,35 @@ function AdminPage({
               ) : (
                 <Text>У этого пользователя пока нет оценок</Text>
               )}
-              <Text>
-                Общее количество комментариев: {selectedUser.reviews.length}
-              </Text>
-              <Text>
-                Общее количество лайков:{" "}
-                {selectedUser.reviews.reduce((acc, el) => acc + el.likes, 0)}
-              </Text>
-              <Text>
-                Общее количество дизлайков:{" "}
-                {selectedUser.reviews.reduce((acc, el) => acc + el.dislikes, 0)}
-              </Text>
+              {selectedUser?.reviews ? (
+                <>
+                  <Text>
+                    Общее количество комментариев:
+                    {selectedUser?.reviews?.length}
+                  </Text>
+                  <Text>
+                    Общее количество лайков:
+                    {selectedUser.reviews.reduce(
+                      (acc, el) => acc + el.likes,
+                      0
+                    )}
+                  </Text>
+                  <Text>
+                    Общее количество дизлайков:
+                    {selectedUser.reviews.reduce(
+                      (acc, el) => acc + el.dislikes,
+                      0
+                    )}
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Text>Общее количество комментариев: 0</Text>
+                  <Text>Общее количество лайков: 0</Text>
+                  <Text>Общее количество дизлайков: 0</Text>
+                </>
+              )}
+
               <Text>
                 Дата регистрации: {formatDate(selectedUser.createdAt)}
               </Text>
@@ -219,7 +247,7 @@ function AdminPage({
                 borderWidth="1px"
                 borderRadius="md"
               >
-                {selectedUser.reviews.length > 0 ? (
+                {selectedUser.reviews.length !== 0 ? (
                   selectedUser.reviews.map((review) => (
                     <Box
                       key={review.id}
