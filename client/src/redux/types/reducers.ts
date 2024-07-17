@@ -1,9 +1,9 @@
 import { PayloadAction, SerializedError, Slice, SliceCaseReducers, SliceSelectors } from "@reduxjs/toolkit";
 import { AuthState, BooksState } from "./states";
-import { IBooks, IType, IUser } from "../../types/stateTypes";
+import { IBooks, ITypeUser, IUser } from "../../types/stateTypes";
 
 export type UserAction = PayloadAction<IUser, string, {
-    arg: IType;
+    arg: ITypeUser;
     requestId: string;
     requestStatus: "fulfilled";
 }, never>
