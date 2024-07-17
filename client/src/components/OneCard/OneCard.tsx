@@ -12,6 +12,7 @@ function OneCard({ book, isForExchange }: BookProps): JSX.Element {
         backgroundColor="#B5C6B8"
         borderRadius="lg"
         border="1px solid #2f855a"
+        _hover={{ transform: "scale(1.02)" }}
       >
         <Image
           h={isForExchange ? "340px" : "450px"}

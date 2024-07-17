@@ -39,7 +39,7 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
         <Stack mt="2" spacing="3">
           <Heading textAlign={'center'} size="md">{book.title}</Heading>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="5">
+            <Badge borderRadius="5px" px="7">
               Автор
             </Badge>
             <Box
@@ -53,7 +53,7 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
             </Box>
           </Box>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="full" px="3">
+            <Badge borderRadius="5px" px="3">
               Cтраницы
             </Badge>
             <Box

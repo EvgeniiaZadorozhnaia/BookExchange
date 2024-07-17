@@ -143,7 +143,7 @@ function MyBooksPage(): JSX.Element {
         )}
       </Box>
       <Box textAlign="center">
-        <Text fontWeight={'bold'}>Добавь свою книгу на обмен</Text>
+        <Text fontSize='2xl' fontWeight={'bold'}>Добавь свою книгу на обмен</Text>
         <Button
           mr={2}
           mb={2}
