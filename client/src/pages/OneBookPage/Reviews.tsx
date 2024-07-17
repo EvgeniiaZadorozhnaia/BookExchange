@@ -6,6 +6,7 @@ import {
   AlertIcon,
   Avatar,
   Badge,
+  Box,
   Button,
   CloseButton,
   Icon,
@@ -247,13 +248,14 @@ function Reviews({
   }
 
   return (
-    <div className="reviews"
+    <div
+      className="reviews"
       style={{
         border: "1px solid black",
-        padding: "10px",
+        padding: "20px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-        margin: "20px 20px 0px 20px",
+        margin: "20px 10px 0px 20px",
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
@@ -261,98 +263,106 @@ function Reviews({
         color: "black",
       }}
     >
-      <div style={{ overflowY: "auto", maxHeight:'260px'}}>
-        <h5 style={{textAlign:'center'}}>Отзывы на книгу "{book?.title}"</h5>
-        {reviews?.length > 0 ? (
-          reviews.map((review) => (
+   <div style={{ overflowY: "auto", maxHeight: "260px", padding: "10px" }}>
+  <h5 style={{ textAlign: "center", marginBottom: "15px" }}>
+    Отзывы на книгу "{book?.title}"
+  </h5>
+  {reviews?.length > 0 ? (
+    reviews.map((review) => (
+      <Box
+        className="animate__animated animate__fadeInUp"
+        key={review.id}
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          marginBottom: "15px",
+          padding: "10px",
+          borderRadius: "8px",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+          backgroundColor: "#ffffff",
+          border: "1px solid #ddd",
+          maxWidth: "100%",
+          wordBreak: "break-word",
+          overflowWrap: "break-word",
+        }}
+      >
+        <Avatar
+          border="2px solid #ddd"
+          padding="1px"
+          src={`http://localhost:3000/static/${review?.User.avatarUrl}`}
+          style={{ marginRight: "10px" }}
+        />
+        <div style={{ flexGrow: 1 }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+            }}
+          >
+            <div style={{ flex: "1 1 auto" }}>
+              <Text fontWeight="bold">
+                {review.User?.username}
+                <Badge ml="1" colorScheme="green">
+                  {formatDate(review.createdAt)}
+                </Badge>
+              </Text>
+              <Text fontSize="sm" style={{ marginTop: "5px", lineHeight: "1.5" }}>
+                {review.content}
+              </Text>
+            </div>
             <div
-            className="animate__animated animate__fadeInUp"
-              key={review.id}
               style={{
                 display: "flex",
-                alignItems: "flex-start",
-                marginBottom: "10px",
-                padding: "10px",
-                borderRadius: "8px",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                backgroundColor: "#f7f7f7",
-                maxWidth: "99%",
-                wordBreak: "break-word",
-                overflowWrap: "break-word",
-                border: "1px solid green",
+                alignItems: "center",
+                gap: "8px",
               }}
             >
-              <Avatar
-                border={"1px solid black"}
-                padding={"1px"}
-                src={`http://localhost:3000/static/${review?.User.avatarUrl}`}
+              <IconButton
+                aria-label="Лайк"
+                icon={<Icon as={AiOutlineLike} />}
+                onClick={() => handleLike(review.id)}
+                variant="outline"
+                size="sm"
               />
-              <div style={{ marginLeft: "15px", flexGrow: 1 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <div style={{ flex: "1 1 auto" }}>
-                    <Text fontWeight="bold">
-                      {review.User?.username}
-                      <Badge ml="1" colorScheme="green">
-                        {formatDate(review.createdAt)}
-                      </Badge>
-                    </Text>
-                    <Text fontSize="sm" style={{ marginTop: "5px" }}>
-                      {review.content}
-                    </Text>
-                  </div>
-                  <div
-                    style={{
-                      marginLeft: "15px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "3px",
-                    }}
-                  >
-                    <IconButton
-                      aria-label="Лайк"
-                      icon={<Icon as={AiOutlineLike} />}
-                      onClick={() => handleLike(review.id)}
-                    />
-                    {review.likes !== undefined && (
-                      <Badge colorScheme="green" ml={1}>
-                        {review.likes}
-                      </Badge>
-                    )}
-                    <IconButton
-                      aria-label="Дизлайк"
-                      icon={<Icon as={AiOutlineDislike} />}
-                      onClick={() => handleDislike(review.id)}
-                    />
-                    {review.dislikes !== undefined && (
-                      <Badge colorScheme="red" ml={1}>
-                        {review.dislikes}
-                      </Badge>
-                    )}
-                    {review.User?.id === user?.id && (
-                      <IconButton
-                        aria-label="Удалить"
-                        icon={<Icon as={AiOutlineDelete} />}
-                        onClick={() => handleReviewDelete(review.id)}
-                        colorScheme="red"
-                        ml={2}
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
+              {review.likes !== undefined && (
+                <Badge colorScheme="green" ml="1">
+                  {review.likes}
+                </Badge>
+              )}
+              <IconButton
+                aria-label="Дизлайк"
+                icon={<Icon as={AiOutlineDislike} />}
+                onClick={() => handleDislike(review.id)}
+                variant="outline"
+                size="sm"
+              />
+              {review.dislikes !== undefined && (
+                <Badge colorScheme="red" ml="1">
+                  {review.dislikes}
+                </Badge>
+              )}
+              {review.User?.id === user?.id && (
+                <IconButton
+                  aria-label="Удалить"
+                  icon={<Icon as={AiOutlineDelete} />}
+                  onClick={() => handleReviewDelete(review.id)}
+                  colorScheme="red"
+                  variant="outline"
+                  size="sm"
+                />
+              )}
             </div>
-          ))
-        ) : (
-          <h6>Отзывов на данную книгу пока нет</h6>
-        )}
-      </div>
+          </div>
+        </div>
+      </Box>
+    ))
+  ) : (
+    <Text style={{ textAlign: "center", color: "#888" }}>
+      Отзывов на данную книгу пока нет 😢. <br />Будьте первым!
+    </Text>
+  )}
+</div>
 
       {showLikeAlert ? (
         <Alert status="info">
@@ -385,11 +395,10 @@ function Reviews({
             borderRadius: "8px",
             boxShadow: "0 2px 4px #b9b5e1",
             backgroundColor: "#f7f7f7",
-            
           }}
           onSubmit={handleSubmitReview}
         >
-          <div style={{ width: "100%"}}>
+          <div style={{ width: "100%" }}>
             <h5 style={{ marginBottom: "5px" }}>Оставить отзыв</h5>
             {book?.Owner?.id !== user?.id ? (
               <Textarea
