@@ -45,7 +45,7 @@ function SearchInput({
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form style={{margin:'30px 0px 85px 0px'}} onSubmit={handleSubmit}>
         <Flex align="center">
           <Input
             className={styles.placeholder}
