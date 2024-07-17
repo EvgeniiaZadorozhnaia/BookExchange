@@ -86,7 +86,7 @@ export default function Profile(): JSX.Element {
         createdAt: new Date().toISOString(),
         Author: {
           username: user.username,
-          avatarUrl: user.avatarUrl,
+          avatarUrl: user?.avatarUrl,
           createdAt: new Date().toISOString(),
         },
       };
