@@ -54,7 +54,7 @@ function AdminPage({
         `${VITE_BASE_URL}${VITE_API}/reviews/${reviewId}`
       );
 
-      // Update the state of the selected user and the users list
+  
       const updatedUser = {
         ...selectedUser,
         reviews: selectedUser.reviews.filter(

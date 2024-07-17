@@ -16,6 +16,7 @@ router
         },
       ],
       attributes: ["id", "username", "email", "rating", "isBlocked", "createdAt"],
+      order: [['rating', 'ASC']],
     });
     res.json(users);
   } catch (error) {
