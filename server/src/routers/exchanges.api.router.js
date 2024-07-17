@@ -10,7 +10,7 @@ router
         fromBook,
         toUser,
         toBook,
-        status: "pending",
+        status: "Ожидает подтверждения",
       });
       res.json(newExchange);
     } catch (error) {

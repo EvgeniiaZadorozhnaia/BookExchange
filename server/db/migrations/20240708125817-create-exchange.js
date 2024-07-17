@@ -15,7 +15,6 @@ module.exports = {
           model: 'Users',
           key: 'id',
         },
-        onDelete: 'cascade',
       },
       fromBook: {
         type: Sequelize.INTEGER,

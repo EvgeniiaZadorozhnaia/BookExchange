@@ -11,11 +11,11 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { starProps } from "../../types/propsTypes";
+import { bookOnDeleteProps, starProps } from "../../types/propsTypes";
 import { AiOutlineDelete } from "react-icons/ai";
 import "animate.css";
 
-function OneCardForFavorites({ book, onDelete }): JSX.Element {
+function OneCardForFavorites({ book, onDelete }: bookOnDeleteProps): JSX.Element {
   const navigate = useNavigate();
 
   const deleteHandler = () => {
@@ -133,7 +133,7 @@ function OneCardForFavorites({ book, onDelete }): JSX.Element {
               fontSize="xs"
               textTransform="uppercase"
               ml="2"
-              display="flex" // Здесь добавляем стили для звёзд
+              display="flex"
               alignItems="center"
             >
               {Array(5)

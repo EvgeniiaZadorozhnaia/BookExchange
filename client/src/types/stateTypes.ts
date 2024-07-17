@@ -8,30 +8,30 @@ export interface IInputs {
 }
 
 export interface IInputsBookCreationState {
-  title?: string;
+  title?: string | undefined;
   author?: string;
   pages?: number;
   pictureUrl?: string;
 }
 
 export interface IUser {
-  isAdmin?: boolean;
-  isBlocked?: boolean;
-  id?: number;
+  isAdmin: boolean;
+  isBlocked: boolean;
+  id: number;
   username: string;
   email: string;
   password: string;
-  avatarUrl?: string;
-  rating?: number;
+  avatarUrl: string;
+  rating: number;
   numberOfRating?: number;
   placeOfMeeting?: string;
-  city?: string;
+  city: string;
   createdAt?: string;
   updatedAt?: string;
 }
 
 export interface IBook {
-  Owner: IUser;
+  Owner: Owner;
   id: number;
   ownerId: number;
   title: string;
@@ -154,10 +154,11 @@ export interface IReview {
 export type IReviews = IReview[];
 
 export interface IUserWithComments {
+  createdAt: string;
   email: string;
   id: number;
   isBlocked: boolean;
-  rating: number;
+  rating: number | null;
   username: string;
   reviews: IReview[];
 }
