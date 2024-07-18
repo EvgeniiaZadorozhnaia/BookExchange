@@ -30,6 +30,7 @@ function CreateBookForm({
 
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
+      //@ts-ignore
       setImg(e.target.files[0]);
       setFileName(e.target.files[0].name);
     }
@@ -49,6 +50,7 @@ function CreateBookForm({
     setDragOver(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      //@ts-ignore
       setImg(e.dataTransfer.files[0]);
       setFileName(e.dataTransfer.files[0].name);
     }
@@ -139,6 +141,7 @@ function CreateBookForm({
             colorScheme="teal"
             variant="outline"
             onClick={(e) => {
+              //@ts-ignore
               submitHandler(e);
               onClose();
             }}

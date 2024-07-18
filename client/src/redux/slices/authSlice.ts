@@ -4,7 +4,8 @@ import { AuthState } from "../types/states";
 import { addUser, logoutUser, refreshToken, signIn } from "../thunkActions";
 import { AuthSlice, RejectedAction, UserAction } from "../types/reducers";
 
-const initialState: AuthState = { user: UserState, loading: true, error: {} };
+
+const initialState: AuthState = { user: UserState, loading: true, error: {message: ""} };
 
 const authSlice: AuthSlice = createSlice({
   name: "authorizationSlice",
@@ -16,7 +17,7 @@ const authSlice: AuthSlice = createSlice({
     });
     builder.addCase(
       addUser.fulfilled,
-      (state: Draft<AuthState>, action: UserAction): void => {
+      (state, action): void => {
         state.user = action.payload;
         state.loading = false;
         localStorage.setItem("user", JSON.stringify(state.user));

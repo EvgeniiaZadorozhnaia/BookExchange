@@ -2,16 +2,15 @@ export interface IInputs {
   username: string;
   email: string;
   password: string;
-  city?: string;
-  placeOfMeeting?: string;
-  avatarUrl?: string;
+  city: string;
+  placeOfMeeting: string;
+  avatarUrl: string;
 }
 
 export interface IInputsBookCreationState {
-  title?: string | undefined;
-  author?: string;
-  pages?: string;
-  pictureUrl?: string;
+  title: string ;
+  author: string;
+  pages: string;
 }
 
 export interface IUser {
@@ -46,13 +45,11 @@ export interface IBook {
 export interface ITypeBook {
   inputs: IInputs;
   type: string;
-  formData: formDataForBook;
 }
 
 export interface ITypeUser {
-  inputs: IInputs;
   type: string;
-  formData: formDataForUser;
+  formData: FormData;
 }
 
 export type IBooks = IBook[];
@@ -143,7 +140,7 @@ export interface BookWithOwner {
 export interface formDataForBook {
   title: string;
   author: string;
-  pages: string;
+  pages: number;
   frontpage: string;
 }
 
@@ -153,7 +150,7 @@ export interface formDataForUser {
   password: string;
   city: string;
   placeOfMeeting: string;
-  avatar: string
+  avatarUrl: string
 }
 
 export interface IReview {

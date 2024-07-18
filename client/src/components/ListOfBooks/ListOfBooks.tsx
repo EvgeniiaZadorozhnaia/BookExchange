@@ -9,7 +9,7 @@ function ListOfBooks({ books }: displayedBooks): JSX.Element {
     <>
       <div className={styles.list}>
         {books.length > 0 &&
-          books.map((book) => <OneCard key={book.id} book={book} />)}
+          books.map((book) => <OneCard key={book.id} book={book} isForExchange={false} />)}
       </div>
     </>
   );

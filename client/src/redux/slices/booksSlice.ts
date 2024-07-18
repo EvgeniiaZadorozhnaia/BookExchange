@@ -15,7 +15,7 @@ import {
   getBooksByUser,
   getFavoriteBooks,
 } from "../thunkActions";
-import { BookAction, BooksSlice, RejectedAction } from "../types/reducers";
+import { AddBookToFavorite, BookAction, BooksSlice, DeleteBookAction, RejectedAction } from "../types/reducers";
 import { IBook } from "../../types/stateTypes";
 
 const initialState: BooksState = {
@@ -23,7 +23,19 @@ const initialState: BooksState = {
   loading: true,
   error: {},
   book: {
-    User: { city: "" },
+    Owner: {
+      avatarUrl: "",
+      city: "",
+      createdAt: "",
+      email: "",
+      id: 0,
+      numberOfRating: 0,
+      password: "",
+      placeOfMeeting: "",
+      rating: 0,
+      updatedAt: "",
+      username: "",
+    },
     id: 0,
     ownerId: 0,
     title: "",
@@ -47,6 +59,8 @@ const booksSlice: BooksSlice = createSlice({
     builder.addCase(
       getBooks.fulfilled,
       (state: Draft<BooksState>, action: BookAction): void => {
+        console.log("state.books", state.books);
+        // @ts-ignore 
         state.books = action.payload;
         state.loading = false;
       }
@@ -68,6 +82,7 @@ const booksSlice: BooksSlice = createSlice({
     builder.addCase(
       getBooksByUser.fulfilled,
       (state: Draft<BooksState>, action: BookAction): void => {
+         // @ts-ignore 
         state.books = action.payload;
         state.loading = false;
       }
@@ -85,7 +100,7 @@ const booksSlice: BooksSlice = createSlice({
     });
     builder.addCase(
       deleteBook.fulfilled,
-      (state, action: PayloadAction<number>) => {
+      (state, action: DeleteBookAction) => {
         state.books = state.books.filter((book) => book.id !== action.payload);
         state.loading = false;
       }
@@ -146,6 +161,7 @@ const booksSlice: BooksSlice = createSlice({
     builder.addCase(
       getFavoriteBooks.fulfilled,
       (state: Draft<BooksState>, action: BookAction): void => {
+        // @ts-ignore 
         state.books = action.payload;
         state.loading = false;
       }
@@ -166,7 +182,7 @@ const booksSlice: BooksSlice = createSlice({
     );
     builder.addCase(
       deleteBookFromFavorites.fulfilled,
-      (state, action: PayloadAction<number>) => {
+      (state, action: DeleteBookAction) => {
         state.books = state.books.filter((book) => book.id !== action.payload);
         state.loading = false;
       }
@@ -184,7 +200,8 @@ const booksSlice: BooksSlice = createSlice({
     });
     builder.addCase(
       addToFavorite.fulfilled,
-      (state: Draft<BooksState>, action: PayloadAction<IBook>): void => {
+      (state: Draft<BooksState>, action: AddBookToFavorite): void => {
+        // @ts-ignore
         state.books.push(action.payload);
         state.loading = false;
       }
