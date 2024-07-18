@@ -72,6 +72,17 @@ module.exports = {
           city: "Санкт-Петербург",
           isAdmin: false,
         },
+        {
+          username: "Иван Рубцов",
+          email: "Rubcov@yandex.ru",
+          password: await bcrypt.hash("admin123", 10),
+          avatarUrl: "Ivan.jpg",
+          rating: 5.0,
+          numberOfRating: 1,
+          placeOfMeeting: "На берегу Волги",
+          city: "Самара",
+          isAdmin: false,
+        },
       ],
       {}
     );
@@ -223,6 +234,15 @@ module.exports = {
           numberOfRating: 1,
           pictureUrl: "488010_1000.jpg",
         },
+        {
+          ownerId: 6,
+          title: "Chakra UI для чайников",
+          author: "Антон Атнагулов",
+          pages: 3120,
+          rating: 5,
+          numberOfRating: 1,
+          pictureUrl: "1591595_1000.jpg",
+        },
       ],
       {}
     );
@@ -267,13 +287,6 @@ module.exports = {
           dislikes: 0,
         },
         {
-          userId: 5,
-          bookId: 11,
-          content: "Самые настоящие свиньи...",
-          likes: 0,
-          dislikes: 0,
-        },
-        {
           userId: 6,
           bookId: 1,
           content: "Книга пророческая",
@@ -300,6 +313,20 @@ module.exports = {
           content: "Согласен полностью с Григорием, книга очень романтичная и читается на одном дыхании ❤️",
           likes: 13,
           dislikes: 1,
+        },
+        {
+          userId: 7,
+          bookId: 11,
+          content: "Привет всем!) Помогаю сегодня до 17:30",
+          likes: 0,
+          dislikes: 2,
+        },
+        {
+          userId: 7,
+          bookId: 11,
+          content: "Чат перепутал, извините",
+          likes: 0,
+          dislikes: 0,
         },
       ],
       {}
