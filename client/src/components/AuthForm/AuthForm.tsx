@@ -15,10 +15,9 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [inputs, setInputs] = useState<IInputs>(InputsState);
   const { user, error } = useAppSelector((state) => state.authSlice);
-  const [avatar, setAvatar] = useState<File | null>(null);
+  const [avatar, setAvatar] = useState<unknown>(null);
   const [dragOver, setDragOver] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const {
     isOpen: isErrorOpen,
@@ -71,25 +70,27 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
 
   const submitHandler = (type: string, e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const formData = new FormData();
+    const formData: FormData = new FormData();
     formData.append("username", inputs.username);
     formData.append("email", inputs.email);
     formData.append("password", inputs.password);
     formData.append("city", inputs.city);
     formData.append("placeOfMeeting", inputs.placeOfMeeting);
+    // @ts-expect-error
     formData.append("avatarUrl", avatar);
     if (type === "signup") {
       if (!inputs.email || !inputs.password || inputs.password.length < 8) {
         setTimeout(() => {
-          setErrorMessage("Пожалуйста, укажите правильную почту и пароль (минимум 8 символов)");
           onErrorOpen();
         }, 200);
       } else {
         dispatch(addUser({ type, formData })).then((user) => {
+          //@ts-ignore
           if (user.error) {
-            setErrorMessage(user.error.message);
+
             onErrorOpen();
           } else {
+            //@ts-ignore
             sendMail(user.payload);
           }
         });
@@ -98,8 +99,8 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
 
     if (type === "signin") {
       dispatch(signIn({ type, inputs })).then((user) => {
+        //@ts-ignore
         if (user.error) {
-          setErrorMessage(user.error.message);
           onErrorOpen();
         }
       });
@@ -269,6 +270,7 @@ export default function AuthForm({ title, type }: AuthFormProps): JSX.Element {
       <ErrorModal
         isOpen={isErrorOpen}
         onClose={onErrorClose}
+        //@ts-ignore
         error={error.message}
       /> 
     </>

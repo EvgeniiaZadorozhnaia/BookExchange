@@ -109,7 +109,7 @@ function SearchInput({
             >
               {options.length > 0 &&
                 options.map((option) => (
-                  <option key={option.id} value={option}>
+                  <option key={option} value={option}>
                     {option}
                   </option>
                 ))}

@@ -13,8 +13,9 @@ import {
 } from "@chakra-ui/react";
 import "animate.css";
 import { useNavigate } from "react-router-dom";
+import { OneCardForMyBooksProps } from "../../types/propsTypes";
 
-function OneCardForMyBooks({ book, onEditClick, onDelete }) {
+function OneCardForMyBooks({ book, onEditClick, onDelete }: OneCardForMyBooksProps): JSX.Element {
   const navigate = useNavigate();
   const deleteHandler = () => {
     if (book.id) {
