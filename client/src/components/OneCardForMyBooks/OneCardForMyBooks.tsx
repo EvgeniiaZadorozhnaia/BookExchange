@@ -12,8 +12,10 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import "animate.css";
+import { useNavigate } from "react-router-dom";
 
 function OneCardForMyBooks({ book, onEditClick, onDelete }) {
+  const navigate = useNavigate();
   const deleteHandler = () => {
     if (book.id) {
       onDelete(book.id);
@@ -35,13 +37,14 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
           src={`http://localhost:3000/static/${book.pictureUrl}`}
           alt="Picture"
           borderRadius="lg"
+          onClick={() => navigate(`/books/oneBook/${book.id}`)}
         />
         <Stack mt="2" spacing="3">
           <Text textAlign="center" fontWeight="bold" fontSize={"18px"}>
             {book.title}
           </Text>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="5px" px="7" border={'1px solid green'}>
+            <Badge borderRadius="5px" px="7" border={"1px solid green"}>
               Автор
             </Badge>
             <Box
@@ -55,7 +58,7 @@ function OneCardForMyBooks({ book, onEditClick, onDelete }) {
             </Box>
           </Box>
           <Box display="flex" alignItems="baseline">
-            <Badge borderRadius="5px" px="3" border={'1px solid green'}>
+            <Badge borderRadius="5px" px="3" border={"1px solid green"}>
               Cтраницы
             </Badge>
             <Box

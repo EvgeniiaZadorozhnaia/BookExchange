@@ -95,12 +95,11 @@ function MyBooksPage(): JSX.Element {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" pb={4}>
+    <Box display="flex" flexDirection="column" alignItems="center">
       <Box
        display="flex"
        justifyContent="center"
        alignItems="center"
-       mb="16px"
       >
         {books.length > 3 && (
           <IconButton

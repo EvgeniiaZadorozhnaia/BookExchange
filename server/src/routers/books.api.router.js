@@ -2,27 +2,33 @@ const router = require("express").Router();
 const { verifyAccessToken } = require("../middlewares/verifyToken");
 const multer = require("../middlewares/multer");
 const { Book, User, Review } = require("../../db/models");
+const { Op } = require('sequelize');
 
 router
-  .get("/", verifyAccessToken, async (req, res) => {
-    try {
-      const booksByOneOwner = await Book.findAll({
-        include: [
-          {
-            model: User,
-            as: "Owner",
+.get("/allBooks/:id", verifyAccessToken, async (req, res) => {
+  const { id } = req.params;
+  try {
+      const booksExceptOwner = await Book.findAll({
+          include: [
+              {
+                  model: User,
+                  as: "Owner",
+                  required: true,
+              },
+          ],
+          where: {
+              '$Owner.id$': {
+                  [Op.ne]: id,
+              },
           },
-        ],
-        order: [["rating", "DESC"]],
+          order: [["rating", "DESC"]],
       });
-      res.json(booksByOneOwner);
-    } catch (error) {
+      res.json(booksExceptOwner);
+  } catch (error) {
       console.error(error.message);
-      res
-        .status(500)
-        .json({ message: "Произошла ошибка при получении списка книг" });
-    }
-  })
+      res.status(500).json({ message: "Произошла ошибка при получении списка книг" });
+  }
+})
   .get("/oneBook/:bookId", async (req, res) => {
     const { bookId } = req.params;
     try {

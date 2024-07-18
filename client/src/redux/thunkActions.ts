@@ -83,9 +83,9 @@ export const logoutUser: newLogout = createAsyncThunk(
 
 export const getBooks: bookGetting = createAsyncThunk(
   "books/getting",
-  async () => {
+  async (id) => {
     const res: AxiosResponse = await axiosInstance.get(
-      `${VITE_BASE_URL}${VITE_API}/books/`
+      `${VITE_BASE_URL}${VITE_API}/books/allBooks/${id}`
     );
     const data = res.data as IBooks[];
 

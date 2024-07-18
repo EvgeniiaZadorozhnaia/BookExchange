@@ -32,9 +32,10 @@ function HomePage({ usersWithComments }: homePageProps): JSX.Element {
   const [displayedBooks, setDisplayedBooks] = useState<IBooks>([]);
   const [isNoResultsOpen, setIsNoResultsOpen] = useState<boolean>(false);
   const AnimatedBox = motion(Box);
+  const { user } = useAppSelector((state) => state.authSlice);
 
   useEffect(() => {
-    dispatch(getBooks());
+    dispatch(getBooks(user?.id));
   }, [usersWithComments]);
 
   useEffect(() => {
