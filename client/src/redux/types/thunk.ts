@@ -1,5 +1,5 @@
 import { AsyncThunk, SerializedError } from "@reduxjs/toolkit"
-import { IBook, IBooks, ITypeUser, IUser } from "../../types/stateTypes"
+import { IBook, IBooks, ITypeBook, ITypeUser, IUser } from "../../types/stateTypes"
 import { AppDispatch, RootState } from "../store"
 import { createBookProps, deleteBookProps, editBookProps } from "../../types/propsTypes"
 
@@ -38,13 +38,15 @@ type AsyncThunkConfig = {
 
   export type NewUser = AsyncThunk<IUser, ITypeUser, AsyncThunkConfig>
 
+  export type OldUser = AsyncThunk<IUser, ITypeBook, AsyncThunkConfig>
+
   export type newBook = AsyncThunk<IBook, createBookProps, AsyncThunkConfig>
 
   export type refreshTokenI = AsyncThunk<IUser, void, AsyncThunkConfig>
 
   export type newLogout = AsyncThunk<void, void, AsyncThunkConfig>
 
-  export type bookGetting = AsyncThunk<IBooks[], void, AsyncThunkConfig>
+  export type bookGetting = AsyncThunk<IBooks[], number, AsyncThunkConfig>
 
   export type getMyBooks = AsyncThunk<IBooks[], number, AsyncThunkConfig>
 

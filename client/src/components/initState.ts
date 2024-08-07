@@ -54,6 +54,7 @@ export const BookState: IBook = {
 export const InputsBookCreationState: IInputsBookCreationState = {
   title: "",
   author: "",
-  pages: 0,
+  pages: "",
+  //@ts-ignore
   pictureUrl: "",
 };

@@ -41,14 +41,16 @@ function MyBooksPage(): JSX.Element {
   function submitHandler(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
 
-    const formData = new FormData();
+    const formData: FormData = new FormData();
     formData.append("title", inputs.title);
     formData.append("author", inputs.author);
     formData.append("pages", inputs.pages);
+    //@ts-ignore
     formData.append("frontpage", img);
 
     try {
       if (editMode) {
+        //@ts-ignore
         dispatch(editBook({ bookId: currentBookId, formData }));
       } else {
         dispatch(createBook({ ownerId, formData }));
@@ -62,7 +64,9 @@ function MyBooksPage(): JSX.Element {
   }
 
   function handleEditClick(book: IBook): void {
+    //@ts-ignore
     setInputs(book);
+    //@ts-ignore
     setCurrentBookId(book.id);
     setEditMode(true);
     onOpen();

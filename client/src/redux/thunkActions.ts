@@ -13,6 +13,7 @@ import {
   newBook,
   newLogout,
   NewUser,
+  OldUser,
   refreshTokenI,
 } from "./types/thunk";
 import {
@@ -26,6 +27,7 @@ const { VITE_API, VITE_BASE_URL }: ImportMeta["env"] = import.meta.env;
 export const addUser: NewUser = createAsyncThunk(
   "users/create",
   async ({ type, formData }) => {
+    
     const res: AxiosResponse = await axiosInstance.post(
       `${VITE_BASE_URL}${VITE_API}/auth/${type}`,
       formData,
@@ -35,13 +37,16 @@ export const addUser: NewUser = createAsyncThunk(
         },
       }
     );
+    
     const data = res.data.user as IUser;
+    console.log("data", data);
+    
     setAccessToken(res.data.accessToken);
     return data;
   }
 );
 
-export const signIn: NewUser = createAsyncThunk(
+export const signIn: OldUser = createAsyncThunk(
   "users/signIn",
   async ({ type, inputs }) => {
     const res: AxiosResponse = await axiosInstance.post(
