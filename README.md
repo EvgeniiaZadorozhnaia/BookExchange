@@ -104,6 +104,6 @@ JS, React, ReduxToolkit, Chakra UI, GoogleBooks, OpenWeather, Git, Node.js, Post
 ![Подробная информация о пользователе](images/Screenshot%202024-08-07%20134821.png)
 
 ## База данных
-![База данных](images/Screenshot%202024-07-17%20155409.png)\
+![База данных](images/Screenshot%202024-07-17%20155409.png)
 
 На этой картинке показана схема базы данных, которая реализована в данном проекте.
