@@ -8,7 +8,7 @@ BookExchange
 
 # Стек
 
-JS, React, ReduxToolkit, Chakra UI, GoogleBooks, OpenWeather, Git, Node.js, PostgreSQL, Express, Sequelize, bcrypt, cookie-parser, cors, dotenv, jsonwebtoken, morgan, nodemon, multer, drag and drop, nodemailer, Vite
+JavaScript, TypeScript, React, ReduxToolkit, Chakra UI, GoogleBooks, OpenWeather, Git, Node.js, PostgreSQL, Express, Sequelize, bcrypt, cookie-parser, cors, dotenv, jsonwebtoken, morgan, nodemon, multer, drag and drop, nodemailer, Vite
 
 # Скриншоты проекта BookExchange
 
